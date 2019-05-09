@@ -26,33 +26,34 @@ class Grafo:
             self.nodes, _ = ox.graph_to_gdfs(self.Grafo)
             self.nodes.head()
             self.tree = KDTree(self.nodes[['x','y']])
-            route = nx.shortest_path(self.Grafo, np.random.choice(self.Grafo.nodes), 
-                         np.random.choice(self.Grafo.nodes))
-            ox.plot_graph_route(self.Grafo, route, fig_height=10, fig_width=10)
-#            aux = self.Grafo.nodes[317810430]
-#            aux.pop('osmid')
-#            aux = tuple(aux.values())
-#            self.lib_idx = self.tree.query([aux], return_distance=False)[0]
-#            print(self.lib_idx)
-#            closest_node_to_lib = self.nodes.iloc[self.lib_idx].index.values[0]
-#            print(closest_node_to_lib)
-#            ig, ax = ox.plot_graph(self.Grafo, fig_height=10, fig_width=10, 
-#                        show=False, close=False, 
-#                        edge_color='black')
-#            
-#            
-#            ax.scatter(aux[1], aux[0], c='red', s=100)
-#            ax.scatter(self.Grafo.node[closest_node_to_lib]['x'],
-#                       self.Grafo.node[closest_node_to_lib]['y'], 
-#                       c='green', s=100)
-#            print(aux)
-#            print(self.Grafo.node[closest_node_to_lib])
-#            plt.show()
-            
 
-        
-        
         def Muestra(self):
             G_projected = ox.project_graph(self.Grafo)
             ox.plot_graph(G_projected)
             
+        def GenerarRutaRandom(self):
+            route = nx.shortest_path(self.Grafo, np.random.choice(self.Grafo.nodes), 
+            np.random.choice(self.Grafo.nodes))
+            ox.plot_graph_route(self.Grafo, route, fig_height=10, fig_width=10)
+        
+        def GenerarPuntoRandom(self):
+            aux = self.Grafo.nodes[np.random.choice(self.Grafo.nodes)]
+            fig, ax = ox.plot_graph(self.Grafo, fig_height=10, fig_width=10, 
+                        show=False, close=False, 
+                        edge_color='black')
+            ax.scatter(aux['x'], aux['y'], c='red', s=100)
+        
+        def ObtenerPuntoMasCercano(self):
+            nodes, _ = ox.graph_to_gdfs(self.Grafo)
+            tree = KDTree(nodes[['y', 'x']], metric='euclidean')
+            aux = self.Grafo.nodes[np.random.choice(self.Grafo.nodes)]
+            aux1 = aux
+            del aux1['osmid']
+            aux1 = tuple(aux1.values())
+            idx_cerc = tree.query([aux1], k=2, return_distance=False)[0]
+            punt_cerc = self.Grafo.node[(nodes.iloc[idx_cerc].index.values[1])]
+            fig, ax = ox.plot_graph(self.Grafo, fig_height=10, fig_width=10, 
+                        show=False, close=False, 
+                        edge_color='black')
+            ax.scatter(aux['x'], aux['y'], c='red', s=50)
+            ax.scatter(punt_cerc['x'], punt_cerc['y'], c='green', s=50)

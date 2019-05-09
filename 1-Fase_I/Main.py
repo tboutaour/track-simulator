@@ -11,3 +11,4 @@ import Grafo as g
 grafo = g.Grafo(39.5713,39.5573,2.6257,2.6023)
 #grafo.Muestra()
 grafo.GenerarKDtree(0.5)
+grafo.Prueba()
