@@ -15,6 +15,18 @@ route1 = "RutaCastilloBellver1.gpx"
 
 f1 = open(route1)
 p1 = gpxpy.parse(f1)
+points_a=[]
+points_c=[]
+for track in p1.tracks:  # OJO SOLO HAY UN TRACK
+    for segment in track.segments:  # OJO SOLO HAY UN SEGMENT
+        for iA in range(0, len(segment.points) - 1):
+            point = segment.points[iA]
+            points_a.append([point.longitude, point.latitude])
+
+    
+
+
+
 
 tolerance = 0.0000009
 
@@ -31,7 +43,7 @@ aux = grafo.Grafo.nodes[np.random.choice(grafo.Grafo.nodes)]
 punto = aux
 del punto['osmid']
 punto = tuple(punto.values())
-
+punto = (39.566531,2.615824)
 grafo.GenerarKDtree()
 punto_cercano=grafo.ObtenerNodoMasCercano(grafo.nodes,punto)
 fig, ax = ox.plot_graph(grafo.Grafo, fig_height=10, fig_width=10, 
