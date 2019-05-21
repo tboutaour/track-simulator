@@ -55,7 +55,7 @@ class Grafo:
             
         def ObtenerNodoMasCercano(self,nodos,punto):
             idx_cerc = self.tree.query([punto], k=2, return_distance=False)[0]
-            punt_cerc = self.Grafo.node[(self.nodes.iloc[idx_cerc].index.values[1])]
+            punt_cerc = self.Grafo.node[(self.nodes.iloc[idx_cerc].index.values[0])]
             
             return punt_cerc
             
