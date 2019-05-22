@@ -24,8 +24,8 @@ ax = plt.Axes(fig, [0., 0., 1., 1.], )
 ax.set_aspect('equal')
 ax.set_axis_off()
 fig.add_axes(ax)
-data_path = './gpx/Rutas'
-gpx_filename = './CastilloBellver.gpx'
+data_path = 'Rutas'
+gpx_filename = 'CastilloBellver.gpx'
 numero = 1
 nombreFichero = "RutaCastilloBellver"
 

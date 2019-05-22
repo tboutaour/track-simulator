@@ -9,9 +9,10 @@ import gpxpy
 import Grafo as g
 import numpy as np
 import osmnx as ox
+import networkx as nx
 
 
-route1 = "RutaCastilloBellver3.gpx"
+route1 = "Rutas/Ficheros/RutaCastilloBellver15.gpx"
 
 f1 = open(route1)
 p1 = gpxpy.parse(f1)
@@ -65,7 +66,15 @@ for a in points_a:
     lon = a[1]
     ax.scatter(lon, lat, c='red', s=20)
 
-for b in points_c:
+
+
+points_c_aux = points_c
+for i in range(len(points_c_aux)-1):
+    if nx.shortest_path_length(grafo.Grafo,points_c_aux[i][1],points_c_aux[i+1][1])>1:
+        points_c_aux[i+1]=points_c_aux[i]
+
+    
+for b in points_c_aux:
     lon = grafo.Grafo.node[b[1]]['x']
     lat = grafo.Grafo.node[b[1]]['y']
     ax.scatter(lon, lat, c='blue', s=20)
