@@ -28,9 +28,13 @@ class Grafo:
         def __colorear_rutas(self):
             return ox.get_edge_colors_by_attr(self.Grafo, attr='length')
             
-        def GenerarKDtree(self):
+        def GenerarKDtree1(self):
             self.nodes, _ = ox.graph_to_gdfs(self.Grafo)
             self.tree = KDTree(self.nodes[['y', 'x']], metric='euclidean')
+            
+        def GenerarKDtreeSegmentos(self, data):
+            self.nodes, _ = ox.graph_to_gdfs(self.Grafo)
+            self.tree = KDTree(data[:,:2], metric='euclidean')
 
         def Muestra(self,n):
             G_projected = ox.project_graph(self.Grafo)
@@ -53,13 +57,25 @@ class Grafo:
                         edge_color='black')
             ax.scatter(aux['x'], aux['y'], c='red', s=100)
             
-        def ObtenerNodoMasCercano(self,nodos,punto):
-            idx_cerc = self.tree.query([punto], k=1, return_distance=False)[0]
-            punt_cerc = self.Grafo.node[(self.nodes.iloc[idx_cerc].index.values[0])]
+        def ObtenerNodosMasCercano(self,nodos,puntos):
+            idx_cerc = self.tree.query(puntos, k = 2, return_distance=False)
+            p_aux1=np.array(self.nodes.iloc[idx_cerc[:,0]].index)
+            p_aux2=np.array(self.nodes.iloc[idx_cerc[:,1]].index)
+            return p_aux1,p_aux2
+        
+        def getClosestNodes(self, data,puntos):
+            idx_cerc = self.tree.query(puntos, k = 1 , return_distance=False)
             
-            return punt_cerc
+            return data[idx_cerc[:,0]][:,2], data[idx_cerc[:,0]][:,3]
             
             
+        def GetNodePoints(self, t):
+            ruta_simplificada = []
+            for b in t:
+                lon = self.Grafo.node[b]['x']
+                lat = self.Grafo.node[b]['y']
+                ruta_simplificada.append([lat,lon])
+            return np.array(ruta_simplificada)
         def __CargarPuntos(self, p):
             points_a = []
             #p.simplify()

@@ -10,72 +10,114 @@ import Grafo as g
 import numpy as np
 import osmnx as ox
 import networkx as nx
+from geopy.distance import distance
+import matplotlib.pyplot as plt
+#from sklearn.neighbors import KDTree
+
+def cargaPuntosTrack(fichero):
+    points_a=[]
+    for track in fichero.tracks:  # OJO SOLO HAY UN TRACK
+        for segment in track.segments:  # OJO SOLO HAY UN SEGMENT
+            for iA in range(0, len(segment.points) - 1):
+                point = segment.points[iA]
+                points_a.append([point.latitude, point.longitude])
+    return np.array(points_a)
+
+def obtenerDistancia(puntos):
+    distancia=[]
+    for p in range(len(puntos)-1):
+        distancia.append(distance(puntos[p],puntos[p+1]).m)
+    return np.array(distancia)
 
 
-route1 = "Rutas/Ficheros/RutaCastilloBellver15.gpx"
 
+def obtenerRutaTrack(grafo, points_a):
+    punto_cercano1, punto_cercano2= grafo.ObtenerNodosMasCercano(grafo.nodes,points_a)
+    return np.column_stack((points_a,punto_cercano1))
+
+def getRouteFromPoint(grafo,data, points_a):
+    originNode, destinyNode = grafo.getClosestNodes(data,points_a)
+    print(originNode)
+    return np.column_stack((points_a,originNode,destinyNode))
+
+
+
+def PlotPoints(ax, t, color):
+    for a in t:
+        lat = a[0]
+        lon = a[1]
+        ax.scatter(lon, lat, c= color, s=20)
+        
+#Función para generar el array bidimensional con todos los puntos y sus nodos or. fin.
+def treeStructureCreation(df):
+    roadRelation = df[['source','target','geometry']]
+    n = []
+    for road in roadRelation.iterrows():
+        try:
+            coords = road[1].geometry.coords[:]
+            coordList = [list(reversed(item)) for item in coords]
+            L = [ x + [road[1].source,road[1].target] for x in coordList]
+            n.extend(L)
+        except AttributeError:
+            pass
+    return np.array(n)
+
+#...................................................................    
+#Método que muestra el cálculo de la distancia. Muestra histograma
+#...................................................................
+def CalculoDistanciaTrayectorias(n):
+    rout ="Rutas/Ficheros/RutaCastilloBellver"
+    d=[]
+    for i in range(n):
+        rout ="Rutas/Ficheros/RutaCastilloBellver"
+        rout=rout+str(i+1)+".gpx"
+        f1 = open(rout)
+        p1 = gpxpy.parse(f1)
+        points_a=[]
+        for track in p1.tracks:  # OJO SOLO HAY UN TRACK
+            for segment in track.segments:  # OJO SOLO HAY UN SEGMENT
+                for iA in range(0, len(segment.points) - 1):
+                    point = segment.points[iA]
+                    points_a.append((point.latitude, point.longitude))
+        for p in range(len(points_a)-1):
+            d.append(distance(points_a[p],points_a[p+1]).m)
+        
+    plt.hist(d, bins=70)
+    
+    plt.xlabel('distance')
+    plt.show()  
+
+#...................................................................    
+#Primer Main.
+#Genera a partir de un fichero todo el grafo y una comparación con una ruta
+#...................................................................
+
+route1 = "Rutas/Ficheros/castillo-bellver.gpx"
 f1 = open(route1)
 p1 = gpxpy.parse(f1)
-points_a=[]
+
 points_c=[]
-for track in p1.tracks:  # OJO SOLO HAY UN TRACK
-    for segment in track.segments:  # OJO SOLO HAY UN SEGMENT
-        for iA in range(0, len(segment.points) - 1):
-            point = segment.points[iA]
-            points_a.append((point.latitude, point.longitude))
 
-    
+puntos_track = cargaPuntosTrack(p1)
 
+distancia = obtenerDistancia(puntos_track)
 
+simulador = g.Grafo(39.5713,39.5573,2.6257,2.6023,p1)
+simulador.Grafo = simulador.Grafo.to_undirected()
 
+df=nx.to_pandas_edgelist(simulador.Grafo)
+data = treeStructureCreation(df)
+simulador.GenerarKDtreeSegmentos(data)
 
-tolerance = 0.0000009
+trackRouteRelation = getRouteFromPoint(simulador,data,puntos_track)
 
-grafo = g.Grafo(39.5713,39.5573,2.6257,2.6023,p1)
-#grafo.Muestra(2)
-#grafo.Grafo.edges()
-#grafo.GenerarKDtree(0.5)
-#grafo.ObtenerPuntoMasCercano()
-#grafo.Prueba()
-
-#ejemplo punto cercano:
-
-aux = grafo.Grafo.nodes[np.random.choice(grafo.Grafo.nodes)]
-punto = aux
-del punto['osmid']
-punto = tuple(punto.values())
-punto = (39.566531,2.615824)
-
-grafo.GenerarKDtree()
-
-for a in points_a:
-    punto_cercano=grafo.ObtenerNodoMasCercano(grafo.nodes,a)
-    points_c.append([a,punto_cercano['osmid']])
-    
-
-punto_cercano=grafo.ObtenerNodoMasCercano(grafo.nodes,punto)
-fig, ax = ox.plot_graph(grafo.Grafo, fig_height=10, fig_width=10, 
+fig, ax = ox.plot_graph(simulador.Grafo, fig_height=10, fig_width=10, 
             show=False, close=False, 
             edge_color='black')
-#ax.scatter(punto[1], punto[0], c='red', s=50)    
-ax.scatter(punto_cercano['x'], punto_cercano['y'], c='green', s=50)
 
-#a falta de arreglar porque p_aux es un float object not subscriptable
-for a in points_a:
-    lat = a[0]
-    lon = a[1]
-    ax.scatter(lon, lat, c='red', s=20)
+PlotPoints(ax, puntos_track, 'red')
+originNodes = simulador.GetNodePoints(trackRouteRelation[:,2])
+destinNodes = simulador.GetNodePoints(trackRouteRelation[:,3])
+PlotPoints(ax, originNodes, 'green')
+PlotPoints(ax,destinNodes, 'green')
 
-
-
-points_c_aux = points_c
-for i in range(len(points_c_aux)-1):
-    if nx.shortest_path_length(grafo.Grafo,points_c_aux[i][1],points_c_aux[i+1][1])>1:
-        points_c_aux[i+1]=points_c_aux[i]
-
-    
-for b in points_c_aux:
-    lon = grafo.Grafo.node[b[1]]['x']
-    lat = grafo.Grafo.node[b[1]]['y']
-    ax.scatter(lon, lat, c='blue', s=20)
-    
