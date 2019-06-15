@@ -12,9 +12,8 @@ import osmnx as ox
 import networkx as nx
 from geopy.distance import distance
 import matplotlib.pyplot as plt
-#from sklearn.neighbors import KDTree
 
-def cargaPuntosTrack(fichero):
+def CargaPuntosTrack(fichero):
     points_a=[]
     for track in fichero.tracks:  # OJO SOLO HAY UN TRACK
         for segment in track.segments:  # OJO SOLO HAY UN SEGMENT
@@ -23,24 +22,15 @@ def cargaPuntosTrack(fichero):
                 points_a.append([point.latitude, point.longitude])
     return np.array(points_a)
 
-def obtenerDistancia(puntos):
+def ObtenerDistancia(puntos):
     distancia=[]
     for p in range(len(puntos)-1):
         distancia.append(distance(puntos[p],puntos[p+1]).m)
     return np.array(distancia)
 
-
-
-def obtenerRutaTrack(grafo, points_a):
-    punto_cercano1, punto_cercano2= grafo.ObtenerNodosMasCercano(grafo.nodes,points_a)
-    return np.column_stack((points_a,punto_cercano1))
-
-def getRouteFromPoint(grafo,data, points_a):
+def GetRouteFromPoint(grafo,data, points_a):
     originNode, destinyNode = grafo.getClosestNodes(data,points_a)
-    print(originNode)
     return np.column_stack((points_a,originNode,destinyNode))
-
-
 
 def PlotPoints(ax, t, color):
     for a in t:
@@ -49,7 +39,7 @@ def PlotPoints(ax, t, color):
         ax.scatter(lon, lat, c= color, s=20)
         
 #Función para generar el array bidimensional con todos los puntos y sus nodos or. fin.
-def treeStructureCreation(df):
+def TreeStructureCreation(df):
     roadRelation = df[['source','target','geometry']]
     n = []
     for road in roadRelation.iterrows():
@@ -98,18 +88,18 @@ p1 = gpxpy.parse(f1)
 
 points_c=[]
 
-puntos_track = cargaPuntosTrack(p1)
+puntos_track = CargaPuntosTrack(p1)
 
-distancia = obtenerDistancia(puntos_track)
+distancia = ObtenerDistancia(puntos_track)
 
 simulador = g.Grafo(39.5713,39.5573,2.6257,2.6023,p1)
 simulador.Grafo = simulador.Grafo.to_undirected()
 
 df=nx.to_pandas_edgelist(simulador.Grafo)
-data = treeStructureCreation(df)
+data = TreeStructureCreation(df)
 simulador.GenerarKDtreeSegmentos(data)
 
-trackRouteRelation = getRouteFromPoint(simulador,data,puntos_track)
+trackRouteRelation = GetRouteFromPoint(simulador,data,puntos_track)
 
 fig, ax = ox.plot_graph(simulador.Grafo, fig_height=10, fig_width=10, 
             show=False, close=False, 
