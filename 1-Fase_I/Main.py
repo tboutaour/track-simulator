@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+
 # -*- coding: utf-8 -*-
 """
 Created on Wed May  8 17:15:18 2019
@@ -75,14 +75,41 @@ def CalculoDistanciaTrayectorias(n):
     plt.hist(d, bins=70)
     
     plt.xlabel('distance')
-    plt.show()  
+    plt.show()
+
+def GetRoadGaps(origin,target):
+    route = nx.shortest_path(simulador.Grafo,origin,target)
+    points = []
+    for i in range(0,len(route)-1):
+        points.append((route[i],route[i+1]))
+    return np.array(points)
+
+def SimplifyRoute(simulador,data):
+    exp = []
+    exp.append(data[0])
+    for idx in range(1,len(data)):
+        distance = nx.shortest_path_length(simulador.Grafo,data[idx][2],data[idx-1][3])
+
+        if distance == 0:
+            exp.append(data[idx])
+        elif distance <=6 and distance >=1 :
+            routeGaps = (GetRoadGaps(data[idx][2],data[idx-1][3])).tolist()
+            addedPoints = [[data[idx][0],data[idx][1]] + x for x in routeGaps]
+            exp.append(data[idx])
+            exp.extend(addedPoints)
+
+        else:
+            print("distancia:" + str(distance))
+            np.delete(data, idx)
+    return np.array(exp)
+
 
 #...................................................................    
 #Primer Main.
 #Genera a partir de un fichero todo el grafo y una comparación con una ruta
 #...................................................................
 
-route1 = "Rutas/Ficheros/castillo-bellver.gpx"
+route1 = "Rutas/Ficheros/RutaRealCastell3.gpx"
 f1 = open(route1)
 p1 = gpxpy.parse(f1)
 
@@ -101,13 +128,26 @@ simulador.GenerarKDtreeSegmentos(data)
 
 trackRouteRelation = GetRouteFromPoint(simulador,data,puntos_track)
 
+trackRouteRelationFiltered = SimplifyRoute(simulador,trackRouteRelation)
+
 fig, ax = ox.plot_graph(simulador.Grafo, fig_height=10, fig_width=10, 
             show=False, close=False, 
             edge_color='black')
 
 PlotPoints(ax, puntos_track, 'red')
-originNodes = simulador.GetNodePoints(trackRouteRelation[:,2])
-destinNodes = simulador.GetNodePoints(trackRouteRelation[:,3])
-PlotPoints(ax, originNodes, 'green')
-PlotPoints(ax,destinNodes, 'green')
+# originNodes = simulador.GetNodePoints(trackRouteRelation[:,2])
+# destinNodes = simulador.GetNodePoints(trackRouteRelation[:,3])
+# PlotPoints(ax, originNodes, 'green')
+# PlotPoints(ax,destinNodes, 'green')
+PlotPoints(ax, trackRouteRelationFiltered[:,0:2], 'blue')
+originNodes = simulador.GetNodePoints(trackRouteRelationFiltered[:,2])
+destinNodes = simulador.GetNodePoints(trackRouteRelationFiltered[:,3])
+PlotPoints(ax, originNodes, 'orange')
+PlotPoints(ax,destinNodes, 'orange')
+routes = []
+for i in trackRouteRelationFiltered:
+    routes.append(nx.shortest_path(simulador.Grafo, i[2], i[3], weight='length'))
 
+ox.plot_graph_routes(simulador.Grafo, routes,route_linewidth=1,orig_dest_node_size=3)
+
+plt.show(block=True)
