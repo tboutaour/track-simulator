@@ -124,13 +124,13 @@ def GetRoadGaps(origin,target):
         points.append((route[i],route[i+1]))
     return np.array(points)
 
-def GetFrequency(data):
+def GetFrequency(data,title):
     data.sort()
     cd_dx = np.linspace(0., 1., len(data))
     ser_dx = pd.Series(cd_dx, index=data)
     fig, ax = plt.subplots()
     ax = ser_dx.plot(drawstyle='steps', legend="True")
-    ax.set_xlabel("Meters", fontsize=16)
+    ax.set_xlabel(title, fontsize=16)
     ax.set_ylabel("Frequency", fontsize=16)
     for tick in ax.xaxis.get_major_ticks():
         tick.label.set_fontsize(12)
@@ -157,12 +157,62 @@ def haversine_distance(origin, destination):
 
   return d*1000
 
+def calculate_initial_compass_bearing(pointA, pointB):
+    if (type(pointA) != tuple) or (type(pointB) != tuple):
+        raise TypeError("Only tuples are supported as arguments")
+    lat1 = math.radians(pointA[0])
+    lat2 = math.radians(pointB[0])
+    diffLong = math.radians(pointB[1] - pointA[1])
+    x = math.sin(diffLong) * math.cos(lat2)
+    y = math.cos(lat1) * math.sin(lat2) - (math.sin(lat1)
+    * math.cos(lat2) * math.cos(diffLong))
+    initial_bearing = math.atan2(x, y)
+    # Now we have the initial bearing but math.atan2 return values
+    # from -180° to + 180° which is not what we want for a compass bearing
+    # The solution is to normalize the initial bearing as shown below
+    initial_bearing = math.degrees(initial_bearing)
+    compass_bearing = (initial_bearing + 360) % 360
+    return compass_bearing
+
+def GetDiagrams(data,title,bins):
+    GetHistogram(data,title,bins)
+    plt.show()
+    GetFrequency(data, title)
+    plt.show()
+
+def GetHistogram(data,title,bins):
+    fig, ax = plt.subplots()
+    plt.hist(data, bins=bins)
+    ax.set_xlabel(title, fontsize=16)
+    ax.set_ylabel("Frequency", fontsize=16)
+    ax.grid(True)
+    fig.canvas.draw()
+
+def GetBearingPointToPoint(set):
+    angulos = []
+    for idx in range(0, len(set) - 1):
+        point = tuple(set[idx])
+        nextPoint = tuple(set[idx + 1])
+        deg = calculate_initial_compass_bearing(point, nextPoint)
+        angulos.append(deg)
+
+    angSinCero = [x for x in angulos if x != 0]
+    return  angSinCero
+
+def GetDistancePointToPoint(set):
+    DistanceBetweenPonints = []
+    for idx in range(0,len(set)-1):
+        distan = haversine_distance(set[idx],
+                                    set[idx+1])
+        DistanceBetweenPonints.append(distan)
+    DistanceBetweenPonints = [x for x in DistanceBetweenPonints if x != 0]
+    return DistanceBetweenPonints
 #...................................................................    
 #Primer Main.
 #Genera a partir de un fichero todo el grafo y una comparación con una ruta
 #...................................................................
 
-route1 = "Rutas/Ficheros/RutaRealCastell3.gpx"
+route1 = "Rutas/Ficheros/RutaRealCastell1.gpx"
 f1 = open(route1)
 p1 = gpxpy.parse(f1)
 
@@ -201,6 +251,13 @@ PlotPoints(ax,destinNodes, 'orange')
 
 PlotRoute(simulador,trackRouteRelationFiltered)
 
-GetFrequency(trackRouteRelationFiltered[:,4])
+GetFrequency(trackRouteRelationFiltered[:,4],"Distance Point-Route Meters")
 
 plt.show(block=True)
+
+bearing = GetBearingPointToPoint(trackRouteRelationFiltered[:,0:2])
+distancePointPoint = GetDistancePointToPoint(trackRouteRelationFiltered[:,0:2])
+
+GetDiagrams(bearing,"Bearing,meters",100)
+GetDiagrams(distancePointPoint,"Distance Point-Point,meters",100)
+
