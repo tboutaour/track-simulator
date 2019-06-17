@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 """
 Created on Wed May  8 18:01:48 2019
@@ -25,8 +23,8 @@ class Grafo:
             self.tree = KDTree(data[:,:2], metric='euclidean')
                     
         def getClosestNodes(self, data,puntos):
-            idx_cerc = self.tree.query(puntos, k = 1 , return_distance=False)
-            return data[idx_cerc[:,0]][:,2], data[idx_cerc[:,0]][:,3]
+            dist_cerc, idx_cerc = self.tree.query(puntos, k = 1 , return_distance=True)
+            return data[idx_cerc[:,0]][:,2], data[idx_cerc[:,0]][:,3], dist_cerc
             
         def GetNodePoints(self, t):
             ruta_simplificada = []
