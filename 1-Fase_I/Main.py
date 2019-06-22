@@ -9,10 +9,13 @@ import Grafo as g
 import numpy as np
 import osmnx as ox
 import networkx as nx
-from geopy.distance import distance
+from geopy.distance import distance, VincentyDistance
 import matplotlib.pyplot as plt
 import pandas as pd
 import math
+from geopy import Point
+from operator import itemgetter
+
 
 def GetDistPoint(point,routeGap):
 #    nodes = data[(data[:, 2] == routeGap[0]) & (data[:, 3] == routeGap[1])][:, 0:2]
@@ -207,6 +210,15 @@ def GetDistancePointToPoint(set):
         DistanceBetweenPonints.append(distan)
     DistanceBetweenPonints = [x for x in DistanceBetweenPonints if x != 0]
     return DistanceBetweenPonints
+
+def GetRandomValue(data):
+    data.sort()
+    cd_dx = np.linspace(0., 1., len(data))
+    ser_dx = pd.Series(cd_dx, index=data)
+    rnd = np.random.random()
+    return np.argmax(np.array(ser_dx > rnd))
+
+
 #...................................................................    
 #Primer Main.
 #Genera a partir de un fichero todo el grafo y una comparación con una ruta
@@ -261,3 +273,55 @@ distancePointPoint = GetDistancePointToPoint(trackRouteRelationFiltered[:,0:2])
 GetDiagrams(bearing,"Bearing,meters",100)
 GetDiagrams(distancePointPoint,"Distance Point-Point,meters",100)
 
+
+
+def simularPuntos(PuntoInicial):
+    PuntoOrigen = PuntoInicial
+    for i in range(0,10):
+        distanceRandomPointPoint = GetRandomValue(distancePointPoint)
+        bearingRandomValue = GetRandomValue(bearing)
+        point = VincentyDistance(meters=distanceRandomPointPoint).destination(Point(PuntoOrigen[0],PuntoOrigen[1]), bearingRandomValue)
+        PlotPoints(ax,[np.array([point[0],point[1]])],'black')
+        PuntoOrigen = point
+#distance(kilometers=distanceRandomPointPoint).destination(Point(39.5585311,2.6140847), bearingRandomValue)
+
+
+# fig, ax = ox.plot_graph(simulador.Grafo, fig_height=10, fig_width=10,
+#             show=False, close=False,
+#             edge_color='black')
+# simularPuntos(Point(trackRouteRelationFiltered[40][0], trackRouteRelationFiltered[40][1]))
+# plt.show()
+
+
+# for node in simulador.Grafo.nodes:
+#     relatedEdges = np.array([e for e in simulador.Grafo.edges(node)])
+#     for edge in relatedEdges[:,1]:
+#         valor = {node: 0.0}
+#         name = str(edge)
+#         nx.set_node_attributes(simulador.Grafo, values=valor, name= name)
+
+
+
+def getFrequencyRoute(data):
+    cabecera = np.array(['X','Y','Origen','Destino','Exactitud'])
+    dftemps = pd.DataFrame({'Origen':data[:,2],'Destino':data[:,3]})
+    frequency = dftemps.groupby(["Origen", "Destino"]).size()
+    pFrequency = frequency/ frequency.sum()
+    return np.array([[b, c] for b, c in pFrequency.items()])
+
+
+def setFrequencyToNode(simulador,data):
+    #En item[0] tendremos (origen,destino)
+    #En item[1] tendremos porcentaje frecuencia
+
+    #la idea es ir al nodo, coger el atributo que corresponde con
+    #el destino y añadirle la frecuencia
+    for item in data:
+        simulador.Grafo.nodes[item[0][0]]['P_'+str(item[0][1])] = item[1]
+
+
+def getMostFrequentPathNode(node):
+    auxList = [(k, v) for k, v in simulador.Grafo.nodes[node].items() if 'P_' in k]
+    auxList = np.array(auxList)
+    frequentPoint = float(max(auxList,key=itemgetter(1))[0][2:])
+    return frequentPoint
