@@ -9,6 +9,7 @@ import osmnx as ox
 from sklearn.neighbors import KDTree
 import numpy as np
 
+
 class Grafo:
         def __init__(self, north, south,east,west,p1):
             self.north = north
