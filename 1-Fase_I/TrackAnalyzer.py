@@ -155,9 +155,21 @@ class TrackAnalyzer:
         compass_bearing = (initial_bearing + 360) % 360
         return compass_bearing
 
-    def getFrequencyRoute(data):
-        cabecera = np.array(['X', 'Y', 'Origen', 'Destino', 'Exactitud'])
+    def getFrequencyRoute(self,data):
+        #cabecera = np.array(['X', 'Y', 'Origen', 'Destino', 'Exactitud'])
         dftemps = pd.DataFrame({'Origen': data[:, 2], 'Destino': data[:, 3]})
         frequency = dftemps.groupby(["Origen", "Destino"]).size()
         pFrequency = frequency / frequency.sum()
         return np.array([[b, c] for b, c in pFrequency.items()])
+
+    def setFrequencyToNode(self, data):
+        # En item[0] tendremos (origen,destino)
+        # En item[1] tendremos porcentaje frecuencia
+
+        # la idea es ir al nodo, coger el atributo que corresponde con
+        # el destino y añadirle la frecuencia
+        for item in data:
+            try:
+                self.graph.nodes[item[0][0]]["prob"].append([item[0][1],item[1]])
+            except KeyError:
+                self.graph.nodes[item[0][0]]["prob"] = [[item[0][1],item[1]]]
