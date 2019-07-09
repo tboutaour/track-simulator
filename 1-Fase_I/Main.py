@@ -144,7 +144,8 @@ def getPoint(la1,lo1,b,d):
     print("lon "+str(lon2))
     return (lat2,lon2)
 
-def prueba(grafo,ax,paramd,perim,col,p1,p2):
+
+def prueba(grafo,axs,paramd,perim,col,p1,p2):
     start = Point(track_analyzer.graph.node[p1]['y'],track_analyzer.graph.node[p1]['x'])
     end = Point(track_analyzer.graph.node[p2]['y'],track_analyzer.graph.node[p2]['x'])
     d = geopy.distance.distance(start,end).m
@@ -154,19 +155,24 @@ def prueba(grafo,ax,paramd,perim,col,p1,p2):
     rndbear=random.uniform(bearing-60,bearing+60)
     # print("rndbearing : "+str(rndbear))
     dest = getPoint(start[0],start[1],rndbear,paramd)
-    # ax.scatter(dest[0], dest[1], c='green')
-    tp.plot_points(ax, [np.array([dest[0], dest[1]])], col)
-    # ax.plot([start[0], dest[0]], [start[1], dest[1]], c='blue')
+    axs.scatter(dest[0], dest[1], c=col)
     aux = geopy.distance.distance(dest, end).m
+
+    # tp.plot_points(axs, [np.array([dest[0], dest[1]])], col)
+    # axs.plot([start[0], dest[0]], [start[1], dest[1]], c='blue')
+
     # print("distancia actual:"+str(aux))
     next = dest
     while aux > perim and aux < d*1.5:
-        rndbear = random.uniform(bearing - 45, bearing + 45)
+        bearing = calculate_initial_compass_bearing((next[0], next[1]), (end[0], end[1]))
+        rndbear = random.uniform(bearing - 90, bearing + 90)
         # print("rndbearing : " + str(rndbear))
         dest = getPoint(next[0], next[1], rndbear, paramd)
-        ax.scatter(dest[0], dest[1], c='green')
-        tp.plot_points(ax, [np.array([dest[0], dest[1]])], col)
-        # ax.plot([next[0],dest[0]],[next[1],dest[1]],c='blue')
+        print(dest)
+        aux_closest = track_analyzer.get_route_relation_from_trackpoint([dest])[0][4]
+        axs.scatter(dest[0], dest[1], c=col)
+        # tp.plot_points(axs, [np.array([dest[0], dest[1]])], col)
+        # axs.plot([next[0],dest[0]],[next[1],dest[1]],c='blue')
         next = dest
         # print("distancia actual:" + str(aux))
         aux = geopy.distance.distance(dest, end).m
@@ -178,25 +184,69 @@ def prueba(grafo,ax,paramd,perim,col,p1,p2):
 start = Point(track_analyzer.graph.node[304661508]['y'], track_analyzer.graph.node[304661508]['x'])
 end = Point(track_analyzer.graph.node[304661509]['y'], track_analyzer.graph.node[304661509]['x'])
 
+# fig, ax = ox.plot_graph(track_analyzer.graph, fig_height=10, fig_width=10,
+#             show=False, close=False)
+#lista = [[a,b] for (a,b,c) in track_analyzer.graph.edges]
+
+p1 = 700015643
+p2 = 700015679
+
+start = Point(track_analyzer.graph.node[p1]['y'], track_analyzer.graph.node[p1]['x'])
+end = Point(track_analyzer.graph.node[p2]['y'], track_analyzer.graph.node[p2]['x'])
+# ec = ['red' if i == (304661508, 699940277,0) else 'black' for i in track_analyzer.graph.edges]
+# nc = ['red' if (i == p1 or i ==p2) else 'black' for i in track_analyzer.graph.nodes]
+
+# nx.draw_networkx_edges(track_analyzer.graph,pos,edgelist=red_edges,edge_color='red')
+color = ['blue','green','purple','orange']
+# for i in range(0,4):
+#     ax3 = plt.subplot()
+#     # ax3.margins(x=-0.2,y=-0.2)   # Values in (-0.5, 0.0) zooms in to center
+#     ax3.scatter(start[0],start[1],c='red')
+#     ax3.scatter(end[0],end[1],c='red')
+#     ax3.plot([start[0],end[0]],[start[1],end[1]],c='black')
+#     ax3.set_title('Zoomed in')
+#     prueba(track_analyzer.graph,ax3,0.02,25,color[i],p1,p2)
+# plt.show()
+def crear_ruta(axs,camino,color,distancia):
+    start = camino[0]
+    end = camino[-1]
+    path_distance = geopy.distance.distance(start, end).m
+
+    for i in range(0,len(camino)-1):
+        bearing = calculate_initial_compass_bearing((camino[i][0], camino[i][1]), (camino[i+1][0], camino[i+1][1]))
+        rndbear = random.uniform(bearing - 30, bearing + 30)
+        for rep in range(0,3):
+            next = getPoint(camino[i][0],camino[i][1],rndbear,distancia)
+            # axs.scatter(next[0], next[1], c=color)
+            tp.plot_points(axs, [np.array([next[0], next[1]])], color)
+            # aux = geopy.distance.distance(dest, end).m
+
+# ax4 = plt.subplot()
+# ax4.margins(x=-0.2,y=-0.2)
+# coords = track_analyzer.df.iloc[28].geometry.coords[:]
+# coordList = [list(reversed(item)) for item in coords]
+# i = 0
+# ax4.scatter(coordList[i][0],coordList[i][1],color='black')
+#
+# for i in coordList:
+#     ax4.scatter(i[0],i[1],c='black')
+# for i in range(0,4):
+#     ax4.scatter(start[0], start[1], c='red')
+#     ax4.scatter(end[0], end[1], c='red')
+#     crear_ruta(ax4, coordList, color[i], 0.025, 25)
+#     # prueba(track_analyzer.graph, ax4, 0.025, 25, color[i], 700015643, 700015679)
+#
+# plt.show()
+
 fig, ax = ox.plot_graph(track_analyzer.graph, fig_height=10, fig_width=10,
             show=False, close=False)
 lista = [[a,b] for (a,b,c) in track_analyzer.graph.edges]
-for i in lista:
-    p1 = i[0]
-    p2 = i[1]
-    # ec = ['red' if i == (304661508, 699940277,0) else 'black' for i in track_analyzer.graph.edges]
-    # nc = ['red' if (i == p1 or i ==p2) else 'black' for i in track_analyzer.graph.nodes]
-
-    nx.draw_networkx_edges(track_analyzer.graph,pos,edgelist=red_edges,edge_color='red')
-    color = ['blue','green','purple','orange']
-    for i in range(0,4):
-        # ax3 = plt.subplot()
-        # ax3.margins(x=-0.2,y=-0.2)   # Values in (-0.5, 0.0) zooms in to center
-        # ax3.scatter(start[0],start[1],c='red')
-        # ax3.scatter(end[0],end[1],c='red')
-        # ax3.plot([start[0],end[0]],[start[1],end[1]],c='black')
-        # ax3.set_title('Zoomed in')
-        prueba(track_analyzer.graph,ax,0.02,25,color[i],p1,p2)
+for idx_camino in range(0,len(lista)-1):
+    try:
+        coords = track_analyzer.df.iloc[int(idx_camino)].geometry.coords[:]
+        coordList = [list(reversed(item)) for item in coords]
+        for trayectoria in range(0,1):
+            crear_ruta(ax,coordList,color[idx_camino%4],0.07)
+    except AttributeError:
+        print("Atributo no encontrado")
 plt.show()
-
-

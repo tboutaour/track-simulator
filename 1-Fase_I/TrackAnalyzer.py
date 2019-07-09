@@ -173,3 +173,6 @@ class TrackAnalyzer:
                 self.graph.nodes[item[0][0]]["prob"].append([item[0][1],item[1]])
             except KeyError:
                 self.graph.nodes[item[0][0]]["prob"] = [[item[0][1],item[1]]]
+
+    def get_idx(self,par):
+        return self.df.loc[(self.df['source'] == par[0]) & (self.df['target'] == par[1])].index[0]
