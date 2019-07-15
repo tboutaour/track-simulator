@@ -11,9 +11,10 @@ from geopy.distance import distance, VincentyDistance
 import networkx as nx
 import math
 
+
 class TrackAnalyzer:
-    def __init__(self,north, south,east,west):
-        self.graph = ox.graph_from_bbox(north,south,east,west).to_undirected()
+    def __init__(self, north, south, east, west):
+        self.graph = self.initialize_graph(north, south, east, west)
         self.df = nx.to_pandas_edgelist(self.graph)
         self.trackpoint_distance = []
         self.trackpoint_route_distance = []
@@ -21,7 +22,39 @@ class TrackAnalyzer:
         self.route_data = []
         self.__tree = -1
 
-    def get_trackpoint_distance(self,track_points):
+    def initialize_graph(self, north, south, east, west):
+        graph = ox.graph_from_bbox(north, south, east, west).to_undirected()
+        edges = list(graph.edges)
+        zeros = [0] * len(edges)
+        ones = [1] * len(edges)
+        dic_reg_zeros = dict(zip(edges, zeros))
+        dic_reg_ones = dict(zip(edges, ones))
+        # nx.set_edge_attributes(graph, dic_reg_zeros, 'num of regs')
+        nx.set_edge_attributes(graph, dic_reg_ones, 'num of detections')
+        nx.set_edge_attributes(graph, dic_reg_zeros, 'num of points')
+        self.initialize_path_freq(graph, edges)
+        return graph
+
+    def initialize_path_freq(self, graph, edges):
+        list_prob = []
+        for edge in edges:
+            number = len(graph.edges(edge[0]))
+            prob = 1 / number
+            list_prob.append(prob)
+        dic_freq = dict(zip(edges, list_prob))
+        nx.set_edge_attributes(graph, dic_freq, 'frequency')
+
+    def update_graph_information(self, dataset):
+        old_information = self.df['source', 'target',]
+        dict_ = {(x[0], x[0], 0): y for x, y in dataset.groupby(['source', 'target']).size().items()}
+
+    def update_edge_freq(self, source_node, target_node):
+        self.df.loc[self.df['source'] == source_node, 'num of regs'] += 1
+        self.df.loc[(self.df['source'] == source_node) & (self.df['target'] == target_node), 'num of detections'] += 1
+        total = self.df['num of detections'][self.df['source'] == source_node].sum()
+        self.df.loc[(self.df['source'] == source_node), 'frequency'] = self.df.loc[(self.df['source'] == source_node),
+                                                                                   'num of detections'].div(total)
+    def get_trackpoint_distance(self, track_points):
         for p in range(len(track_points) - 1):
             self.trackpoint_distance.append(distance(track_points[p], track_points[p + 1]).m)
 
@@ -43,22 +76,22 @@ class TrackAnalyzer:
         self.route_data = self.create_tree_structure()
         self.__tree = KDTree(self.route_data[:, :2], metric='euclidean')
 
-    def get_closest_node(self,puntos):
-        dist_cerc, idx_cerc = self.__tree.query(puntos, k = 1 , return_distance=True)
-        return self.route_data[idx_cerc[:,0]][:,2], self.route_data[idx_cerc[:,0]][:,3], dist_cerc
+    def get_closest_node(self, puntos):
+        dist_cerc, idx_cerc = self.__tree.query(puntos, k=1, return_distance=True)
+        return self.route_data[idx_cerc[:, 0]][:, 2], self.route_data[idx_cerc[:, 0]][:, 3], dist_cerc
 
     def get_route_relation_from_trackpoint(self, track_points):
         originNode, destinyNode, distance = self.get_closest_node(track_points)
         return np.column_stack((track_points, originNode, destinyNode, distance * 1000))
 
-    def get_road_gaps(self,origin_point, target_point):
+    def get_road_gaps(self, origin_point, target_point):
         route = nx.shortest_path(self.graph, origin_point, target_point)
         points = []
         for i in range(0, len(route) - 1):
             points.append((route[i], route[i + 1]))
         return np.array(points)
 
-    def __closest_node(self,node, nodes):
+    def __closest_node(self, node, nodes):
         deltas = nodes - node
         dist_2 = np.einsum('ij,ij->i', deltas, deltas)
         return np.argmin(dist_2)
@@ -86,22 +119,24 @@ class TrackAnalyzer:
         except:
             return 0
 
-    def get_simplified_route_relation(self,route_relation):
+    def get_simplified_route_relation(self, route_relation):
         exp = []
         exp.append(route_relation[0])
-        for idx in range(1,len(route_relation)):
-            distance = nx.shortest_path_length(self.graph,route_relation[idx][2],route_relation[idx-1][3])
-            point = [route_relation[idx][0],route_relation[idx][1]]
+        for idx in range(1, len(route_relation)):
+            distance = nx.shortest_path_length(self.graph, route_relation[idx][2], route_relation[idx - 1][3])
+            point = [route_relation[idx][0], route_relation[idx][1]]
             if distance == 0:
                 exp.append(route_relation[idx])
             elif 6 >= distance >= 1:
-                routeGaps = (self.get_road_gaps(route_relation[idx][2],route_relation[idx-1][3])).tolist()
-                addedPoints = [[route_relation[idx][0],route_relation[idx][1]] + x + [self.__get_points_distance(point,x)] for x in routeGaps]
+                routeGaps = (self.get_road_gaps(route_relation[idx][2], route_relation[idx - 1][3])).tolist()
+                addedPoints = [
+                    [route_relation[idx][0], route_relation[idx][1]] + x + [self.__get_points_distance(point, x)] for x
+                    in routeGaps]
                 exp.append(route_relation[idx])
                 exp.extend(addedPoints)
             else:
                 print("distancia:" + str(distance))
-        self.trackpoint_route_distance = np.array(exp)[:,4]
+        self.trackpoint_route_distance = np.array(exp)[:, 4]
         return np.array(exp)
 
     def get_node_points(self, t):
@@ -118,16 +153,16 @@ class TrackAnalyzer:
             routes.append(nx.shortest_path(self.graph, i[2], i[3], weight='length'))
         ox.plot_graph_routes(self.graph, routes, route_linewidth=1, orig_dest_node_size=3)
 
-    def get_distance_point_to_point(self,set):
+    def get_distance_point_to_point(self, set):
         DistanceBetweenPonints = []
         for idx in range(0, len(set) - 1):
             distan = self.__haversine_distance(set[idx],
-                                        set[idx + 1])
+                                               set[idx + 1])
             DistanceBetweenPonints.append(distan)
         DistanceBetweenPonints = [x for x in DistanceBetweenPonints if x != 0]
         self.trackpoint_distance = DistanceBetweenPonints
 
-    def get_bearing_point_to_point(self,set):
+    def get_bearing_point_to_point(self, set):
         angulos = []
         for idx in range(0, len(set) - 1):
             point = tuple(set[idx])
@@ -138,7 +173,7 @@ class TrackAnalyzer:
         angSinCero = [x for x in angulos if x != 0]
         self.trackpoint_bearing = angSinCero
 
-    def __calculate_initial_compass_bearing(self,pointA, pointB):
+    def __calculate_initial_compass_bearing(self, pointA, pointB):
         if (type(pointA) != tuple) or (type(pointB) != tuple):
             raise TypeError("Only tuples are supported as arguments")
         lat1 = math.radians(pointA[0])
@@ -155,8 +190,8 @@ class TrackAnalyzer:
         compass_bearing = (initial_bearing + 360) % 360
         return compass_bearing
 
-    def getFrequencyRoute(self,data):
-        #cabecera = np.array(['X', 'Y', 'Origen', 'Destino', 'Exactitud'])
+    def getFrequencyRoute(self, data):
+        # cabecera = np.array(['X', 'Y', 'Origen', 'Destino', 'Exactitud'])
         dftemps = pd.DataFrame({'Origen': data[:, 2], 'Destino': data[:, 3]})
         frequency = dftemps.groupby(["Origen", "Destino"]).size()
         pFrequency = frequency / frequency.sum()
@@ -170,9 +205,9 @@ class TrackAnalyzer:
         # el destino y añadirle la frecuencia
         for item in data:
             try:
-                self.graph.nodes[item[0][0]]["prob"].append([item[0][1],item[1]])
+                self.graph.nodes[item[0][0]]["prob"].append([item[0][1], item[1]])
             except KeyError:
-                self.graph.nodes[item[0][0]]["prob"] = [[item[0][1],item[1]]]
+                self.graph.nodes[item[0][0]]["prob"] = [[item[0][1], item[1]]]
 
-    def get_idx(self,par):
+    def get_idx(self, par):
         return self.df.loc[(self.df['source'] == par[0]) & (self.df['target'] == par[1])].index[0]

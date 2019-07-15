@@ -197,7 +197,7 @@ end = Point(track_analyzer.graph.node[p2]['y'], track_analyzer.graph.node[p2]['x
 # nc = ['red' if (i == p1 or i ==p2) else 'black' for i in track_analyzer.graph.nodes]
 
 # nx.draw_networkx_edges(track_analyzer.graph,pos,edgelist=red_edges,edge_color='red')
-color = ['blue','green','purple','orange']
+
 # for i in range(0,4):
 #     ax3 = plt.subplot()
 #     # ax3.margins(x=-0.2,y=-0.2)   # Values in (-0.5, 0.0) zooms in to center
@@ -207,19 +207,7 @@ color = ['blue','green','purple','orange']
 #     ax3.set_title('Zoomed in')
 #     prueba(track_analyzer.graph,ax3,0.02,25,color[i],p1,p2)
 # plt.show()
-def crear_ruta(axs,camino,color,distancia):
-    start = camino[0]
-    end = camino[-1]
-    path_distance = geopy.distance.distance(start, end).m
 
-    for i in range(0,len(camino)-1):
-        bearing = calculate_initial_compass_bearing((camino[i][0], camino[i][1]), (camino[i+1][0], camino[i+1][1]))
-        rndbear = random.uniform(bearing - 30, bearing + 30)
-        for rep in range(0,3):
-            next = getPoint(camino[i][0],camino[i][1],rndbear,distancia)
-            # axs.scatter(next[0], next[1], c=color)
-            tp.plot_points(axs, [np.array([next[0], next[1]])], color)
-            # aux = geopy.distance.distance(dest, end).m
 
 # ax4 = plt.subplot()
 # ax4.margins(x=-0.2,y=-0.2)
@@ -238,8 +226,24 @@ def crear_ruta(axs,camino,color,distancia):
 #
 # plt.show()
 
+def crear_ruta(axs,camino,color,distancia):
+    start = camino[0]
+    end = camino[-1]
+    path_distance = geopy.distance.distance(start, end).m
+
+    for i in range(0,2):
+        bearing = calculate_initial_compass_bearing((camino[i][0], camino[i][1]), (camino[i+1][0], camino[i+1][1]))
+        rndbear = random.uniform(bearing - 30, bearing + 30)
+        for rep in range(0,3):
+            next = getPoint(camino[i][0],camino[i][1],rndbear,distancia)
+            # axs.scatter(next[0], next[1], c=color)
+            tp.plot_points(axs, [np.array([next[0], next[1]])], color)
+            # aux = geopy.distance.distance(dest, end).m
+
+color = ['blue','green','purple','orange']
 fig, ax = ox.plot_graph(track_analyzer.graph, fig_height=10, fig_width=10,
             show=False, close=False)
+
 lista = [[a,b] for (a,b,c) in track_analyzer.graph.edges]
 for idx_camino in range(0,len(lista)-1):
     try:
