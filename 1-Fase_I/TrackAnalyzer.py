@@ -10,6 +10,7 @@ import pandas as pd
 from geopy.distance import distance, VincentyDistance
 import networkx as nx
 import math
+from geopy import Point
 
 
 class TrackAnalyzer:
@@ -23,7 +24,7 @@ class TrackAnalyzer:
         self.__tree = -1
 
     def initialize_graph(self, north, south, east, west):
-        graph = ox.graph_from_bbox(north, south, east, west).to_undirected()
+        graph = ox.graph_from_bbox(north, south, east, west).to_undirected().to_directed()
         edges = list(graph.edges)
         zeros = [0] * len(edges)
         ones = [1] * len(edges)
@@ -49,13 +50,16 @@ class TrackAnalyzer:
         dict_ = {(x[0], x[0], 0): y for x, y in dataset.groupby(['source', 'target']).size().items()}
 
     def update_edge_freq(self, source_node, target_node):
-        self.df.loc[self.df['source'] == source_node, 'num of regs'] += 1
+        # self.df.loc[self.df['source'] == source_node, 'num of regs'] += 1
         self.df.loc[(self.df['source'] == source_node) & (self.df['target'] == target_node), 'num of detections'] += 1
         total = self.df['num of detections'][self.df['source'] == source_node].sum()
         self.df.loc[(self.df['source'] == source_node), 'frequency'] = self.df.loc[(self.df['source'] == source_node),
                                                                                    'num of detections'].div(total)
+        self.graph = nx.from_pandas_edgelist(self.df,source = 'source',target='target', edge_attr=True)
+
+
     def get_trackpoint_distance(self, track_points):
-        for p in range(len(track_points) - 1):
+        for p in range(0,len(track_points) - 1):
             self.trackpoint_distance.append(distance(track_points[p], track_points[p + 1]).m)
 
     # Función para generar el array bidimensional con todos los puntos DE LA RUTA y sus nodos or. fin.
@@ -65,8 +69,8 @@ class TrackAnalyzer:
         for road in roadRelation.iterrows():
             try:
                 coords = road[1].geometry.coords[:]
-                coordList = [list(reversed(item)) for item in coords]
-                L = [x + [road[1].source, road[1].target] for x in coordList]
+                coordList = [(Point(y,x)) for x,y in coords]
+                L = [[c ,(road[1].source, road[1].target)] for c in coordList]
                 n.extend(L)
             except AttributeError:
                 pass
@@ -74,15 +78,86 @@ class TrackAnalyzer:
 
     def set_kdtree(self):
         self.route_data = self.create_tree_structure()
-        self.__tree = KDTree(self.route_data[:, :2], metric='euclidean')
+        self.__tree = KDTree(np.array([[a.latitude,a.longitude] for a,b in self.route_data]), metric='euclidean')
 
-    def get_closest_node(self, puntos):
-        dist_cerc, idx_cerc = self.__tree.query(puntos, k=1, return_distance=True)
-        return self.route_data[idx_cerc[:, 0]][:, 2], self.route_data[idx_cerc[:, 0]][:, 3], dist_cerc
+    def get_closest_nodes(self, puntos,radius):
+        idx_cerc,dist = self.__tree.query_radius(puntos, r=radius, count_only=False, return_distance=True)
+        return np.array(self.route_data[idx_cerc[0]]), dist
 
-    def get_route_relation_from_trackpoint(self, track_points):
-        originNode, destinyNode, distance = self.get_closest_node(track_points)
-        return np.column_stack((track_points, originNode, destinyNode, distance * 1000))
+    def get_emission_prob(self,projection, point):
+        d = (1/(math.sqrt(2*math.pi)))*math.e**(-(self.__haversine_distance(projection[0],point[0]))/2)
+        return d
+
+    def get_transition_prob(self,projection,prev_point):
+        # print(projection[1][0])
+        # print(point[1][0])
+        # print(projection[0])
+        # print(point[0])
+        dest = prev_point[1][0]
+        try:
+            shortest_path = math.e**((nx.shortest_path_length(self.graph,prev_point[1][0],float(projection[1][0])))*7)
+        except nx.NetworkXNoPath:
+            shortest_path = math.e**100
+        distance = self.__haversine_distance(prev_point[0],projection[0])
+        prob = distance/shortest_path
+        return prob
+
+    def get_mid_track_point(self, origin, target):
+        nodes = self.df[(self.df['source'] == origin) & (self.df['target'] == target)]
+        if nodes.size == 0:
+            nodes = self.df[(self.df['source'] == target) & (self.df['target'] == origin)]
+        try:
+            coords = nodes.iloc[0].geometry.coords[:]
+            mid_point = Point((coords[int((len(coords) / 2))][1],coords[int((len(coords) / 2))][0]))
+            return mid_point
+        except:
+            pass
+
+    def complete_path(self, path, point):
+        aux_path = nx.shortest_path(self.graph, path[-1][1][1], point[1][0])
+        points = []
+        for i in range(0, len(aux_path) - 1):
+            mid_point = self.get_mid_track_point(aux_path[i], aux_path[i + 1])
+            print(aux_path[i], aux_path[i + 1],mid_point)
+            if mid_point is not None:
+                path.append(np.array([mid_point,(aux_path[i], aux_path[i + 1])]))
+            else:
+                path.append(np.array([point[0], (aux_path[i], aux_path[i + 1])]))
+        path.append(point)
+
+    def viterbi_algorithm(self,points):
+        path = []
+        max_scores = []
+        # Para cada uno de los puntos GPS
+        for idx_point in range(0, len(points)):
+            print("idx "+str(idx_point))
+            max_score = 0
+            score = 0
+            projections,_ = self.get_closest_nodes([points[idx_point]], 0.001)
+            print("cant.punt "+str(len(projections)))
+            for p in projections:
+                ep = self.get_emission_prob([points[idx_point]], p)
+                if idx_point > 1:
+                    score = ep * self.get_transition_prob(p, path[-1])
+                else:
+                    score = ep * 1.0
+                if score > max_score:
+                    estimated = p
+                    max_score = score
+                # print(path[-1][1][1])
+                # print(estimated[1][0])
+            if idx_point > 0:
+                distance = nx.shortest_path_length(self.graph, path[-1][1][1],estimated[1][0])
+                print("distance "+str(distance))
+                if 8 > distance >= 1:
+                    print("Completamos Path")
+                    self.complete_path(path,estimated)
+                elif distance <= 0:
+                    path.append(estimated)
+            else:
+                path.append(estimated)
+            max_scores.append(max_score)
+        return path, max_scores
 
     def get_road_gaps(self, origin_point, target_point):
         route = nx.shortest_path(self.graph, origin_point, target_point)
@@ -123,20 +198,21 @@ class TrackAnalyzer:
         exp = []
         exp.append(route_relation[0])
         for idx in range(1, len(route_relation)):
-            distance = nx.shortest_path_length(self.graph, route_relation[idx][2], route_relation[idx - 1][3])
+            distance = nx.shortest_path_length(self.graph, route_relation[idx][1][1], route_relation[idx - 1][1][0])
             point = [route_relation[idx][0], route_relation[idx][1]]
             if distance == 0:
                 exp.append(route_relation[idx])
-            elif 6 >= distance >= 1:
-                routeGaps = (self.get_road_gaps(route_relation[idx][2], route_relation[idx - 1][3])).tolist()
+            elif 2 >= distance > 0:
+                routeGaps = (self.get_road_gaps(route_relation[idx][1][1], route_relation[idx - 1][1][0])).tolist()
                 addedPoints = [
-                    [route_relation[idx][0], route_relation[idx][1]] + x + [self.__get_points_distance(point, x)] for x
-                    in routeGaps]
+                     [route_relation[idx][0], tuple(x)] for x
+                     in routeGaps]
                 exp.append(route_relation[idx])
                 exp.extend(addedPoints)
             else:
                 print("distancia:" + str(distance))
-        self.trackpoint_route_distance = np.array(exp)[:, 4]
+                idx += 2
+        # self.trackpoint_route_distance = np.array(exp)[:, 4]
         return np.array(exp)
 
     def get_node_points(self, t):
@@ -211,3 +287,11 @@ class TrackAnalyzer:
 
     def get_idx(self, par):
         return self.df.loc[(self.df['source'] == par[0]) & (self.df['target'] == par[1])].index[0]
+
+    def create_route(self, results):
+        L = [(x[0], x[1], 0) for x in results[:, 1]]
+        idss = [n for i, n in enumerate(L) if i == 0 or n != L[i - 1]]
+        ids = []
+        for i in idss:
+            ids.append(i[0])
+        return ids

@@ -22,42 +22,60 @@ import random
 import math
 
 
-parsed_file = tr.load_gpx_file("Rutas/Ficheros/RutaRealCastell3.gpx")
+parsed_file = tr.load_gpx_file("Rutas/Ficheros/RutaRealCastell4.gpx")
 track_points = tr.load_file_points(parsed_file)
 
 track_analyzer = ta.TrackAnalyzer(39.5713,39.5573,2.6257,2.6023)
 track_analyzer.set_kdtree()
 track_analyzer.get_trackpoint_distance(track_points)
 
-track_route_relation = track_analyzer.get_route_relation_from_trackpoint(track_points)
-track_route_relation_filtered = track_analyzer.get_simplified_route_relation(track_route_relation)
 
-originNodes = track_analyzer.get_node_points(track_route_relation_filtered[:,2])
-destinNodes = track_analyzer.get_node_points(track_route_relation_filtered[:,3])
+s, m = track_analyzer.viterbi_algorithm(track_points)
+i = track_analyzer.get_simplified_route_relation(s)
+s = np.array(s)
+L = [(x[0],x[1],0) for x in s[:,1]]
+ec = ['red' if i in L else 'black' for i in track_analyzer.graph.edges]
+fig, ax = ox.plot_graph(track_analyzer.graph, fig_height=10, fig_width=10,show=False, close=False, edge_color=ec)
+tp.plot_points(ax,track_points,'black')
+tp.plot_points(ax,s[:,0],'orange')
+plt.show()
 
-fig, ax = ox.plot_graph(track_analyzer.graph, fig_height=10, fig_width=10,
-            show=False, close=False,
-            edge_color='black')
+route = track_analyzer.create_route(s)
+ox.plot_graph_route(track_analyzer.graph, route, fig_height=10, fig_width=10)
 
-tp.plot_points(ax, track_points, 'red')
-tp.plot_points(ax, track_route_relation_filtered[:,0:2], 'blue')
+# for l in L:
+#     track_analyzer.update_edge_freq(l[0],l[1])
 
-tp.plot_points(ax, originNodes, 'orange')
-tp.plot_points(ax,destinNodes, 'orange')
 
-tp.plot_route(track_analyzer.graph,track_route_relation_filtered)
-
-plt.show(block=True)
-
-track_analyzer.get_bearing_point_to_point(track_route_relation_filtered[:,0:2])
-track_analyzer.get_distance_point_to_point(track_route_relation_filtered[:,0:2])
-
+# track_route_relation = track_analyzer.get_route_relation_from_trackpoint(track_points)
+# track_route_relation_filtered = track_analyzer.get_simplified_route_relation(track_route_relation)
+#
+# originNodes = track_analyzer.get_node_points(track_route_relation_filtered[:,2])
+# destinNodes = track_analyzer.get_node_points(track_route_relation_filtered[:,3])
+#
+# fig, ax = ox.plot_graph(track_analyzer.graph, fig_height=10, fig_width=10,
+#             show=False, close=False,
+#             edge_color='black')
+#
+# tp.plot_points(ax, track_points, 'red')
+# tp.plot_points(ax, track_route_relation_filtered[:,0:2], 'blue')
+#
+# tp.plot_points(ax, originNodes, 'orange')
+# tp.plot_points(ax,destinNodes, 'orange')
+#
+# tp.plot_route(track_analyzer.graph,track_route_relation_filtered)
+#
+# plt.show(block=True)
+#
+# track_analyzer.get_bearing_point_to_point(track_route_relation_filtered[:,0:2])
+# track_analyzer.get_distance_point_to_point(track_route_relation_filtered[:,0:2])
+#
 # tp.plot_diagrams(track_analyzer.trackpoint_bearing,"Trackpoint Bearing, meters",100)
 # tp.plot_diagrams(track_analyzer.trackpoint_distance,"Trackpoint Distance, meters",100)
 # tp.plot_diagrams(track_analyzer.trackpoint_route_distance,"Route-Track distance, meters",100)
 
-frecuencies = track_analyzer.getFrequencyRoute(track_route_relation_filtered)
-track_analyzer.setFrequencyToNode(frecuencies)
+# frecuencies = track_analyzer.getFrequencyRoute(track_route_relation_filtered)
+# track_analyzer.setFrequencyToNode(frecuencies)
 
 def simularPuntos(punto,ax):
     PuntoOrigen = punto
@@ -77,9 +95,9 @@ def simularPuntos(punto,ax):
 # plt.show()
 
 
-
-red_edges = [(304661508, 699940277,0)]
-pos = nx.spring_layout(track_analyzer.graph)
+#
+# red_edges = [(304661508, 699940277,0)]
+# pos = nx.spring_layout(track_analyzer.graph)
 # nx.draw_networkx_nodes(track_analyzer.graph,pos,node_size = 20)
 # nx.draw_networkx_labels(track_analyzer.graph,pos)
 def calculate_initial_compass_bearing(pointA, pointB):
@@ -180,19 +198,19 @@ def prueba(grafo,axs,paramd,perim,col,p1,p2):
     # print(dest)
     d = geopy.distance.distance(start, dest).m
     # print("distancia start-dest: "+str(d))
-
-start = Point(track_analyzer.graph.node[304661508]['y'], track_analyzer.graph.node[304661508]['x'])
-end = Point(track_analyzer.graph.node[304661509]['y'], track_analyzer.graph.node[304661509]['x'])
-
-# fig, ax = ox.plot_graph(track_analyzer.graph, fig_height=10, fig_width=10,
-#             show=False, close=False)
-#lista = [[a,b] for (a,b,c) in track_analyzer.graph.edges]
-
-p1 = 700015643
-p2 = 700015679
-
-start = Point(track_analyzer.graph.node[p1]['y'], track_analyzer.graph.node[p1]['x'])
-end = Point(track_analyzer.graph.node[p2]['y'], track_analyzer.graph.node[p2]['x'])
+#
+# start = Point(track_analyzer.graph.node[304661508]['y'], track_analyzer.graph.node[304661508]['x'])
+# end = Point(track_analyzer.graph.node[304661509]['y'], track_analyzer.graph.node[304661509]['x'])
+#
+# # fig, ax = ox.plot_graph(track_analyzer.graph, fig_height=10, fig_width=10,
+# #             show=False, close=False)
+# #lista = [[a,b] for (a,b,c) in track_analyzer.graph.edges]
+#
+# p1 = 700015643
+# p2 = 700015679
+#
+# start = Point(track_analyzer.graph.node[p1]['y'], track_analyzer.graph.node[p1]['x'])
+# end = Point(track_analyzer.graph.node[p2]['y'], track_analyzer.graph.node[p2]['x'])
 # ec = ['red' if i == (304661508, 699940277,0) else 'black' for i in track_analyzer.graph.edges]
 # nc = ['red' if (i == p1 or i ==p2) else 'black' for i in track_analyzer.graph.nodes]
 
@@ -240,17 +258,21 @@ def crear_ruta(axs,camino,color,distancia):
             tp.plot_points(axs, [np.array([next[0], next[1]])], color)
             # aux = geopy.distance.distance(dest, end).m
 
-color = ['blue','green','purple','orange']
-fig, ax = ox.plot_graph(track_analyzer.graph, fig_height=10, fig_width=10,
-            show=False, close=False)
+# color = ['blue','green','purple','orange']
+# fig, ax = ox.plot_graph(track_analyzer.graph, fig_height=10, fig_width=10,
+#             show=False, close=False)
+#
+# lista = [[a,b] for (a,b,c) in track_analyzer.graph.edges]
+# for idx_camino in range(0,len(lista)-1):
+#     try:
+#         coords = track_analyzer.df.iloc[int(idx_camino)].geometry.coords[:]
+#         coordList = [list(reversed(item)) for item in coords]
+#         for trayectoria in range(0,1):
+#             crear_ruta(ax,coordList,color[idx_camino%4],0.07)
+#     except AttributeError:
+#         print("Atributo no encontrado")
+# plt.show()
 
-lista = [[a,b] for (a,b,c) in track_analyzer.graph.edges]
-for idx_camino in range(0,len(lista)-1):
-    try:
-        coords = track_analyzer.df.iloc[int(idx_camino)].geometry.coords[:]
-        coordList = [list(reversed(item)) for item in coords]
-        for trayectoria in range(0,1):
-            crear_ruta(ax,coordList,color[idx_camino%4],0.07)
-    except AttributeError:
-        print("Atributo no encontrado")
-plt.show()
+
+
+
