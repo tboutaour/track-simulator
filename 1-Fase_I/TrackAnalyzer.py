@@ -16,7 +16,7 @@ from geopy import Point
 class TrackAnalyzer:
     def __init__(self, north, south, east, west):
         self.graph = self.initialize_graph(north, south, east, west)
-        self.df = nx.to_pandas_edgelist(self.graph)
+        self.df = nx.to_pandas_edgelist(self.graph,source = 'source',target='target')
         self.trackpoint_distance = []
         self.trackpoint_route_distance = []
         self.trackpoint_bearing = []
@@ -50,13 +50,11 @@ class TrackAnalyzer:
         dict_ = {(x[0], x[0], 0): y for x, y in dataset.groupby(['source', 'target']).size().items()}
 
     def update_edge_freq(self, source_node, target_node):
-        # self.df.loc[self.df['source'] == source_node, 'num of regs'] += 1
-        self.df.loc[(self.df['source'] == source_node) & (self.df['target'] == target_node), 'num of detections'] += 1
+        self.graph.edges[(source_node, target_node, 0)]['num of detections'] +=1
         total = self.df['num of detections'][self.df['source'] == source_node].sum()
-        self.df.loc[(self.df['source'] == source_node), 'frequency'] = self.df.loc[(self.df['source'] == source_node),
-                                                                                   'num of detections'].div(total)
-        self.graph = nx.from_pandas_edgelist(self.df,source = 'source',target='target', edge_attr=True)
-
+        for edge in self.graph.edges(source_node):
+            self.graph.edges[(edge[0],edge[1],0)]['frequency'] = self.graph.edges[(edge[0],edge[1],0)]['num of detections']/total
+        self.df = nx.to_pandas_edgelist(self.graph, source='source', target='target')
 
     def get_trackpoint_distance(self, track_points):
         for p in range(0,len(track_points) - 1):

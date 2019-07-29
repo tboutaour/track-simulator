@@ -9,6 +9,7 @@ import TrackPlot as tp
 import TrackSimulator as ts
 import osmnx as ox
 import matplotlib.pyplot as plt
+import matplotlib.animation as animation
 from geopy.distance import distance, VincentyDistance
 import numpy as np
 from geopy import Point
@@ -20,6 +21,7 @@ from geopy import Point
 import geopy
 import random
 import math
+
 
 
 parsed_file = tr.load_gpx_file("Rutas/Ficheros/RutaRealCastell4.gpx")
@@ -35,17 +37,35 @@ i = track_analyzer.get_simplified_route_relation(s)
 s = np.array(s)
 L = [(x[0],x[1],0) for x in s[:,1]]
 ec = ['red' if i in L else 'black' for i in track_analyzer.graph.edges]
+
 fig, ax = ox.plot_graph(track_analyzer.graph, fig_height=10, fig_width=10,show=False, close=False, edge_color=ec)
-tp.plot_points(ax,track_points,'black')
-tp.plot_points(ax,s[:,0],'orange')
+
+x = track_points[:,1]
+y = track_points[:,0]
+
+graph, = plt.plot([], [], 'o')
+
+def animate(i):
+    graph.set_data(x[:i+1], y[:i+1])
+    return graph
+
+ani = animation.FuncAnimation(fig, animate,frames=len(track_points), interval=200,repeat=False)
 plt.show()
 
-route = track_analyzer.create_route(s)
-ox.plot_graph_route(track_analyzer.graph, route, fig_height=10, fig_width=10)
 
+# tp.plot_points(ax,track_points,'black')
+# tp.plot_points(ax,s[:,0],'orange')
+
+
+# for i in range(0, len(track_points)):
+#     ax.plot(track_points[:,0], track_points[:,1], color='black')
+# plt.show()
+
+# route = track_analyzer.create_route(s)
+# ox.plot_graph_route(track_analyzer.graph, route, fig_height=10, fig_width=10)
+#
 # for l in L:
-#     track_analyzer.update_edge_freq(l[0],l[1])
-
+#      track_analyzer.update_edge_freq(l[0],l[1])
 
 # track_route_relation = track_analyzer.get_route_relation_from_trackpoint(track_points)
 # track_route_relation_filtered = track_analyzer.get_simplified_route_relation(track_route_relation)
@@ -272,7 +292,4 @@ def crear_ruta(axs,camino,color,distancia):
 #     except AttributeError:
 #         print("Atributo no encontrado")
 # plt.show()
-
-
-
 
