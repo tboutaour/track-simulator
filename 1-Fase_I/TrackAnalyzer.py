@@ -11,6 +11,8 @@ from geopy.distance import distance, VincentyDistance
 import networkx as nx
 import math
 from geopy import Point
+from itertools import groupby
+
 
 
 class TrackAnalyzer:
@@ -20,6 +22,7 @@ class TrackAnalyzer:
         self.trackpoint_distance = []
         self.trackpoint_route_distance = []
         self.trackpoint_bearing = []
+        self.trackpoint_number = []
         self.route_data = []
         self.__tree = -1
 
@@ -58,7 +61,7 @@ class TrackAnalyzer:
 
     def get_trackpoint_distance(self, track_points):
         for p in range(0,len(track_points) - 1):
-            self.trackpoint_distance.append(distance(track_points[p], track_points[p + 1]).m)
+            self.trackpoint_distance.append(distance(track_points[p], track_points[p + 1]).km)
 
     # Función para generar el array bidimensional con todos los puntos DE LA RUTA y sus nodos or. fin.
     def create_tree_structure(self):
@@ -93,7 +96,7 @@ class TrackAnalyzer:
         # print(point[0])
         dest = prev_point[1][0]
         try:
-            shortest_path = math.e**((nx.shortest_path_length(self.graph,prev_point[1][0],float(projection[1][0])))*7)
+            shortest_path = math.e**((nx.shortest_path_length(self.graph,prev_point[1][0],float(projection[1][0])))*4)
         except nx.NetworkXNoPath:
             shortest_path = math.e**100
         distance = self.__haversine_distance(prev_point[0],projection[0])
@@ -118,7 +121,7 @@ class TrackAnalyzer:
             mid_point = self.get_mid_track_point(aux_path[i], aux_path[i + 1])
             print(aux_path[i], aux_path[i + 1],mid_point)
             if mid_point is not None:
-                path.append(np.array([mid_point,(aux_path[i], aux_path[i + 1])]))
+                path.append(np.array([path[-1][0],(aux_path[i], aux_path[i + 1])]))
             else:
                 path.append(np.array([point[0], (aux_path[i], aux_path[i + 1])]))
         path.append(point)
@@ -147,10 +150,10 @@ class TrackAnalyzer:
             if idx_point > 0:
                 distance = nx.shortest_path_length(self.graph, path[-1][1][1],estimated[1][0])
                 print("distance "+str(distance))
-                if 8 > distance >= 1:
+                if 8 > distance >= 1 and (path[-1][1] != estimated[1]):
                     print("Completamos Path")
                     self.complete_path(path,estimated)
-                elif distance <= 0:
+                elif distance <= 0 or (path[-1][1] == estimated[1]):
                     path.append(estimated)
             else:
                 path.append(estimated)
@@ -221,12 +224,6 @@ class TrackAnalyzer:
             ruta_simplificada.append([lat, lon])
         return np.array(ruta_simplificada)
 
-    def plot_route(self, track):
-        routes = []
-        for i in track:
-            routes.append(nx.shortest_path(self.graph, i[2], i[3], weight='length'))
-        ox.plot_graph_routes(self.graph, routes, route_linewidth=1, orig_dest_node_size=3)
-
     def get_distance_point_to_point(self, set):
         DistanceBetweenPonints = []
         for idx in range(0, len(set) - 1):
@@ -234,7 +231,7 @@ class TrackAnalyzer:
                                                set[idx + 1])
             DistanceBetweenPonints.append(distan)
         DistanceBetweenPonints = [x for x in DistanceBetweenPonints if x != 0]
-        self.trackpoint_distance = DistanceBetweenPonints
+        self.trackpoint_route_distance = DistanceBetweenPonints
 
     def get_bearing_point_to_point(self, set):
         angulos = []
@@ -293,3 +290,18 @@ class TrackAnalyzer:
         for i in idss:
             ids.append(i[0])
         return ids
+
+    #no funciona
+    def get_number_points(self,set):
+        count = [len(list(group)) for key, group in groupby(sorted(set))]
+        self.trackpoint_number.extend(count)
+
+
+    def analyze_results(self,track):
+        self.get_trackpoint_distance(track[:,0])
+        self.get_bearing_point_to_point(track[:,0])
+        self.get_number_points(track[:, 1])
+        self.get_distance_point_to_point(track[:,0])
+
+
+
