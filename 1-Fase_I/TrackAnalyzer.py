@@ -10,15 +10,16 @@ import pandas as pd
 from geopy.distance import distance, VincentyDistance
 import networkx as nx
 import math
-from geopy import Point
+from geopy import Point as gPoint
 from itertools import groupby
+from shapely.geometry import Point, LineString
 
 
 
 class TrackAnalyzer:
     def __init__(self, north, south, east, west):
         self.graph = self.initialize_graph(north, south, east, west)
-        self.df = nx.to_pandas_edgelist(self.graph,source = 'source',target='target')
+        self.df = nx.to_pandas_edgelist(self.graph, source = 'source', target='target')
         self.trackpoint_distance = []
         self.trackpoint_route_distance = []
         self.trackpoint_bearing = []
@@ -27,8 +28,10 @@ class TrackAnalyzer:
         self.__tree = -1
 
     def initialize_graph(self, north, south, east, west):
-        graph = ox.graph_from_bbox(north, south, east, west).to_undirected().to_directed()
+        aux_graph = ox.graph_from_bbox(north, south, east, west)
+        graph = self.completar_grafo(aux_graph)
         edges = list(graph.edges)
+        print(edges)
         zeros = [0] * len(edges)
         ones = [1] * len(edges)
         dic_reg_zeros = dict(zip(edges, zeros))
@@ -70,7 +73,7 @@ class TrackAnalyzer:
         for road in roadRelation.iterrows():
             try:
                 coords = road[1].geometry.coords[:]
-                coordList = [(Point(y,x)) for x,y in coords]
+                coordList = [(gPoint(y,x)) for x,y in coords]
                 L = [[c ,(road[1].source, road[1].target)] for c in coordList]
                 n.extend(L)
             except AttributeError:
@@ -119,7 +122,7 @@ class TrackAnalyzer:
         points = []
         for i in range(0, len(aux_path) - 1):
             mid_point = self.get_mid_track_point(aux_path[i], aux_path[i + 1])
-            print(aux_path[i], aux_path[i + 1],mid_point)
+            # print(aux_path[i], aux_path[i + 1],mid_point)
             if mid_point is not None:
                 path.append(np.array([path[-1][0],(aux_path[i], aux_path[i + 1])]))
             else:
@@ -131,11 +134,11 @@ class TrackAnalyzer:
         max_scores = []
         # Para cada uno de los puntos GPS
         for idx_point in range(0, len(points)):
-            print("idx "+str(idx_point))
+            # print("idx "+str(idx_point))
             max_score = 0
             score = 0
             projections,_ = self.get_closest_nodes([points[idx_point]], 0.001)
-            print("cant.punt "+str(len(projections)))
+            # print("cant.punt "+str(len(projections)))
             for p in projections:
                 ep = self.get_emission_prob([points[idx_point]], p)
                 if idx_point > 1:
@@ -149,9 +152,9 @@ class TrackAnalyzer:
                 # print(estimated[1][0])
             if idx_point > 0:
                 distance = nx.shortest_path_length(self.graph, path[-1][1][1],estimated[1][0])
-                print("distance "+str(distance))
+                # print("distance "+str(distance))
                 if 8 > distance >= 1 and (path[-1][1] != estimated[1]):
-                    print("Completamos Path")
+                    # print("Completamos Path")
                     self.complete_path(path,estimated)
                 elif distance <= 0 or (path[-1][1] == estimated[1]):
                     path.append(estimated)
@@ -303,5 +306,31 @@ class TrackAnalyzer:
         self.get_number_points(track[:, 1])
         self.get_distance_point_to_point(track[:,0])
 
-
-
+    def completar_grafo(self,graph):
+        graph_aux = graph.copy()
+        for edge in graph_aux.edges(data=True):
+            try:
+                #crearemos la arista
+                print(edge)
+                reverted = edge
+                print("Estruct original", reverted[2])
+                reverted[2]['oneway'] = False
+                #Almacenamos la información de los puntos
+                a = reverted[2]['geometry'].coords[:]
+                #Giramos los puntos (están en a)
+                a.reverse()
+                #Metemos esta información en la girada
+                reverted[2]['geometry'] = LineString(a)
+                attr = reverted[2]
+                print("Estruct cambiada", reverted[2])
+                e = (reverted[1],reverted[0])
+                graph.add_edge(*e,**attr)
+                graph.edges[(edge[0],edge[1],0)]['oneway']= False
+            except KeyError:
+                print("Error", reverted[1],reverted[0])
+                attr = reverted[2]
+                print("Estruct cambiada", reverted[2])
+                e = (reverted[1], reverted[0])
+                graph.add_edge(*e, **attr)
+                graph.edges[(edge[0], edge[1], 0)]['oneway'] = False
+        return graph

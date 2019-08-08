@@ -8,19 +8,16 @@ import TrackAnalyzer as ta
 import TrackPlot as tp
 import TrackSimulator as ts
 import osmnx as ox
+import matplotlib
+matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-from geopy.distance import distance, VincentyDistance
 import numpy as np
-from operator import itemgetter
-import networkx as nx
-import geopy.distance
-import numpy as np
-from geopy import Point
-import geopy
-import random
-import math
 
+
+def animate(i):
+    graph.set_data(x[:i+1], y[:i+1])
+    return graph
 
 
 parsed_file = tr.load_gpx_file("Rutas/Ficheros/RutaRealCastell4.gpx")
@@ -115,13 +112,13 @@ fig, ax = ox.plot_graph(track_analyzer.graph, fig_height=10, fig_width=10,show=F
 # frecuencies = track_analyzer.getFrequencyRoute(track_route_relation_filtered)
 # track_analyzer.setFrequencyToNode(frecuencies)
 
-xxx = [n for i, n in enumerate(L) if i == 0 or n != L[i-1]]
-path = []
-for x in xxx:
-    points = ts.simulate_route(track_analyzer,x[0],x[1])
-    path.extend(points)
-# tp.plot_points(ax,points,'red')
+origin = 317813546
+end = 317813195
 
+# dijkstra = nx.dijkstra_path(track_analyzer.graph, origin, end, 'frequency')
+# ox.plot_graph_route(track_analyzer.graph, dijkstra, fig_height=10, fig_width=10)
+
+path = ts.simulate_route(track_analyzer, origin, end, ax)
 
 p = np.array([[a[0],a[1]] for a in path])
 x = p[:,1]
@@ -129,13 +126,7 @@ y = p[:,0]
 
 graph, = plt.plot([], [], 'o')
 
-
-def animate(i):
-    graph.set_data(x[:i+1], y[:i+1])
-    return graph
-
-
-# ani = animation.FuncAnimation(fig, animate,frames=len(p), interval=200)
+ani = animation.FuncAnimation(fig, animate,frames=len(p), interval=200)
 
 tp.plot_points(ax, path, 'red')
 plt.show()

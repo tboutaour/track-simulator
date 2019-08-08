@@ -13,7 +13,7 @@ def plot_points(ax, t, color):
     for a in t:
         lat = a[0]
         lon = a[1]
-        ax.scatter(lon, lat, c= color, s=20)
+        ax.scatter(lon, lat, c=color, s=20)
 
 def plot_route(graph, track):
     routes = []
