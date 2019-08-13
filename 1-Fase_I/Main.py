@@ -20,6 +20,7 @@ def animate(i):
     return graph
 
 
+START_NODES = [1261877527,1261877476,560055784]
 parsed_file = tr.load_gpx_file("Rutas/Ficheros/RutaRealCastell4.gpx")
 track_points = tr.load_file_points(parsed_file)
 
@@ -37,14 +38,14 @@ L_P = np.array([[x[0],x[1]] for x in s[:,0]])
 track_analyzer.analyze_results(s)
 
 ec = ['red' if i in L else 'black' for i in track_analyzer.graph.edges]
-
+nc = ['red' if node in START_NODES else 'black' for node in track_analyzer.graph.nodes]
 #-----------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------
 
-fig, ax = ox.plot_graph(track_analyzer.graph, fig_height=10, fig_width=10,show=False, close=False, edge_color=ec)
+fig, ax = ox.plot_graph(track_analyzer.graph, fig_height=10, fig_width=10,show=False, close=False, node_color=nc)
 
 
 # x = L_P[:,1]
@@ -113,6 +114,7 @@ fig, ax = ox.plot_graph(track_analyzer.graph, fig_height=10, fig_width=10,show=F
 # track_analyzer.setFrequencyToNode(frecuencies)
 
 origin = 317813546
+origin = 699940305
 end = 317813195
 
 # dijkstra = nx.dijkstra_path(track_analyzer.graph, origin, end, 'frequency')
@@ -130,4 +132,3 @@ ani = animation.FuncAnimation(fig, animate,frames=len(p), interval=200)
 
 tp.plot_points(ax, path, 'red')
 plt.show()
-

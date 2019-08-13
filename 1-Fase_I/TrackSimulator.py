@@ -221,6 +221,57 @@ def get_closest_segment_point(track_analysis, coord_list, origin_node, target_no
     return idx
 
 
+def get_most_frequent_node(track_analysis,node):
+    """
+    Every segment have a frequency. It returns choose one of the options according the frequencies.
+    :param track_analysis: Object od TrackAnalyzer class
+    :param node: Node of the selection
+    :return: selected target node
+    """
+    target_list = []
+    roll = random.random()
+    for i in track_analysis.graph.edges(node,data=True):
+        target_list.append([i[1],i[2]['frequency']])
+    target_list.sort(key=lambda x: x[1])
+    aux = 0
+    selected_target = 67
+    for target in target_list:
+        aux = aux + target[1]
+        if roll < aux:
+            selected_target = target[0]
+            break
+    return selected_target
+
+
+def create_path(track_analysis, origin, dist):
+    """
+    Create the most frequent path given frequencies stored at track_analysis object.
+    Given an origin node and a maximum distance it creates the most frequent path.
+    Once the track_analysis is updated the path may change.
+    It does not recognise returns of route.
+    :param track_analysis:  Object of TrackAnalyzer class
+    :param origin: Origin node of the simulated route
+    :param dist: Distance of the route.
+    :return: created path, distance of this path.
+    """
+    path = []
+    distance_created = 0
+    prev_node = origin
+    path.append(origin)
+    while distance_created < dist:
+        next_node = get_most_frequent_node(track_analysis, prev_node)
+        print("next_node: ",next_node)
+        distance_aux = distance_created + track_analysis.graph.edges[(prev_node, next_node, 0)]['length']
+        if distance_aux < dist:
+            distance_created = distance_aux
+            path.append(next_node)
+            prev_node = next_node
+            print("distance", distance_created)
+        else:
+            return path, distance_created
+    return path, distance_created
+
+
 def simulate_route(track_analysis, origin, end, ax):
     """
     Simulates creation of route given an origin and target point.
@@ -235,18 +286,18 @@ def simulate_route(track_analysis, origin, end, ax):
     simulated_track = []
     # Simular creación de trayectoria completa
 
-    # Encontrar el camino Dijsktra desde un nodo inicio seleccionado al final.
-    dijkstra = nx.dijkstra_path(track_analysis.graph, origin, end, 'frequency')
-    path = []
-    for d in range(0, len(dijkstra) - 1):
-        path.append([dijkstra[d], dijkstra[d + 1]])
+    # Encontrar el camino más probable.
+    simulated_path,_ = create_path(track_analysis,origin,3330)
+
     # Iterar para cada uno de los nodos del camino escogido
+    path = []
+    for d in range(0, len(simulated_path) - 1):
+        path.append([simulated_path[d], simulated_path[d + 1]])
 
     # Lista de colores para los segmentos
     colors = ["green", "red", "blue", "purple", "pink", "orange", "yellow", "black"]
     # Indice para crear segmentos de colores distintos
     idx_color = 0
-
     print("path" + str(path))
     for segment in path:
         seg = simulate_segment(track_analysis, segment)
@@ -256,3 +307,5 @@ def simulate_route(track_analysis, origin, end, ax):
         for s in seg:
             simulated_track.append(s)
     return np.array(simulated_track)
+
+
