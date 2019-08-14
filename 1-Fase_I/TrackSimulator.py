@@ -17,7 +17,6 @@ import TrackAnalyzer as ta
 import networkx as nx
 
 
-
 def get_random_value(data):
     data.sort()
     cd_dx = np.linspace(0., 1., len(data))
@@ -105,21 +104,21 @@ def simulate_segment(ta, seg):
     origin_point = Point(ta.graph.nodes[origin_node]['y'], ta.graph.nodes[origin_node]['x'])
     target_point = Point(ta.graph.nodes[target_node]['y'], ta.graph.nodes[target_node]['x'])
     d = geopy.distance.distance(origin_point, target_point).m
-    print("Origen segmento: " + str(origin_node))
-    print("Punto origen segmento: " + str(origin_point))
-    print("Objetivo segmento: " + str(target_node))
-    print("Punto objetivo segmento: " + str(target_point))
+    # print("Origen segmento: " + str(origin_node))
+    # print("Punto origen segmento: " + str(origin_point))
+    # print("Objetivo segmento: " + str(target_node))
+    # print("Punto objetivo segmento: " + str(target_point))
     try:
         dest, aux = calculate_point(ta, segment, origin_node, target_node, origin_point, target_point)
         next = dest
-        print("Dis. Inicio : " + str(aux))
+        # print("Dis. Inicio : " + str(aux))
         while aux > 24 and len(segment) < 30:
             dest, aux = calculate_point(ta, segment, origin_node, target_node, next, target_point)
-            print(aux)
+            # print(aux)
             next = dest
     except KeyError:
         pass
-    print("Dis Final : " + str(aux))
+    # print("Dis Final : " + str(aux))
 
     return np.array(segment)
 
@@ -145,7 +144,7 @@ def calculate_point(track_analysis, segment, origin_node, target_node, origin_po
 
     # Calcular el indice del punto GPS más cercano del segmento
     idx = get_closest_segment_point(track_analysis, coord_list, origin_node, target_node, origin_point)
-    print("indice del punto más cercano: " + str(idx))
+    # print("indice del punto más cercano: " + str(idx))
 
     # Calculamos la dirección entre el punto que origen y el siguiente punto encontrado
     try:
@@ -169,16 +168,16 @@ def calculate_point(track_analysis, segment, origin_node, target_node, origin_po
     dest = getPoint(origin_point[0], origin_point[1], rndbear, point_distance)
 
     dist_gen_point = geopy.distance.distance(dest, (destPoint[0], destPoint[1])).m
-    print("Distancia al punto idx: " + str(dist_gen_point))
+    # print("Distancia al punto idx: " + str(dist_gen_point))
     i = 0
     while dist_gen_point > 70 and i < 30:
         i = i + 1
         rndbear = np.random.uniform(bearing - 20, bearing + 20)
-        print("random: " + str(rndbear))
-        print("bearing: " + str(bearing))
+        # print("random: " + str(rndbear))
+        # print("bearing: " + str(bearing))
         dest = getPoint(origin_point[0], origin_point[1], rndbear, point_distance)
         dist_gen_point = geopy.distance.distance(dest, (destPoint[0], destPoint[1])).m
-        print("Distancia al punto idx: " + str(dist_gen_point))
+        # print("Distancia al punto idx: " + str(dist_gen_point))
 
     # Calculamos la distancia entre este punto y el final
     aux = geopy.distance.distance(dest, target_point).m
@@ -221,9 +220,10 @@ def get_closest_segment_point(track_analysis, coord_list, origin_node, target_no
     return idx
 
 
-def get_most_frequent_node(track_analysis,node):
+def get_most_frequent_node(track_analysis,node, path):
     """
     Every segment have a frequency. It returns choose one of the options according the frequencies.
+    :param path:
     :param track_analysis: Object od TrackAnalyzer class
     :param node: Node of the selection
     :return: selected target node
@@ -259,14 +259,14 @@ def create_path(track_analysis, origin, dist):
     prev_node = origin
     path.append(origin)
     while distance_created < dist:
-        next_node = get_most_frequent_node(track_analysis, prev_node)
-        print("next_node: ",next_node)
+        next_node = get_most_frequent_node(track_analysis, prev_node, path)
+        # print("next_node: ",next_node)
         distance_aux = distance_created + track_analysis.graph.edges[(prev_node, next_node, 0)]['length']
         if distance_aux < dist:
             distance_created = distance_aux
             path.append(next_node)
             prev_node = next_node
-            print("distance", distance_created)
+            # print("distance", distance_created)
         else:
             return path, distance_created
     return path, distance_created
@@ -298,10 +298,10 @@ def simulate_route(track_analysis, origin, end, ax):
     colors = ["green", "red", "blue", "purple", "pink", "orange", "yellow", "black"]
     # Indice para crear segmentos de colores distintos
     idx_color = 0
-    print("path" + str(path))
+    # print("path" + str(path))
     for segment in path:
         seg = simulate_segment(track_analysis, segment)
-        print("Puntos: " + str(len(seg)))
+        # print("Puntos: " + str(len(seg)))
         idx_color = idx_color + 1
         # tp.plot_points(ax, seg, colors[idx_color % len(colors)])
         for s in seg:

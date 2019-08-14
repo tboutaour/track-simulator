@@ -13,39 +13,49 @@ matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import numpy as np
+import os
 
 
 def animate(i):
     graph.set_data(x[:i+1], y[:i+1])
     return graph
-
-
+DIRECTORY = "Rutas/Ficheros/rutasMFlores/"
+COLOURS = ["green", "blue", "purple", "pink", "orange", "yellow", "black"]
 START_NODES = [1261877527,1261877476,560055784]
-parsed_file = tr.load_gpx_file("Rutas/Ficheros/RutaRealCastell4.gpx")
-track_points = tr.load_file_points(parsed_file)
+# parsed_file = tr.load_gpx_file("Rutas/Ficheros/rutasMFlores/activity_3602182164.gpx")
+# track_points = tr.load_file_points(parsed_file)
 
 track_analyzer = ta.TrackAnalyzer(39.5713,39.5573,2.6257,2.6023)
 track_analyzer.set_kdtree()
-track_analyzer.get_trackpoint_distance(track_points)
 
-
-s, m = track_analyzer.viterbi_algorithm(track_points)
-i = track_analyzer.get_simplified_route_relation(s)
-s = np.array(s)
-L = [(x[0],x[1],0) for x in s[:,1]]
-L_P = np.array([[x[0],x[1]] for x in s[:,0]])
-
-track_analyzer.analyze_results(s)
-
-ec = ['red' if i in L else 'black' for i in track_analyzer.graph.edges]
 nc = ['red' if node in START_NODES else 'black' for node in track_analyzer.graph.nodes]
+fig, ax = ox.plot_graph(track_analyzer.graph, fig_height=10, fig_width=10,show=False, close=False, node_color=nc)
+
+idx_col = 0
+for gpx_file in os.listdir("Rutas/Ficheros/rutasMFlores/"):
+    if gpx_file.endswith(".gpx"):
+        print("Analizando: ",DIRECTORY+gpx_file)
+        parsed_file = tr.load_gpx_file(DIRECTORY+gpx_file)
+        track_points = tr.load_file_points(parsed_file)
+        track_analyzer.get_trackpoint_distance(track_points)
+        s, m = track_analyzer.viterbi_algorithm(track_points)
+        i = track_analyzer.get_simplified_route_relation(s)
+        s = np.array(s)
+        L = [(x[0],x[1],0) for x in s[:,1]]
+        L_P = np.array([[x[0],x[1]] for x in s[:,0]])
+
+        track_analyzer.analyze_results(s)
+        # tp.plot_points(ax,s[:,0],COLOURS[idx_col % len(COLOURS)])
+        # idx_col = idx_col + 1
+        print("Finalizando análisis: ", DIRECTORY + gpx_file)
+
 #-----------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------
 #-----------------------------------------------------------------------------------------------------
 
-fig, ax = ox.plot_graph(track_analyzer.graph, fig_height=10, fig_width=10,show=False, close=False, node_color=nc)
+
 
 
 # x = L_P[:,1]
@@ -114,7 +124,7 @@ fig, ax = ox.plot_graph(track_analyzer.graph, fig_height=10, fig_width=10,show=F
 # track_analyzer.setFrequencyToNode(frecuencies)
 
 origin = 317813546
-origin = 699940305
+origin = 1324747872
 end = 317813195
 
 # dijkstra = nx.dijkstra_path(track_analyzer.graph, origin, end, 'frequency')
@@ -128,7 +138,7 @@ y = p[:,0]
 
 graph, = plt.plot([], [], 'o')
 
-ani = animation.FuncAnimation(fig, animate,frames=len(p), interval=200)
+ani = animation.FuncAnimation(fig, animate,frames=len(p), interval=100)
 
 tp.plot_points(ax, path, 'red')
 plt.show()

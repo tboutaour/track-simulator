@@ -14,12 +14,10 @@ from geopy import Point as gPoint
 from itertools import groupby
 from shapely.geometry import Point, LineString
 
-
-
 class TrackAnalyzer:
     def __init__(self, north, south, east, west):
         self.graph = self.initialize_graph(north, south, east, west)
-        self.df = nx.to_pandas_edgelist(self.graph, source = 'source', target='target')
+        self.df = nx.to_pandas_edgelist(self.graph)
         self.trackpoint_distance = []
         self.trackpoint_route_distance = []
         self.trackpoint_bearing = []
@@ -31,7 +29,7 @@ class TrackAnalyzer:
         aux_graph = ox.graph_from_bbox(north, south, east, west)
         graph = self.completar_grafo(aux_graph)
         edges = list(graph.edges)
-        print(edges)
+        # print(edges)
         zeros = [0] * len(edges)
         ones = [1] * len(edges)
         dic_reg_zeros = dict(zip(edges, zeros))
@@ -61,6 +59,11 @@ class TrackAnalyzer:
         for edge in self.graph.edges(source_node):
             self.graph.edges[(edge[0],edge[1],0)]['frequency'] = self.graph.edges[(edge[0],edge[1],0)]['num of detections']/total
         self.df = nx.to_pandas_edgelist(self.graph, source='source', target='target')
+
+    def update_frequencies(self,track_points):
+        for track_point in track_points:
+            self.update_edge_freq(track_point[0],track_point[1])
+
 
     def get_trackpoint_distance(self, track_points):
         for p in range(0,len(track_points) - 1):
@@ -214,7 +217,7 @@ class TrackAnalyzer:
                 exp.append(route_relation[idx])
                 exp.extend(addedPoints)
             else:
-                print("distancia:" + str(distance))
+                # print("distancia:" + str(distance))
                 idx += 2
         # self.trackpoint_route_distance = np.array(exp)[:, 4]
         return np.array(exp)
@@ -305,15 +308,17 @@ class TrackAnalyzer:
         self.get_bearing_point_to_point(track[:,0])
         self.get_number_points(track[:, 1])
         self.get_distance_point_to_point(track[:,0])
+        self.update_frequencies(track[:,1])
+
 
     def completar_grafo(self,graph):
         graph_aux = graph.copy()
         for edge in graph_aux.edges(data=True):
             try:
                 #crearemos la arista
-                print(edge)
+                # print(edge)
                 reverted = edge
-                print("Estruct original", reverted[2])
+                # print("Estruct original", reverted[2])
                 reverted[2]['oneway'] = False
                 #Almacenamos la información de los puntos
                 a = reverted[2]['geometry'].coords[:]
@@ -322,15 +327,15 @@ class TrackAnalyzer:
                 #Metemos esta información en la girada
                 reverted[2]['geometry'] = LineString(a)
                 attr = reverted[2]
-                print("Estruct cambiada", reverted[2])
-                e = (reverted[1],reverted[0])
+                # print("Estruct cambiada", reverted[2])
+                e = (reverted[1],reverted[0],0)
                 graph.add_edge(*e,**attr)
                 graph.edges[(edge[0],edge[1],0)]['oneway']= False
             except KeyError:
-                print("Error", reverted[1],reverted[0])
+                # print("KeyError", reverted[1],reverted[0])
                 attr = reverted[2]
-                print("Estruct cambiada", reverted[2])
-                e = (reverted[1], reverted[0])
+                # print("Estruct cambiada", reverted[2])
+                e = (reverted[1], reverted[0],0)
                 graph.add_edge(*e, **attr)
                 graph.edges[(edge[0], edge[1], 0)]['oneway'] = False
         return graph
