@@ -272,7 +272,7 @@ def create_path(track_analysis, origin, dist):
     return path, distance_created
 
 
-def simulate_route(track_analysis, origin, end, ax):
+def simulate_route(track_analysis, origin, end, distance, ax):
     """
     Simulates creation of route given an origin and target point.
     This simulation is made by searching Dijkstra's path and simulating points segment by segment.
@@ -287,8 +287,20 @@ def simulate_route(track_analysis, origin, end, ax):
     # Simular creación de trayectoria completa
 
     # Encontrar el camino más probable.
-    simulated_path,_ = create_path(track_analysis,origin,3330)
+    list_original = []
+    list_distances = []
+    list_reduced = []
+    for i in range(0,500):
+        simulated_path_aux, distance_generated = create_path(track_analysis,origin,distance)
+        list_original.append(simulated_path_aux)
+        list_distances.append(distance_generated)
+        res=[]
+        res = [l for l in simulated_path_aux if l not in res]
+        list_reduced.append(res)
 
+    idx_to_return = list_reduced.index(max(list_reduced,key=len))
+    simulated_path = list_original[idx_to_return]
+    distence_to_return = list_distances[idx_to_return]
     # Iterar para cada uno de los nodos del camino escogido
     path = []
     for d in range(0, len(simulated_path) - 1):
@@ -306,6 +318,7 @@ def simulate_route(track_analysis, origin, end, ax):
         # tp.plot_points(ax, seg, colors[idx_color % len(colors)])
         for s in seg:
             simulated_track.append(s)
-    return np.array(simulated_track)
+
+    return np.array(simulated_track), distence_to_return
 
 
