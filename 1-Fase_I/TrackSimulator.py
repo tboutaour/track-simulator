@@ -13,8 +13,14 @@ from geopy import Point
 import geopy
 import random
 import math
+import gpxpy
+import gpxpy.gpx
 import TrackAnalyzer as ta
 import networkx as nx
+
+PROB_RETURN = 0.4
+NUMBER_SIMULATIONS = 5
+EARTH_RADIUM = 6378.1  # Radius of the Earth
 
 
 def get_random_value(data):
@@ -25,7 +31,7 @@ def get_random_value(data):
     return np.argmax(np.array(ser_dx > rnd))
 
 
-def calculate_initial_compass_bearing(pointA, pointB):
+def calculate_initial_compass_bearing(point_a, point_b):
     """
     Calculates the bearing between two points.
     The formulae used is the following:
@@ -41,17 +47,17 @@ def calculate_initial_compass_bearing(pointA, pointB):
     :Returns Type:
       float
     """
-    if (type(pointA) != tuple) or (type(pointB) != tuple):
+    if (type(point_a) != tuple) or (type(point_b) != tuple):
         raise TypeError("Only tuples are supported as arguments")
 
-    lat1 = math.radians(pointA[0])
-    lat2 = math.radians(pointB[0])
+    lat1 = math.radians(point_a[0])
+    lat2 = math.radians(point_b[0])
 
-    diffLong = math.radians(pointB[1] - pointA[1])
+    diff_long = math.radians(point_b[1] - point_a[1])
 
-    x = math.sin(diffLong) * math.cos(lat2)
+    x = math.sin(diff_long) * math.cos(lat2)
     y = math.cos(lat1) * math.sin(lat2) - (math.sin(lat1)
-                                           * math.cos(lat2) * math.cos(diffLong))
+                                           * math.cos(lat2) * math.cos(diff_long))
 
     initial_bearing = math.atan2(x, y)
 
@@ -63,57 +69,54 @@ def calculate_initial_compass_bearing(pointA, pointB):
     return compass_bearing
 
 
-def getPoint(la1, lo1, b, d):
-    R = 6378.1  # Radius of the Earth
-    brng = math.radians(b)  # Bearing is 90 degrees converted to radians.
-    # d = 0.1  # Distance in km
+def getPoint(point, bearing, distance):
+    bearing_radians = math.radians(bearing)
 
-    # lat2  52.20444 - the lat result I'm hoping for
-    # lon2  0.36056 - the long result I'm hoping for.
+    lat_point = math.radians(point[0])  # Current lat point converted to radians
+    lon_point = math.radians(point[1])  # Current long point converted to radians
 
-    lat1 = math.radians(la1)  # Current lat point converted to radians
-    lon1 = math.radians(lo1)  # Current long point converted to radians
+    lat_result = math.asin(math.sin(lat_point) * math.cos(distance / EARTH_RADIUM) +
+                           math.cos(lat_point) * math.sin(distance / EARTH_RADIUM) * math.cos(bearing_radians))
 
-    lat2 = math.asin(math.sin(lat1) * math.cos(d / R) +
-                     math.cos(lat1) * math.sin(d / R) * math.cos(brng))
+    lon_result = lon_point + math.atan2(math.sin(bearing_radians) * math.sin(distance / EARTH_RADIUM) *
+                                        math.cos(lat_point), math.cos(distance / EARTH_RADIUM) - math.sin(lat_point) *
+                                        math.sin(lat_result))
 
-    lon2 = lon1 + math.atan2(math.sin(brng) * math.sin(d / R) * math.cos(lat1),
-                             math.cos(d / R) - math.sin(lat1) * math.sin(lat2))
+    lat_result = math.degrees(lat_result)
+    lon_result = math.degrees(lon_result)
 
-    lat2 = math.degrees(lat2)
-    lon2 = math.degrees(lon2)
-
-    # print("lat " + str(lat2))
-    # print("lon " + str(lon2))
-    return (lat2, lon2)
+    return lat_result, lon_result
 
 
-def simulate_segment(ta, seg):
+def simulate_segment(track_analyze, segment):
     """
     Simulates creation of points in the segment delimited by two nodes of the graph
-    :param self:
-    :param ta: TrackAnalysis of the project with all the information for recreating the segment
-    :param seg: Segment to simulate (Origin node, Target node)
+    :param track_analyze: TrackAnalysis of the project with all the information for recreating the segment
+    :param segment: Segment to simulate (Origin node, Target node)
     :return: Array of points (lat,lon) of the simulation
     """
-    gen_points_number = get_random_value(ta.trackpoint_number)
+    if track_analyze.trackpoint_number:
+        gen_points_number = get_random_value(track_analyze.trackpoint_number)
+    else:
+        gen_points_number = 12
+
     aux = 0
-    origin_node = seg[0]
-    target_node = seg[1]
+    origin_node = segment[0]
+    target_node = segment[1]
     segment = []
-    origin_point = Point(ta.graph.nodes[origin_node]['y'], ta.graph.nodes[origin_node]['x'])
-    target_point = Point(ta.graph.nodes[target_node]['y'], ta.graph.nodes[target_node]['x'])
+    origin_point = Point(track_analyze.graph.nodes[origin_node]['y'], track_analyze.graph.nodes[origin_node]['x'])
+    target_point = Point(track_analyze.graph.nodes[target_node]['y'], track_analyze.graph.nodes[target_node]['x'])
     d = geopy.distance.distance(origin_point, target_point).m
     # print("Origen segmento: " + str(origin_node))
     # print("Punto origen segmento: " + str(origin_point))
     # print("Objetivo segmento: " + str(target_node))
     # print("Punto objetivo segmento: " + str(target_point))
     try:
-        dest, aux = calculate_point(ta, segment, origin_node, target_node, origin_point, target_point)
+        dest, aux = calculate_point(track_analyze, segment, origin_node, target_node, origin_point, target_point)
         next = dest
         # print("Dis. Inicio : " + str(aux))
         while aux > 24 and len(segment) < 30:
-            dest, aux = calculate_point(ta, segment, origin_node, target_node, next, target_point)
+            dest, aux = calculate_point(track_analyze, segment, origin_node, target_node, next, target_point)
             # print(aux)
             next = dest
     except KeyError:
@@ -138,6 +141,11 @@ def calculate_point(track_analysis, segment, origin_node, target_node, origin_po
     :param target_point: Target point of the segment
     :return:
     """
+    if track_analysis.trackpoint_route_distance:
+        rnd_distance = random.choice(track_analysis.trackpoint_route_distance) / 1000
+    else:
+        rnd_distance = 0.04
+    rnd_distance = 0.04
     # Cargar la estructura de lista del segmento
     coords = track_analysis.graph.edges[(origin_node, target_node, 0)]['geometry'].coords[:]
     coord_list = [list(reversed(item)) for item in coords]
@@ -162,10 +170,10 @@ def calculate_point(track_analysis, segment, origin_node, target_node, origin_po
 
     # Calculamos distacia al punto que queremos crear
     # point_distance = get_random_value(ta.trackpoint_distance)/8000
-    point_distance = 0.040
+    point_distance = rnd_distance
 
     # Generamos el punto
-    dest = getPoint(origin_point[0], origin_point[1], rndbear, point_distance)
+    dest = getPoint((origin_point[0], origin_point[1]), rndbear, point_distance)
 
     dist_gen_point = geopy.distance.distance(dest, (destPoint[0], destPoint[1])).m
     # print("Distancia al punto idx: " + str(dist_gen_point))
@@ -175,7 +183,7 @@ def calculate_point(track_analysis, segment, origin_node, target_node, origin_po
         rndbear = np.random.uniform(bearing - 20, bearing + 20)
         # print("random: " + str(rndbear))
         # print("bearing: " + str(bearing))
-        dest = getPoint(origin_point[0], origin_point[1], rndbear, point_distance)
+        dest = getPoint((origin_point[0], origin_point[1]), rndbear, point_distance)
         dist_gen_point = geopy.distance.distance(dest, (destPoint[0], destPoint[1])).m
         # print("Distancia al punto idx: " + str(dist_gen_point))
 
@@ -220,7 +228,7 @@ def get_closest_segment_point(track_analysis, coord_list, origin_node, target_no
     return idx
 
 
-def get_most_frequent_node(track_analysis,node, path):
+def get_most_frequent_node(track_analysis, node, path):
     """
     Every segment have a frequency. It returns choose one of the options according the frequencies.
     :param path:
@@ -230,16 +238,25 @@ def get_most_frequent_node(track_analysis,node, path):
     """
     target_list = []
     roll = random.random()
-    for i in track_analysis.graph.edges(node,data=True):
-        target_list.append([i[1],i[2]['frequency']])
+    for i in track_analysis.graph.edges(node, data=True):
+        target_list.append([i[1], i[2]['frequency']])
     target_list.sort(key=lambda x: x[1])
     aux = 0
     selected_target = 67
+    idx_target = 0
     for target in target_list:
+
         aux = aux + target[1]
         if roll < aux:
             selected_target = target[0]
+            if track_analysis.graph.degree(selected_target) > 1 and len(path) > 2 and path[-2] == selected_target:
+                retro_roll = random.random()
+                if retro_roll < PROB_RETURN:
+                    selected_target = target[0]
+                else:
+                    selected_target = target_list[idx_target - 1][0]
             break
+        idx_target = idx_target + 1
     return selected_target
 
 
@@ -290,17 +307,18 @@ def simulate_route(track_analysis, origin, end, distance, ax):
     list_original = []
     list_distances = []
     list_reduced = []
-    for i in range(0,500):
-        simulated_path_aux, distance_generated = create_path(track_analysis,origin,distance)
+    # Realizamos 5 y nos quedamos con el que tenga menos repeticiones.
+    for i in range(0, NUMBER_SIMULATIONS):
+        simulated_path_aux, distance_generated = create_path(track_analysis, origin, distance)
         list_original.append(simulated_path_aux)
         list_distances.append(distance_generated)
-        res=[]
+        res = []
         res = [l for l in simulated_path_aux if l not in res]
         list_reduced.append(res)
 
-    idx_to_return = list_reduced.index(max(list_reduced,key=len))
+    idx_to_return = list_reduced.index(max(list_reduced, key=len))
     simulated_path = list_original[idx_to_return]
-    distence_to_return = list_distances[idx_to_return]
+    distance_to_return = list_distances[idx_to_return]
     # Iterar para cada uno de los nodos del camino escogido
     path = []
     for d in range(0, len(simulated_path) - 1):
@@ -310,7 +328,6 @@ def simulate_route(track_analysis, origin, end, distance, ax):
     colors = ["green", "red", "blue", "purple", "pink", "orange", "yellow", "black"]
     # Indice para crear segmentos de colores distintos
     idx_color = 0
-    # print("path" + str(path))
     for segment in path:
         seg = simulate_segment(track_analysis, segment)
         # print("Puntos: " + str(len(seg)))
@@ -319,6 +336,26 @@ def simulate_route(track_analysis, origin, end, distance, ax):
         for s in seg:
             simulated_track.append(s)
 
-    return np.array(simulated_track), distence_to_return
+    return np.array(simulated_track), distance_to_return
 
 
+
+def create_gpx_track(data, file_name):
+    # Creating a new file:
+    gpx = gpxpy.gpx.GPX()
+
+    # Create first track in our GPX:
+    gpx_track = gpxpy.gpx.GPXTrack()
+    gpx.tracks.append(gpx_track)
+
+    # Create first segment in our GPX track:
+    gpx_segment = gpxpy.gpx.GPXTrackSegment()
+    gpx_track.segments.append(gpx_segment)
+
+    # Create points:
+    for point in data:
+        gpx_segment.points.append(gpxpy.gpx.GPXTrackPoint(point[0], point[1]))
+        
+    # print('Created GPX:', gpx.to_xml())
+    with open(file_name, "w") as f:
+        f.write(gpx.to_xml())

@@ -15,7 +15,7 @@ from itertools import groupby
 from shapely.geometry import Point, LineString
 
 DEL_ATTRIB = ['tunnel','access','oneway','name','osmid','service','lanes','bridge','ref','maxspeed','highway']
-
+SIGMA = 1.6
 
 class TrackAnalyzer:
     def __init__(self, north, south, east, west):
@@ -27,6 +27,7 @@ class TrackAnalyzer:
         self.trackpoint_number = []
         self.route_data = []
         self.__tree = -1
+        self.__set_kdtree()
 
     def initialize_graph(self, north, south, east, west):
         aux_graph = ox.graph_from_bbox(north, south, east, west)
@@ -39,10 +40,10 @@ class TrackAnalyzer:
         dic_reg_ones = dict(zip(edges, ones))
         nx.set_edge_attributes(graph, dic_reg_ones, 'num of detections')
         nx.set_edge_attributes(graph, dic_reg_zeros, 'num of points')
-        self.initialize_path_freq(graph, edges)
+        self.__initialize_path_freq(graph, edges)
         return graph
 
-    def initialize_path_freq(self, graph, edges):
+    def __initialize_path_freq(self, graph, edges):
         list_prob = []
         for edge in edges:
             number = len(graph.edges(edge[0]))
@@ -52,7 +53,13 @@ class TrackAnalyzer:
         nx.set_edge_attributes(graph, dic_freq, 'frequency')
 
 
-    def update_edge_freq(self, source_node, target_node):
+    def __update_edge_freq(self, source_node, target_node):
+        """
+        Update information of edge frequency in detection. This method updates information in all edges given the source.
+        This update the TrackAnalyzer object.
+        :param source_node: Source node of the edge visited
+        :param target_node: Target node of the edge visited
+        """
         self.graph.edges[(source_node, target_node, 0)]['num of detections'] +=1
         total = self.df['num of detections'][self.df['source'] == source_node].sum()
         for edge in self.graph.edges(source_node):
@@ -60,35 +67,34 @@ class TrackAnalyzer:
         self.df = nx.to_pandas_edgelist(self.graph, source='source', target='target')
 
 
-    def update_frequencies(self,track_points):
+    def __update_frequencies(self,track_points):
         for track_point in track_points:
-            self.update_edge_freq(track_point[0],track_point[1])
+            self.__update_edge_freq(track_point[0],track_point[1])
 
 
     def get_trackpoint_distance(self, track_points):
         for p in range(0,len(track_points) - 1):
             self.trackpoint_distance.append(distance(track_points[p], track_points[p + 1]).km)
 
-
-    # Función para generar el array bidimensional con todos los puntos DE LA RUTA y sus nodos or. fin.
     def create_tree_structure(self):
         """
         Creation of the structure to set the KDtree.
-        :return: Array composed by [Source,target,geometry]
+        For every geometry, extract every point and create array.
+        :return: Array composed by [Coord Point,Source,Target]
         """
-        roadRelation = self.df[['source', 'target', 'geometry']]
+        road_relation = self.df[['source', 'target', 'geometry']]
         n = []
-        for road in roadRelation.iterrows():
+        for road in road_relation.iterrows():
             try:
                 coords = road[1].geometry.coords[:]
-                coordList = [(gPoint(y,x)) for x,y in coords]
-                L = [[c ,(road[1].source, road[1].target)] for c in coordList]
+                coord_list = [(gPoint(y,x)) for x,y in coords]
+                L = [[coord_point ,(road[1].source, road[1].target)] for coord_point in coord_list]
                 n.extend(L)
             except AttributeError:
                 pass
         return np.array(n)
 
-    def set_kdtree(self):
+    def __set_kdtree(self):
         self.route_data = self.create_tree_structure()
         self.__tree = KDTree(np.array([[a.latitude,a.longitude] for a,b in self.route_data]), metric='euclidean')
 
@@ -96,14 +102,15 @@ class TrackAnalyzer:
         idx_cerc,dist = self.__tree.query_radius(puntos, r=radius, count_only=False, return_distance=True)
         return np.array(self.route_data[idx_cerc[0]]), dist
 
-    def get_emission_prob(self,projection, point):
-        d = (1/(math.sqrt(2*math.pi)))*math.e**(-(self.__haversine_distance(projection[0],point[0]))/2)
+    def __get_emission_prob(self,projection, point):
+        d = (1/(math.sqrt(2*math.pi))*SIGMA)*math.e**(-(self.__haversine_distance(projection[0],point[0]))**2/(2*SIGMA)**2)
         return d
 
-    def get_transition_prob(self,projection,prev_point):
+    def __get_transition_prob(self,projection,prev_point):
         dest = prev_point[1][0]
         try:
-            shortest_path = math.e**((nx.shortest_path_length(self.graph,prev_point[1][0],float(projection[1][0])))*4)
+            shortest_path = math.e**((nx.shortest_path_length(self.graph,prev_point[1][0],float(projection[1][0]))))
+            #shortest_path = nx.shortest_path_length(self.graph,prev_point[1][0],float(projection[1][0]))+1
         except nx.NetworkXNoPath:
             shortest_path = math.e**100
         distance = self.__haversine_distance(prev_point[0],projection[0])
@@ -133,33 +140,37 @@ class TrackAnalyzer:
                 path.append(np.array([point[0], (aux_path[i], aux_path[i + 1])]))
         path.append(point)
 
-    def viterbi_algorithm(self,points):
+    def __viterbi_algorithm(self,points):
         path = []
-        max_scores = []
+        max_prob_record = []
         # Para cada uno de los puntos GPS
-        for idx_point in range(0, len(points)):
-            max_score = 0
-            score = 0
+        for idx_point in range(0,len(points)):
+            max_prob = 0
+            total_prob = 0
+            #Obtención de todas las proyecciones de este punto
             projections,_ = self.get_closest_nodes([points[idx_point]], 0.001)
-            for p in projections:
-                ep = self.get_emission_prob([points[idx_point]], p)
+            #Para cada una de las proyecciones obtner sus probabilidades
+            #Nos quedaremos con la proyección de mayor probabilidad
+            for projection in projections:
+                emission_prob = self.__get_emission_prob([points[idx_point]], projection)
                 if idx_point > 1:
-                    score = ep * self.get_transition_prob(p, path[-1])
+                    total_prob = emission_prob * self.__get_transition_prob(projection, path[-1])
                 else:
-                    score = ep * 1.0
-                if score > max_score:
-                    estimated = p
-                    max_score = score
+                    total_prob = emission_prob * 1.0
+                if total_prob > max_prob:
+                    estimated_point = projection
+                    max_prob = total_prob
             if idx_point > 0:
-                distance = nx.shortest_path_length(self.graph, path[-1][1][1],estimated[1][0])
-                if 8 > distance >= 1 and (path[-1][1] != estimated[1]):
-                    self.complete_path(path,estimated)
-                elif distance <= 0 or (path[-1][1] == estimated[1]):
-                    path.append(estimated)
+                #Si la distancia entre puntos es mayor a 1 se debe completar el camino.
+                distance_between_points = nx.shortest_path_length(self.graph, path[-1][1][1],estimated_point[1][0])
+                if 8 > distance_between_points >= 1 and (path[-1][1] != estimated_point[1]):
+                    self.complete_path(path,estimated_point)
+                elif distance_between_points <= 0 or (path[-1][1] == estimated_point[1]):
+                    path.append(estimated_point)
             else:
-                path.append(estimated)
-            max_scores.append(max_score)
-        return path, max_scores
+                path.append(estimated_point)
+            max_prob_record.append(max_prob)
+        return path, max_prob_record
 
     def get_road_gaps(self, origin_point, target_point):
         route = nx.shortest_path(self.graph, origin_point, target_point)
@@ -185,7 +196,6 @@ class TrackAnalyzer:
         return d * 1000
 
     def __get_points_distance(self, point, routeGap):
-        #    nodes = data[(data[:, 2] == routeGap[0]) & (data[:, 3] == routeGap[1])][:, 0:2]
         nodes = self.df[(self.df['source'] == routeGap[0]) & (self.df['target'] == routeGap[1])]
         if nodes.size == 0:
             nodes = self.df[(self.df['source'] == routeGap[1]) & (self.df['target'] == routeGap[0])]
@@ -196,7 +206,13 @@ class TrackAnalyzer:
         except:
             return 0
 
-    def get_simplified_route_relation(self, route_relation):
+    def __get_simplified_route_relation(self, route_relation):
+        """
+        Currently deprecated.
+        Add points between routes.
+        :param route_relation: route to analyze gaps.
+        :return: route without gaps
+        """
         exp = []
         exp.append(route_relation[0])
         for idx in range(1, len(route_relation)):
@@ -225,7 +241,7 @@ class TrackAnalyzer:
             ruta_simplificada.append([lat, lon])
         return np.array(ruta_simplificada)
 
-    def get_distance_point_to_point(self, set):
+    def __get_distance_point_to_point(self, set):
         DistanceBetweenPonints = []
         for idx in range(0, len(set) - 1):
             distan = self.__haversine_distance(set[idx],
@@ -234,7 +250,7 @@ class TrackAnalyzer:
         DistanceBetweenPonints = [x for x in DistanceBetweenPonints if x != 0]
         self.trackpoint_route_distance = DistanceBetweenPonints
 
-    def get_bearing_point_to_point(self, set):
+    def __get_bearing_point_to_point(self, set):
         angulos = []
         for idx in range(0, len(set) - 1):
             point = tuple(set[idx])
@@ -262,26 +278,17 @@ class TrackAnalyzer:
         compass_bearing = (initial_bearing + 360) % 360
         return compass_bearing
 
-    def getFrequencyRoute(self, data):
-        # cabecera = np.array(['X', 'Y', 'Origen', 'Destino', 'Exactitud'])
-        dftemps = pd.DataFrame({'Origen': data[:, 2], 'Destino': data[:, 3]})
-        frequency = dftemps.groupby(["Origen", "Destino"]).size()
-        pFrequency = frequency / frequency.sum()
-        return np.array([[b, c] for b, c in pFrequency.items()])
 
     def get_idx(self, par):
         return self.df.loc[(self.df['source'] == par[0]) & (self.df['target'] == par[1])].index[0]
 
-    def create_route(self, results):
-        L = [(x[0], x[1], 0) for x in results[:, 1]]
-        idss = [n for i, n in enumerate(L) if i == 0 or n != L[i - 1]]
-        ids = []
-        for i in idss:
-            ids.append(i[0])
-        return ids
 
-
-    def get_number_points(self,set):
+    def __get_number_points(self,set):
+        """
+        Obtain number of points of a set and save the information.
+        This update the TrackAnalyzer object.
+        :param set: Set of GPS points
+        """
         count = [len(list(group)) for key, group in groupby(sorted(set))]
         self.trackpoint_number.extend(count)
 
@@ -297,11 +304,11 @@ class TrackAnalyzer:
         -Frequencies: Frequencies of aparition of the segment of a route
         :param track: List of GPS points (lat,lon) referenced by the nearest segment
         """
-        self.get_trackpoint_distance(track[:,0])
-        self.get_bearing_point_to_point(track[:,0])
-        self.get_number_points(track[:, 1])
-        self.get_distance_point_to_point(track[:,0])
-        self.update_frequencies(track[:,1])
+        #self.__get_trackpoint_distance(track[:,0])
+        self.__get_bearing_point_to_point(track[:,0])
+        self.__get_number_points(track[:, 1])
+        self.__get_distance_point_to_point(track[:,0])
+        self.__update_frequencies(track[:,1])
 
 
     def completar_grafo(self,graph):
@@ -316,12 +323,14 @@ class TrackAnalyzer:
             try:
                 #crearemos la arista
                 reverted = edge
+                attr = reverted[2]
                 #Almacenamos la información de los puntos
                 a = reverted[2]['geometry'].coords[:]
                 #Giramos los puntos (están en a)
                 a.reverse()
                 reverted[2]['geometry'] = LineString(a)
                 e = (reverted[1],reverted[0],0)
+                # print("Vamos a añadir: ",e,attr)
                 graph.add_edge(*e,**attr)
             except KeyError:
                 attr = reverted[2]
@@ -340,9 +349,9 @@ class TrackAnalyzer:
         :param track:
         :return:
         """
-        self.get_trackpoint_distance(track)
-        analyzed_track, m = self.viterbi_algorithm(track)
-        simplified_track = self.get_simplified_route_relation(analyzed_track)
+        #self.__get_trackpoint_distance(track)
+        analyzed_track, m = self.__viterbi_algorithm(track)
+        simplified_track = self.__get_simplified_route_relation(analyzed_track)
         return analyzed_track, m, simplified_track
 
     def compose_file_information(self,graph):

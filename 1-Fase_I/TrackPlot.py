@@ -50,4 +50,3 @@ def plot_diagrams(data,title,bins):
     plt.show()
     get_frequency(data, title)
     plt.show()
-
