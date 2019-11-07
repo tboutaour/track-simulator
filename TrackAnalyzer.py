@@ -29,6 +29,7 @@ class TrackAnalyzer:
         self.__tree = -1
         self.__set_kdtree()
 
+    #Pasado modificado a clase Graph
     def initialize_graph(self, north, south, east, west):
         aux_graph = ox.graph_from_bbox(north, south, east, west)
         graph = self.completar_grafo(aux_graph)
@@ -43,6 +44,7 @@ class TrackAnalyzer:
         self.__initialize_path_freq(graph, edges)
         return graph
 
+    #Pasado a clase graph
     def __initialize_path_freq(self, graph, edges):
         list_prob = []
         for edge in edges:
@@ -52,7 +54,7 @@ class TrackAnalyzer:
         dic_freq = dict(zip(edges, list_prob))
         nx.set_edge_attributes(graph, dic_freq, 'frequency')
 
-
+    #Pasado a Clase Graph
     def __update_edge_freq(self, source_node, target_node):
         """
         Update information of edge frequency in detection. This method updates information in all edges given the source.
@@ -102,10 +104,12 @@ class TrackAnalyzer:
         idx_cerc,dist = self.__tree.query_radius(puntos, r=radius, count_only=False, return_distance=True)
         return np.array(self.route_data[idx_cerc[0]]), dist
 
+    # pasado a clase HMM
     def __get_emission_prob(self,projection, point):
         d = (1/(math.sqrt(2*math.pi))*SIGMA)*math.e**(-(self.__haversine_distance(projection[0],point[0]))**2/(2*SIGMA)**2)
         return d
 
+    # pasado a clase HMM
     def __get_transition_prob(self,projection,prev_point):
         dest = prev_point[1][0]
         try:
@@ -128,6 +132,7 @@ class TrackAnalyzer:
         except:
             pass
 
+    # pasado a clase HMM
     def complete_path(self, path, point):
         aux_path = nx.shortest_path(self.graph, path[-1][1][1], point[1][0])
         points = []
@@ -140,6 +145,7 @@ class TrackAnalyzer:
                 path.append(np.array([point[0], (aux_path[i], aux_path[i + 1])]))
         path.append(point)
 
+    # pasado a clase HMM
     def __viterbi_algorithm(self,points):
         path = []
         max_prob_record = []
@@ -184,6 +190,7 @@ class TrackAnalyzer:
         dist_2 = np.einsum('ij,ij->i', deltas, deltas)
         return np.argmin(dist_2)
 
+    # pasado a clase HMM
     def __haversine_distance(self, origin_point, target_point):
         """ Haversine formula to calculate the distance between two lat/long points on a sphere """
         radius = 6371.0  # FAA approved globe radius in km

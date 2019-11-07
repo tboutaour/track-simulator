@@ -169,8 +169,8 @@ def calculate_point(track_analysis, segment, origin_node, target_node, origin_po
     rndbear = np.random.uniform(bearing - 20, bearing + 20)
 
     # Calculamos distacia al punto que queremos crear
-    point_distance = get_random_value(track_analysis.trackpoint_distance)/8000
-    #point_distance = rnd_distance
+    point_distance = get_random_value(track_analysis.trackpoint_distance) / 8000
+    # point_distance = rnd_distance
 
     # Generamos el punto
     dest = getPoint((origin_point[0], origin_point[1]), rndbear, point_distance)
@@ -339,7 +339,6 @@ def simulate_route(track_analysis, origin, end, distance, ax):
     return np.array(simulated_track), distance_to_return
 
 
-
 def create_gpx_track(data, file_name):
     # Creating a new file:
     gpx = gpxpy.gpx.GPX()
@@ -353,9 +352,9 @@ def create_gpx_track(data, file_name):
     gpx_track.segments.append(gpx_segment)
 
     # Create points:
-    for point in data:
-        gpx_segment.points.append(gpxpy.gpx.GPXTrackPoint(point[0], point[1]))
-        
+    [gpx_segment.points.append(point[0], point[1]) for point in data]
+
     # print('Created GPX:', gpx.to_xml())
     with open(file_name, "w") as f:
         f.write(gpx.to_xml())
+
