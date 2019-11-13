@@ -49,3 +49,4 @@ class Graph(networkx.classes.DiGraph):
         for edge in self.graph.edges(source_node):
             self.graph.edges[(edge[0],edge[1],0)]['frequency'] = self.graph.edges[(edge[0],edge[1],0)][ 'num of detections']/total
 ##        self.df = networkx.to_pandas_edgelist(self.graph, source='source', target='target')
+

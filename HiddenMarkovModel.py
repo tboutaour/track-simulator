@@ -3,7 +3,6 @@ import networkx
 import numpy as np
 SIGMA = 1.6
 
-
 def haversine_distance(origin_point, target_point):
     """ Haversine formula to calculate the distance between two lat/long points on a sphere """
     radius = 6371.0  # FAA approved globe radius in km
@@ -14,7 +13,6 @@ def haversine_distance(origin_point, target_point):
     c = 2.0 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
     d = radius * c
     return d * 1000
-
 
 class HiddenMarkovModel:
     def get_emission_prob(self, projection, point):
@@ -29,7 +27,6 @@ class HiddenMarkovModel:
         distance = haversine_distance(prev_point[0], projection[0])
         prob = distance / shortest_path
         return prob
-
 
     def __viterbi_algorithm(self,points):
         path = []

@@ -11,7 +11,6 @@ import TrackPlot as tp
 import TrackSimulator as ts
 import osmnx as ox
 import matplotlib
-from shapely.geometry import Point, LineString
 
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
@@ -210,6 +209,7 @@ def simulate_route():
         file_name = GPX_FILE_DIRECTORY + file_name + '.gpx'
         ts.create_gpx_track(p,file_name)
         print("File saved.")
+
 
 def auxiliar():
     ejemplo = track_analyzer.graph.edges[(302770185, 700015725,0)]

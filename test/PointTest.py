@@ -14,6 +14,7 @@ class MyTestCase(unittest.TestCase):
         segm.add_point(point)
         segm.add_point(point)
         self.assertEqual(segm.get_points(), [(2.0, 1.0), (4.0, 4.0), (2.0, 1.0), (2.0, 1.0)])
+        self.assertEqual(point.calculate_initial_compass_bearing(point_b), 56.20251196993809)
 
     def test_point_operations(self):
         point = Point(2, 1)

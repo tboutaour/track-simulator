@@ -285,10 +285,8 @@ class TrackAnalyzer:
         compass_bearing = (initial_bearing + 360) % 360
         return compass_bearing
 
-
     def get_idx(self, par):
         return self.df.loc[(self.df['source'] == par[0]) & (self.df['target'] == par[1])].index[0]
-
 
     def __get_number_points(self,set):
         """
