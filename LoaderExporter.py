@@ -1,6 +1,8 @@
 import abc
 
 import gpxpy
+import networkx as nx
+import pickle
 
 
 class LoaderSaver(abc.ABC):
@@ -23,29 +25,43 @@ class LoaderSaver(abc.ABC):
 
 class GraphLoaderSaver(LoaderSaver):
     def loadFile(self, input):
-        pass
+        # G = nx.read_edgelist(path, nodetype=int, create_using=nx.MultiDiGraph,
+        #                      data=(('num of detections', int), ('num of points', int), ('frequency', float),))
+        G = nx.read_gpickle(input)
+        return G
 
     def parseFile(self):
         pass
 
     def saveFile(self, output, data):
-        pass
+        nx.write_gpickle(data, output)
 
 
 class StatisticsLoaderSaver(LoaderSaver):
     def loadFile(self, input):
-        pass
+        with open(input, 'rb') as handle:
+            statistics = pickle.load(handle)
+        ta.trackpoint_distance = statistics.get('trackpoint_distance')
+        ta.trackpoint_route_distance = statistics.get('trackpoint_route_distance')
+        ta.trackpoint_bearing = statistics.get('trackpoint_bearing')
+        ta.trackpoint_number = statistics.get('trackpoint_number')
 
     def parseFile(self):
         pass
 
     def saveFile(self, output, data):
-        pass
+        statistics = {'trackpoint_distance': data.trackpoint_distance,
+                      'trackpoint_route_distance': data.trackpoint_route_distance,
+                      'trackpoint_bearing': data.trackpoint_bearing, 'trackpoint_number': ta.trackpoint_number}
+        with open(output, 'wb') as handle:
+            pickle.dump(statistics, handle)
 
 
 class GPXLoaderSaver(LoaderSaver):
     def loadFile(self, input):
-        pass
+        local_file = open(input)
+        parsed_file = gpxpy.parse(local_file)
+        return parsed_file
 
     def parseFile(self):
         pass

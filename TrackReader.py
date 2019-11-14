@@ -8,6 +8,7 @@ import numpy as np
 import networkx as nx
 import pickle
 
+# Pasado a LoaderExporter
 def load_gpx_file(file):
     local_file = open(file)
     parsed_file = gpxpy.parse(local_file)
@@ -22,25 +23,28 @@ def load_file_points(file):
                 points_a.append([point.latitude, point.longitude])
     return np.array(points_a)
 
+#Pasado a LoaderExporter
 def save_graph_to_file(graph,path):
     # nx.write_edgelist(graph, path, data=['num of detections', 'num of points', 'frequency'])
     # with open(path, 'wb') as handle:
     #     pickle.dump(graph, handle)
     nx.write_gpickle(graph,path)
 
+#Pasado a LoaderExporter
 def load_graph_from_file(path):
     # G = nx.read_edgelist(path, nodetype=int, create_using=nx.MultiDiGraph,
     #                      data=(('num of detections', int), ('num of points', int), ('frequency', float),))
     G = nx.nx.read_gpickle(path)
     return G
 
+#Pasado a LoaderExporter
 def save_track_analysis_statistics(ta,file):
     statistics = {'trackpoint_distance': ta.trackpoint_distance, 'trackpoint_route_distance': ta.trackpoint_route_distance,
             'trackpoint_bearing': ta.trackpoint_bearing,'trackpoint_number': ta.trackpoint_number}
     with open(file, 'wb') as handle:
         pickle.dump(statistics, handle)
 
-
+#Pasado a LoaderExporter
 def load_track_analysis_statistics(ta,file):
     with open(file, 'rb') as handle:
         statistics = pickle.load(handle)
