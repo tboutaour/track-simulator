@@ -1,6 +1,7 @@
 import abc
 import numpy as np
-from Point import Point, Segment
+from entities.TrackPoint_impl import TrackPoint as Point
+from entities.TrackSegment_impl import TrackSegment as Segment
 import random
 import geopy
 import utils

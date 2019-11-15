@@ -12,7 +12,7 @@ import numpy as np
 import utils
 import pandas as pd
 from geopy.distance import distance
-from Point import Point,Segment
+from entities.TrackPoint_impl import TrackPoint as Point
 PROB_RETURN = 0.4
 NUMBER_SIMULATIONS = 5
 EARTH_RADIUM = 6378.1  # Radius of the Earth
