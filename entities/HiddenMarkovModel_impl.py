@@ -1,7 +1,9 @@
+from entities.HiddenMarkovModel import HiddenMarkovModel
 import math
 import networkx
 import numpy as np
 SIGMA = 1.6
+
 
 def haversine_distance(origin_point, target_point):
     """ Haversine formula to calculate the distance between two lat/long points on a sphere """
@@ -14,7 +16,8 @@ def haversine_distance(origin_point, target_point):
     d = radius * c
     return d * 1000
 
-class HiddenMarkovModel:
+
+class HMM(HiddenMarkovModel):
     def get_emission_prob(self, projection, point):
         d = (1 / (math.sqrt(2 * math.pi)) * SIGMA) * math.e ** (
                 -(haversine_distance(projection[0], point[0])) ** 2 / (2 * SIGMA) ** 2)
@@ -28,7 +31,7 @@ class HiddenMarkovModel:
         prob = distance / shortest_path
         return prob
 
-    def __viterbi_algorithm(self,points):
+    def viterbi_algorithm(self,points):
         path = []
         max_prob_record = []
         # Para cada uno de los puntos GPS
