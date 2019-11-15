@@ -1,7 +1,8 @@
 import networkx
+from entities.Graph import Graph as dGraph
 
 
-class Graph(networkx.classes.DiGraph):
+class Graph(dGraph):
     def __init__(self, g: networkx.DiGraph):
         self.graph = g
 
