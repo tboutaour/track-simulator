@@ -100,7 +100,7 @@ class TrackAnalyzer:
     def __get_simplified_route_relation(self, route_relation):
         """
         Currently deprecated.
-        Add points between routes.
+        Add points between tracks.
         :param route_relation: route to analyze gaps.
         :return: route without gaps
         """

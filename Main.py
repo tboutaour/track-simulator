@@ -222,7 +222,7 @@ print("Welcome to TrackSimulator.\n\n\n\n")
 print("-----------------------------------")
 while option != 0:
     print("\n\nHere are the different options right now:\n"
-          "1.-Introduce real routes to analyze\n"
+          "1.-Introduce real tracks to analyze\n"
           "2.-Introduce information to load\n"
           "3.-Show graph information\n"
           "4.-Generate route\n"
