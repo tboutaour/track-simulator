@@ -1,10 +1,13 @@
 import networkx
+import osmnx
 from entities.Graph import Graph as dGraph
+from entities.TrackSegment_impl import TrackSegment as Segment
 
 
 class Graph(dGraph):
-    def __init__(self, g: networkx.DiGraph):
-        self.graph = g
+    def __init__(self, north, south, east, west, segment: Segment):
+        self.graph = osmnx.graph_from_bbox(north, south, east, west)
+        self.segment = segment
 
     def get_edges(self):
         return self.graph.edges(data=True)
@@ -38,6 +41,10 @@ class Graph(dGraph):
         dic_freq = dict(zip(edges, list_prob))
         networkx.set_edge_attributes(self.graph, dic_freq, 'frequency')
 
+    def update_frequencies(self, edges):
+        for edge in edges:
+            self.update_edge_freq(edge[0], edge[1])
+
     def update_edge_freq(self, source_node, target_node):
         """
         Update information of edge frequency in detection. This method updates information in all edges given the source.
@@ -45,9 +52,11 @@ class Graph(dGraph):
         :param source_node: Source node of the edge visited
         :param target_node: Target node of the edge visited
         """
-        self.graph.edges[(source_node, target_node, 0)]['num of detections'] += 1
-        total = self.df['num of detections'][self.df['source'] == source_node].sum()
+        self.graph.get_edges()[(source_node, target_node, 0)]['num of detections'] += 1
+        total = self.df['num of detections'][self.df['source'] == source_node].sum()  #?? TODO: Check
         for edge in self.graph.edges(source_node):
-            self.graph.edges[(edge[0],edge[1],0)]['frequency'] = self.graph.edges[(edge[0],edge[1],0)][ 'num of detections']/total
-##        self.df = networkx.to_pandas_edgelist(self.graph, source='source', target='target')
+            self.graph.edges[(edge[0], edge[1], 0)]['frequency'] = self.graph.edges[(edge[0],edge[1],0)][ 'num of detections']/total
 
+    # TODO implement graph clean
+    def graph_clean_and_normalize(self):
+        pass
