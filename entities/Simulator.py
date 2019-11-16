@@ -2,6 +2,7 @@ import abc
 import numpy as np
 from entities.TrackPoint_impl import TrackPoint as Point
 from entities.TrackSegment_impl import TrackSegment as Segment
+from entities.Analyzer_impl import TrackAnalyzer as Analyzer
 import random
 import geopy
 import utils
@@ -20,7 +21,7 @@ class TrackSimulator(Simulator):
     def simulate(self):
         pass
 
-    def simulate_route(self,track_analysis, origin, end, distance, ax):
+    def simulate_route(self, track_analysis, origin, end, distance, ax):
         """
         Simulates creation of route given an origin and target point.
         This simulation is made by searching Dijkstra's path and simulating points segment by segment.
@@ -191,24 +192,21 @@ class TrackSimulator(Simulator):
                 return path, distance_created
         return path, distance_created
 
-    def get_most_frequent_node(self, track_analysis, node, path):
+    def get_most_frequent_node(self, track_analysis: Analyzer, node, path):
         """
         Every segment have a frequency. It returns choose one of the options according the frequencies.
         :param path:
-        :param track_analysis: Object od TrackAnalyzer class
+        :param track_analysis: Object od TrackAnalyzer_impl class
         :param node: Node of the selection
         :return: selected target node
         """
-        target_list = []
         roll = random.random()
-        for i in track_analysis.graph.edges(node, data=True):
-            target_list.append([i[1], i[2]['frequency']])
+        target_list = [[i[1], i[2]['frequency']] for i in track_analysis.graph.get_edges()]
         target_list.sort(key=lambda x: x[1])
         aux = 0
         selected_target = 67
         idx_target = 0
         for target in target_list:
-
             aux = aux + target[1]
             if roll < aux:
                 selected_target = target[0]
