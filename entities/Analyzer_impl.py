@@ -1,14 +1,20 @@
-import abc
+from entities.Analyzer import Analyzer
+import networkx
+from sklearn.neighbors import KDTree
+from entities.TrackPoint_impl import TrackPoint as Point
+from entities.Graph_impl import Graph
+import numpy as np
 
-class Analizer(abc.ABC):
-    @abc.abstractmethod
+
+class TrackAnalyzer(Analyzer):
+    def __init__(self, graph: Graph, tracks):
+        self.graph = graph
+        self.tracks = tracks
+        self.segmentDf = networkx.to_pandas_edgelist(graph)
+        self.tree = self.set_kdtree()
+
     def analyze(self):
-        """."""
-        return
-
-    def generateResults(self):
-        """."""
-        return
+        pass
 
     def get_closest_segment_point(self, track_analysis, coord_list, origin_node, target_node, point):
         """
@@ -40,3 +46,24 @@ class Analizer(abc.ABC):
             idx = len(coord_list)
         return idx
 
+    def create_tree_structure(self):
+        """
+        Creation of the structure to set the KDtree.
+        For every geometry, extract every point and create array.
+        :return: Array composed by [Coord Point,Source,Target]
+        """
+        road_relation = self.segmentDf[['source', 'target', 'geometry']]
+        n = []
+        for road in road_relation.iterrows():
+            try:
+                coords = road[1].geometry.coords[:]
+                coord_list = [(Point(y, x)) for x, y in coords]
+                L = [[coord_point, (road[1].source, road[1].target)] for coord_point in coord_list]
+                n.extend(L)
+            except AttributeError:
+                pass
+        return np.array(n)
+
+    def set_kdtree(self):
+        segment_data = self.create_tree_structure()
+        return KDTree(np.array([[a.latitude, a.longitude] for a, b in segment_data]), metric='euclidean')
