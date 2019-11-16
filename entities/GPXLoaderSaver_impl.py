@@ -1,6 +1,7 @@
 from entities.LoaderSaver import LoaderSaver
 import gpxpy
 import gpxpy.gpx
+import numpy as np
 
 
 def create_gpx_track(data):
@@ -22,6 +23,16 @@ def create_gpx_track(data):
     return gpx.to_xml()
 
 
+def load_file_points(file):
+    points_a = []
+    for track in file.tracks:  # OJO SOLO HAY UN TRACK
+        for segment in track.segments:  # OJO SOLO HAY UN SEGMENT
+            for iA in range(0, len(segment.points) - 1):
+                point = segment.points[iA]
+                points_a.append([point.latitude, point.longitude])
+    return np.array(points_a)
+
+
 class GPXLoaderSaver(LoaderSaver):
 
     def __init__(self, source):
@@ -33,7 +44,8 @@ class GPXLoaderSaver(LoaderSaver):
 
     def parseFile(self):
         data = gpxpy.parse(self.source_file)
-        return data
+        points = load_file_points(data)
+        return points
 
     def saveFile(self, output, data):
         with open(output, "w") as f:
