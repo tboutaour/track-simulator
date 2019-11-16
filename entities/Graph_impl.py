@@ -5,8 +5,9 @@ from entities.TrackSegment_impl import TrackSegment as Segment
 
 
 class Graph(dGraph):
-    def __init__(self, north, south, east, west, segment: Segment):
+    def __init__(self, north, south, east, west, segment: [Segment]):
         self.graph = osmnx.graph_from_bbox(north, south, east, west)
+        self.graph_clean_and_normalize()
         self.segment = segment
 
     def get_edges(self):
