@@ -182,6 +182,7 @@ class TrackAnalyzer:
         self.trackpoint_number.extend(count)
 
 
+    # TODO implement this in Statistics class
     def analyze_results(self,track):
         """
         Obtain the information from the track
@@ -229,18 +230,6 @@ class TrackAnalyzer:
         #     for att in DEL_ATTRIB:
         #         d.pop(att, None)
         return graph
-
-    def analize_track(self,track):
-        """
-        Analyze the track.
-        Obtain trackpoint distance and the mapping of the track.
-        :param track:
-        :return:
-        """
-        self.__get_trackpoint_distance(track)
-        analyzed_track, m = self.__viterbi_algorithm(track)
-        simplified_track = self.__get_simplified_route_relation(analyzed_track)
-        return analyzed_track, m, simplified_track
 
     def compose_file_information(self,graph):
         """

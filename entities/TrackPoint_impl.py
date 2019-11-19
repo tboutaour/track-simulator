@@ -6,15 +6,12 @@ from shapely.geometry import Point as sPoint
 EARTH_RADIUM = 6378.1  # Radius of the Earth
 
 
-class TrackPoint(Point):
-    def __init__(self, lat, long):
-        self.point = sPoint(lat, long)
-
+class TrackPoint(Point, sPoint):
     def get_latitude(self):
-        return self.point.x
+        return self.x
 
     def get_longitude(self):
-        return self.point.y
+        return self.y
 
     def get_latlong(self):
         return self.get_latitude(), self.get_longitude()
@@ -47,7 +44,7 @@ class TrackPoint(Point):
         lat_result = math.degrees(lat_result)
         lon_result = math.degrees(lon_result)
 
-        return Point(lat_result,lon_result)
+        return Point(lat_result, lon_result)
 
     def get_bearing(self, target_point):
         """
@@ -85,3 +82,5 @@ class TrackPoint(Point):
         initial_bearing = math.degrees(initial_bearing)
         compass_bearing = (initial_bearing + 360) % 360
         return compass_bearing
+
+

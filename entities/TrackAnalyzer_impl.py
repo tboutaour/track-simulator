@@ -1,26 +1,40 @@
 from entities.Analyzer import Analyzer
 import networkx
 from sklearn.neighbors import KDTree
+
+from entities.TrackAnalyzerStatistics_impl import TrackAnalyzerStatistics
 from entities.TrackPoint_impl import TrackPoint as Point
 from entities.Graph_impl import Graph
 import numpy as np
+import logging
+from entities.TrackSegment_impl import TrackSegment
 
 
 class TrackAnalyzer(Analyzer):
-    def __init__(self, graph: Graph, tracks):
+    def __init__(self, graph: Graph, tracks, statistics: [TrackAnalyzerStatistics]):  # Estas tracks deben estar ya detectadas y filtradas
         self.graph = graph
         self.tracks = tracks
-        self.segmentDf = networkx.to_pandas_edgelist(graph)
-        self.tree = self.set_kdtree()
+        self.statistics = statistics
 
+
+
+    # TODO implement Analyze functionality
     def analyze(self):
-        pass
+        """
+        Analyze the track.
+        Obtain trackpoint distance and the mapping of the track.
+        :param track:
+        :return:
+        """
+        self.__get_trackpoint_distance(self.tracks)
+        analyzed_track, m = self.__viterbi_algorithm(self.tracks)
+        simplified_track = self.__get_simplified_route_relation(analyzed_track)
+        return analyzed_track, m, simplified_track
 
-    def get_closest_segment_point(self, track_analysis, coord_list, origin_node, target_node, point):
+    def get_closest_segment_point(self, coord_list, origin_node, target_node, point):
         """
         Gets the closest point's index given a segment and a point.
 
-        :param track_analysis: Object of TrackAnalyzer class
         :param coord_list: List of GPS points of the segment
         :param origin_node: Origin node of the segment
         :param target_node: Target node of the segment
@@ -28,7 +42,7 @@ class TrackAnalyzer(Analyzer):
         :return: Index of the list of closest point of the coordinates' list
         """
         # Buscamos los puntos candidatos más cercanos.
-        a, b = track_analysis.get_closest_nodes([[point[0], point[1]]], 15)
+        a, b = self.get_closest_nodes([[point[0], point[1]]], 15)
         aux = []
         # Filtramos aquellos que pertenecen a la ruta en cuestión
         for idx in range(0, len(a)):
@@ -46,24 +60,17 @@ class TrackAnalyzer(Analyzer):
             idx = len(coord_list)
         return idx
 
-    def create_tree_structure(self):
-        """
-        Creation of the structure to set the KDtree.
-        For every geometry, extract every point and create array.
-        :return: Array composed by [Coord Point,Source,Target]
-        """
-        road_relation = self.segmentDf[['source', 'target', 'geometry']]
-        n = []
-        for road in road_relation.iterrows():
-            try:
-                coords = road[1].geometry.coords[:]
-                coord_list = [(Point(y, x)) for x, y in coords]
-                L = [[coord_point, (road[1].source, road[1].target)] for coord_point in coord_list]
-                n.extend(L)
-            except AttributeError:
-                pass
-        return np.array(n)
 
-    def set_kdtree(self):
-        segment_data = self.create_tree_structure()
-        return KDTree(np.array([[a.latitude, a.longitude] for a, b in segment_data]), metric='euclidean')
+
+
+
+
+    def get_mid_track_point(self, origin, target):
+        nodes = self.segmentDf[(self.segmentDf['source'] == origin) & (self.segmentDf['target'] == target)]
+        if nodes.size == 0:
+            nodes = self.segmentDf[(self.segmentDf['source'] == target) & (self.segmentDf['target'] == origin)]
+        try:
+            segment = TrackSegment(nodes.iloc[0].geometry.coords[:])
+            return segment.get_middle_point()
+        except Exception as e:
+            logging.error("Cannot get middle_point:", exc_info=True)

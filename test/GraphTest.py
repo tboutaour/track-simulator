@@ -2,10 +2,6 @@ import unittest
 import osmnx
 from entities.Graph_impl import Graph
 from entities.TrackSegment_impl import TrackSegment as Segment
-import matplotlib.pyplot as plt
-from entities.GPXLoaderSaver_impl import GPXLoaderSaver as LoaderSaver
-from entities.HMMMapMatching_impl import MapMatching
-import networkx
 
 
 class MyTestCase(unittest.TestCase):

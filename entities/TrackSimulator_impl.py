@@ -118,11 +118,11 @@ class TrackSimulator(Simulator):
             rnd_distance = 0.04
         rnd_distance = 0.04
         # Cargar la estructura de lista del segmento
-        coords = track_analysis.graph.edges[(origin_node, target_node, 0)]['geometry'].coords[:]
+        coords = self.graph.edges[(origin_node, target_node, 0)]['geometry'].coords[:]
         coord_list = [list(reversed(item)) for item in coords]
 
         # Calcular el indice del punto GPS más cercano del segmento
-        idx = track_analysis.get_closest_segment_point(track_analysis, coord_list, origin_node, target_node, origin_point)
+        idx = self.get_closest_segment_point(coord_list, origin_node, target_node, origin_point)
         # print("indice del punto más cercano: " + str(idx))
 
         # Calculamos la dirección entre el punto que origen y el siguiente punto encontrado

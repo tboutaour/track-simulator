@@ -12,8 +12,8 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(point.haversine_distance(point_b), 400524.4343337236)
         self.assertEqual(segm.get_points(), [(2.0, 1.0), (4.0, 4.0)])
         self.assertEqual(segm.get_distance(), 400524.4343337236)
-        segm.add_point(point.get_latlong())
-        segm.add_point(point.get_latlong())
+        segm = segm.add_point(point.get_latlong())
+        segm = segm.add_point(point.get_latlong())
         self.assertEqual(segm.get_points(), [(2.0, 1.0), (4.0, 4.0), (2.0, 1.0), (2.0, 1.0)])
         self.assertEqual(point.get_bearing(point_b), 56.20251196993809)
 
