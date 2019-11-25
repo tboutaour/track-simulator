@@ -27,4 +27,5 @@ class TrackSegment(Segment, LineString):
     def get_nearest_point_from_segment(self, point: [Point]):
         #line_interpolate_point(linestring, line_locate_point(LineString, Point))
         #return self.interpolate(self.project(point))
-        return nearest_points(self, point)[0]
+        reversed_segment = TrackSegment([Point(tuple(reversed(track_point))) for track_point in self.get_points()])
+        return Point(nearest_points(reversed_segment, point)[0].coords)

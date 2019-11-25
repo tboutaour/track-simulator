@@ -45,6 +45,7 @@ class GPXLoaderSaver(LoaderSaver):
     def parseFile(self):
         data = gpxpy.parse(self.source_file)
         points = load_file_points(data)
+        self.source_file.close()
         return points
 
     def saveFile(self, output, data):

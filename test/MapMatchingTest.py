@@ -44,6 +44,26 @@ class MyTestCase(unittest.TestCase):
         plt.show()
         self.assertEqual(True, False)
 
+    def test_viterbi_algorithm(self):
+        test_file = LoaderSaver("../tracks/Ficheros/rutasMFlores/activity_3276836874.gpx")
+        point = Point(39.5586107, 2.6227118)
+        parsed_file = test_file.parseFile()
+        point = Point(parsed_file[120])
+        bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023, Segment)
+        hidden_markov_model = HMM(graph=bellver_graph)
+        fig, ax = osmnx.plot_graph(bellver_graph.graph, node_color='black', node_zorder=3, show=False, close=False)
+        list_of_points = []
+        for p in parsed_file:
+            p = Point(p)
+            list_of_points.append(hidden_markov_model.get_closest_nodes(Point(p)))
+            plt.scatter(p.get_longitude(), p.get_latitude(), c="green")
+        parsed_point_list = [Point(x[0], x[1]) for x in parsed_file]
+        hmm = MapMatching(parsed_point_list, hidden_markov_model)
+        result = hmm.match()
+        for r in result:
+            plt.scatter(r[0].get_longitude(), r[0].get_latitude(), c="red")
+        plt.show()
+        self.assertEqual(True, True)
 
 if __name__ == '__main__':
     unittest.main()

@@ -2,6 +2,7 @@ import networkx
 import osmnx
 from entities.Graph import Graph as dGraph
 from entities.TrackSegment_impl import TrackSegment as Segment
+from entities.TrackPoint_impl import TrackPoint as Point
 
 
 class Graph(dGraph):
@@ -16,9 +17,11 @@ class Graph(dGraph):
     def get_nodes(self):
         return self.graph.nodes()
 
-    def get_shortest_path(self, origin_node, target_node):
+    def get_shortest_path(self, origin_point: Point, target_point: Point):
         try:
-            shortest_path = networkx.shortest_path(self.graph, origin_node, target_node)
+            origin_node = osmnx.get_nearest_node(self.graph, origin_point.get_latlong())
+            target_node = osmnx.get_nearest_node(self.graph, target_point.get_latlong())
+            shortest_path = len(networkx.shortest_path(self.graph, origin_node, target_node))
         except networkx.NetworkXNoPath:
             shortest_path = 100
         return shortest_path
