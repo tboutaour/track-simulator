@@ -6,7 +6,6 @@ Created on Wed May  8 18:01:48 2019
 """
 
 import osmnx as ox
-from sklearn.neighbors import KDTree
 import numpy as np
 
 
@@ -18,14 +17,6 @@ class Grafo:
             self.west = west
             self.Grafo = ox.graph_from_bbox(self.north,self.south,self.east,self.west)
             self.p1 = p1
-
-        def GenerarKDtreeSegmentos(self, data):
-            self.nodes, _ = ox.graph_to_gdfs(self.Grafo)
-            self.tree = KDTree(data[:,:2], metric='euclidean')
-                    
-        def getClosestNodes(self, data,puntos):
-            dist_cerc, idx_cerc = self.tree.query(puntos, k = 1 , return_distance=True)
-            return data[idx_cerc[:,0]][:,2], data[idx_cerc[:,0]][:,3], dist_cerc
             
         def GetNodePoints(self, t):
             ruta_simplificada = []

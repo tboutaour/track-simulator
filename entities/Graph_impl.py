@@ -8,6 +8,7 @@ from entities.TrackPoint_impl import TrackPoint as Point
 class Graph(dGraph):
     def __init__(self, north, south, east, west, segment: [Segment]):
         self.graph = osmnx.graph_from_bbox(north, south, east, west)
+        self.edge_information = self.get_edge_information_dataframe()
         self.graph_clean_and_normalize()
         self.segment = segment
 
@@ -17,13 +18,31 @@ class Graph(dGraph):
     def get_nodes(self):
         return self.graph.nodes()
 
-    def get_shortest_path(self, origin_point: Point, target_point: Point):
+    def get_shortest_path_length(self, origin_node, target_node):
         try:
-            origin_node = osmnx.get_nearest_node(self.graph, origin_point.get_latlong())
-            target_node = osmnx.get_nearest_node(self.graph, target_point.get_latlong())
-            shortest_path = len(networkx.shortest_path(self.graph, origin_node, target_node))
+            shortest_path = networkx.shortest_path_length(self.graph, origin_node, target_node)
+            if shortest_path > 13 and shortest_path > 0:
+                shortest_path = 100000000
         except networkx.NetworkXNoPath:
-            shortest_path = 100
+            shortest_path = -1
+        return shortest_path
+
+    def get_edge_information_dataframe(self):
+        df = networkx.to_pandas_edgelist(self.graph)
+        del df['tunnel']
+        del df['ref']
+        del df['service']
+        del df['lanes']
+        del df['bridge']
+        del df['maxspeed']
+        del df['width']
+        return df
+
+    def get_shortest_path(self, origin_node, target_node):
+        try:
+            shortest_path = networkx.shortest_path(self.graph, origin_node, target_node)
+        except networkx.NetworkXNoPath:
+            shortest_path = -1
         return shortest_path
 
     def initialize_information(self):
