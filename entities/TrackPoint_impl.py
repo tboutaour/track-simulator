@@ -19,13 +19,16 @@ class TrackPoint(Point, sPoint):
     def haversine_distance(self, other):
         """ Haversine formula to calculate the distance between two lat/long points on a sphere """
         radius = 6371.0  # FAA approved globe radius in km
-        dlat = math.radians(other.get_latitude() - self.get_latitude())
-        dlon = math.radians(other.get_longitude() - self.get_longitude())
-        a = math.sin(dlat / 2.) * math.sin(dlat / 2.) + math.cos(math.radians(self.get_latitude())) \
-            * math.cos(math.radians(other.get_latitude())) * math.sin(dlon / 2.) * math.sin(dlon / 2.)
-        c = 2.0 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
-        d = radius * c
-        return d * 1000
+        try:
+            dlat = math.radians(other.get_latitude() - self.get_latitude())
+            dlon = math.radians(other.get_longitude() - self.get_longitude())
+            a = math.sin(dlat / 2.) * math.sin(dlat / 2.) + math.cos(math.radians(self.get_latitude())) \
+                * math.cos(math.radians(other.get_latitude())) * math.sin(dlon / 2.) * math.sin(dlon / 2.)
+            c = 2.0 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+            d = radius * c
+            return d * 1000
+        except AttributeError:
+            return 100000
 
     def generate_point(self, bearing, distance):
         bearing_radians = math.radians(bearing)

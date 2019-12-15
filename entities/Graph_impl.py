@@ -6,11 +6,10 @@ from entities.TrackPoint_impl import TrackPoint as Point
 
 
 class Graph(dGraph):
-    def __init__(self, north, south, east, west, segment: [Segment]):
+    def __init__(self, north, south, east, west):
         self.graph = osmnx.graph_from_bbox(north, south, east, west)
         self.edge_information = self.get_edge_information_dataframe()
         self.graph_clean_and_normalize()
-        self.segment = segment
 
     def get_edges(self):
         return self.graph.edges(data=True)

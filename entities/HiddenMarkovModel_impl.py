@@ -48,7 +48,7 @@ class HMM(HiddenMarkovModel):
                                           point.get_longitude(),
                                           next_point.get_latitude(),
                                           next_point.get_longitude())
-        route_distance = self.graph.get_shortest_path_length(projection[1],
+        route_distance = self.graph.get_shortest_path_length(projection[2],
                                                             next_projection[1])
 
         prob = (1 / BETA) * math.e ** (-(abs(great_circle_distance - route_distance)))
@@ -77,8 +77,9 @@ class HMM(HiddenMarkovModel):
                 else:
                     total_prob = emission_prob * 1.0
                 if total_prob > max_prob:
-                    if idx_point > 1 and projection[1] == path[-1][2] and projection[2] == path[-1][1]:
-                        projection[1], projection[2] = projection[2], projection[1]
+                    if idx_point > 1:
+                        if (projection[2] == path[-1][1]) or (projection[2] == path[-1][2] and projection[1] != path[-1][1]):
+                            projection[1], projection[2] = projection[2], projection[1]
                     estimated_point = projection
                     max_prob = total_prob
                     if idx_point > 0 and self.graph.get_shortest_path_length(projection[1], path[-1][1]) > 2:
@@ -117,5 +118,6 @@ class HMM(HiddenMarkovModel):
         ]
 
         edges_with_distances = sorted(edges_with_distances, key=lambda x: x[1])
-        closest_edges_to_point = edges_with_distances[:4]
+        closest_edges_to_point = edges_with_distances[:3]
+
         return closest_edges_to_point

@@ -7,13 +7,15 @@ from entities.TrackPoint_impl import TrackPoint as Point
 from entities.Graph_impl import Graph
 import matplotlib.pyplot as plt
 import osmnx
+import seaborn as sns; sns.set()
+
 
 
 class MyTestCase(unittest.TestCase):
     def test_file_reading_and_plotting(self):
         test_file = LoaderSaver("../tracks/Ficheros/rutasMFlores/activity_3276836874.gpx")
         parsed_file = test_file.parseFile()
-        bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023, Segment)
+        bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023)
         fig, ax = osmnx.plot_graph(bellver_graph.graph, node_color='black', node_zorder=3, show=False, close=False)
 
         hidden_markov_model = HMM(graph=bellver_graph)
@@ -28,19 +30,17 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(True, False)
 
     def test_get_nearest_segment_points(self):
-        test_file = LoaderSaver("../tracks/Ficheros/rutasMFlores/activity_3276836874.gpx")
+        test_file = LoaderSaver("../tracks/Ficheros/rutasMFlores/activity_3689734814.gpx")
         point = Point(39.5586107, 2.6227118)
         parsed_file = test_file.parseFile()
-        point = Point(parsed_file[120])
-        bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023, Segment)
+        bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023)
         hidden_markov_model = HMM(graph=bellver_graph)
         fig, ax = osmnx.plot_graph(bellver_graph.graph, node_color='black', node_zorder=3, show=False, close=False)
         for p in parsed_file:
-            p = Point(p)
-            list_of_points = hidden_markov_model.get_closest_nodes(Point(p))
-            plt.scatter(p.get_longitude(), p.get_latitude(), c = "green" )
+            list_of_points = hidden_markov_model.get_closest_nodes(p[2])
+            plt.scatter(p[2].get_longitude(), p[2].get_latitude(), c="green")
             for res in list_of_points:
-                plt.scatter(Point(res).get_latitude(), Point(res).get_longitude(), c="red")
+                plt.scatter(res[0].get_longitude(), res[0].get_latitude(), c="red")
         plt.show()
         self.assertEqual(True, False)
 
@@ -48,7 +48,7 @@ class MyTestCase(unittest.TestCase):
         test_file = LoaderSaver("../tracks/Ficheros/rutasMFlores/activity_3689734814.gpx")
         point = Point(39.5586107, 2.6227118)
         parsed_file = test_file.parseFile()
-        bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023, Segment)
+        bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023)
         hidden_markov_model = HMM(graph=bellver_graph)
         fig, ax = osmnx.plot_graph(bellver_graph.graph, node_color='black', node_zorder=3, show=False, close=False)
         for p in parsed_file:

@@ -1,14 +1,21 @@
 from entities.Statistics import Statistics
 from entities.TrackPoint_impl import TrackPoint as Point
 import pandas as pd
+import numpy as np
+
+
+def generate_accumulative_distribution(data):
+    # Generación distribucion acumulada
+    data.sort()
+    cd_dx = np.linspace(0., 1., len(data))
+    ser_dx = pd.Series(cd_dx, index=data)
+    return ser_dx
 
 
 class TrackAnalyzerStatistics(Statistics):
     def __init__(self, graph, track):
-        self.dataset = pd.DataFrame(track,
-                                    columns=['X_point', 'Y_point', 'X_projection', 'Y_projection', 'Origin', 'Target'])
+        self.dataset = track
         self.graph = graph
-        self.track = track
 
     def get_statistics(self):
         pass
@@ -24,14 +31,26 @@ class TrackAnalyzerStatistics(Statistics):
         pass  # TODO implement method
 
     def get_distance_between_points(self):
-        point_x = self.dataset['X_point'].tolist()
-        point_y = self.dataset['Y_point'].tolist()
+        point = self.dataset['Point'].tolist()
         distance = []
-        for i in range(0, len(point_x) - 1):
-            distance.append(Point(point_x[i], point_y[i]).distance(Point(point_x[i + 1], point_y[i + 1])))
+        for i in range(0, len(point) - 1):
+            distance.append(point[i].haversine_distance(point[i + 1]))
         return distance
 
     def get_distance_point_projection(self):
         self.dataset['Point_projection_distance'] = self.dataset.apply(
-            lambda row: Point(row.X_point, row.Y_point).distance(Point(row.X_projection, row.Y_projection)), axis=1)
+            lambda x: x['Point'].haversine_distance(x['Projection']), axis=1)
+        self.dataset = self.dataset[self.dataset['Point_projection_distance'] < 10000]
 
+    def normalize_dataset(data):
+        list_origin_targe_reduced = list(zip(data.Origin, data.Target))
+        for idx in range(0, len(list_origin_targe_reduced) - 1):
+            if list_origin_targe_reduced[idx][0] == list_origin_targe_reduced[idx + 1][1]:
+                aux1 = (list_origin_targe_reduced[idx][1], list_origin_targe_reduced[idx][0])
+                list_origin_targe_reduced[idx] = aux1
+                aux2 = (list_origin_targe_reduced[idx + 1][1], list_origin_targe_reduced[idx + 1][0])
+                list_origin_targe_reduced[idx + 1] = aux2
+            elif list_origin_targe_reduced[idx][1] == list_origin_targe_reduced[idx + 1][1]:
+                aux2 = (list_origin_targe_reduced[idx + 1][1], list_origin_targe_reduced[idx + 1][0])
+                list_origin_targe_reduced[idx + 1] = aux2
+        return list_origin_targe_reduced
