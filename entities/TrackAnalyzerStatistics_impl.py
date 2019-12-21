@@ -35,22 +35,11 @@ class TrackAnalyzerStatistics(Statistics):
         distance = []
         for i in range(0, len(point) - 1):
             distance.append(point[i].haversine_distance(point[i + 1]))
-        return distance
+        return distance, generate_accumulative_distribution(distance)
 
     def get_distance_point_projection(self):
         self.dataset['Point_projection_distance'] = self.dataset.apply(
             lambda x: x['Point'].haversine_distance(x['Projection']), axis=1)
         self.dataset = self.dataset[self.dataset['Point_projection_distance'] < 10000]
-
-    def normalize_dataset(data):
-        list_origin_targe_reduced = list(zip(data.Origin, data.Target))
-        for idx in range(0, len(list_origin_targe_reduced) - 1):
-            if list_origin_targe_reduced[idx][0] == list_origin_targe_reduced[idx + 1][1]:
-                aux1 = (list_origin_targe_reduced[idx][1], list_origin_targe_reduced[idx][0])
-                list_origin_targe_reduced[idx] = aux1
-                aux2 = (list_origin_targe_reduced[idx + 1][1], list_origin_targe_reduced[idx + 1][0])
-                list_origin_targe_reduced[idx + 1] = aux2
-            elif list_origin_targe_reduced[idx][1] == list_origin_targe_reduced[idx + 1][1]:
-                aux2 = (list_origin_targe_reduced[idx + 1][1], list_origin_targe_reduced[idx + 1][0])
-                list_origin_targe_reduced[idx + 1] = aux2
-        return list_origin_targe_reduced
+        dataset_list = list(self.dataset['Point_projection_distance'])
+        return dataset_list, generate_accumulative_distribution(dataset_list)

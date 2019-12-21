@@ -46,13 +46,10 @@ class Graph(dGraph):
 
     def initialize_information(self):
         edges = list(self.graph.edges)
-        zeros = [0] * len(edges)
         ones = [1] * len(edges)
-        dic_reg_zeros = dict(zip(edges, zeros))
         dic_reg_ones = dict(zip(edges, ones))
         networkx.set_edge_attributes(self.graph, dic_reg_ones, 'num of detections')
-        networkx.set_edge_attributes(self.graph, dic_reg_zeros, 'num of points')
-        self.initialize_path_frequency()
+        self.initialize_path_frequency(self.graph.edges)
 
     def initialize_path_frequency(self, edges):
         list_prob = []
@@ -79,6 +76,17 @@ class Graph(dGraph):
         for edge in self.graph.edges(source_node):
             self.graph.edges[(edge[0], edge[1], 0)]['frequency'] = self.graph.edges[(edge[0],edge[1],0)][ 'num of detections']/total
 
+    def plot_graph(self):
+        fig, ax = osmnx.plot_graph(self.graph, node_color='black', node_zorder=3, show=False, close=False)
+        return fig, ax
+
     # TODO implement graph clean
     def graph_clean_and_normalize(self):
+        self.initialize_information()
+        self.initialize_path_frequency(self.graph.edges)
+
+    def load_analyze_information(self, df):
         pass
+        # get path and update frquencies
+        #
+
