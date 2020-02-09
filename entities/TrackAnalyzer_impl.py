@@ -38,4 +38,7 @@ class TrackAnalyzer(Analyzer):
                                                           distance_between_points,
                                                           list(ac_dis_between_points))
 
+        reduced_track = statistics.reduce_track()
+        reduced_track.map(lambda x: self.graph.update_edge_freq(x['Origin'], x['Target']))
+
         return main_df, mapped_points

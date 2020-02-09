@@ -6,6 +6,8 @@ from entities.TrackPoint_impl import TrackPoint as Point
 import numpy as np
 import utils
 import geopy
+import geopy.distance
+import math
 import random
 NUMBER_SIMULATIONS = 4
 PROB_RETURN = 0.4
@@ -19,7 +21,7 @@ class TrackSimulator(Simulator):
     def simulate(self):
         pass
 
-    def simulate_route(self, track_analysis, origin, end, distance, ax):
+    def simulate_route(self, origin, end, distance, ax):
         """
         Simulates creation of route given an origin and target point.
         This simulation is made by searching Dijkstra's path and simulating points segment by segment.
@@ -39,7 +41,7 @@ class TrackSimulator(Simulator):
         list_reduced = []
         # Realizamos 5 y nos quedamos con el que tenga menos repeticiones.
         for i in range(0, NUMBER_SIMULATIONS):
-            simulated_path_aux, distance_generated = self.create_path(track_analysis, origin, distance)
+            simulated_path_aux, distance_generated = self.create_path(origin, distance)
             list_original.append(simulated_path_aux)
             list_distances.append(distance_generated)
             res = []
@@ -59,39 +61,50 @@ class TrackSimulator(Simulator):
         # Indice para crear segmentos de colores distintos
         idx_color = 0
         for segment in path:
-            seg = self.simulate_segment(track_analysis, segment)
+            seg = self.simulate_segment(segment)
             idx_color = idx_color + 1
             for s in seg:
                 simulated_track.append(s)
 
         return np.array(simulated_track), distance_to_return
 
-    def simulate_segment(self, track_analyze, segment):
+    def create_path(self, origin, dist):
         """
-        Simulates creation of points in the segment delimited by two nodes of the graph
-        :param track_analyze: TrackAnalysis of the project with all the information for recreating the segment
-        :param segment: Segment to simulate (Origin node, Target node)
-        :return: Array of points (lat,lon) of the simulation
+        Create the most frequent path given frequencies stored at track_analysis object.
+        Given an origin node and a maximum distance it creates the most frequent path.
+        Once the track_analysis is updated the path may change.
+        It does not recognise returns of route.
+        :param origin: Origin node of the simulated route
+        :param dist: Distance of the route.
+        :return: created path, distance of this path.
         """
-        if track_analyze.trackpoint_number:
-            gen_points_number = utils.get_random_value(track_analyze.trackpoint_number)
-        else:
-            gen_points_number = 12
+        path = []
+        distance_created = 0
+        prev_node = origin
+        path.append(origin)
+        while distance_created < dist:
+            next_node = self.get_most_frequent_node(prev_node, path)
+            distance_aux = distance_created + self.graph.get_edge_by_node((prev_node, next_node))['length']
+            if distance_aux < dist:
+                distance_created = distance_aux
+                path.append(next_node)
+                prev_node = next_node
+            else:
+                return path, distance_created
+        return path, distance_created
 
+    def simulate_segment(self, segment):
         aux = 0
         origin_node = segment[0]
         target_node = segment[1]
         segment = []
-        origin_point = Point(track_analyze.graph.nodes[origin_node]['y'], track_analyze.graph.nodes[origin_node]['x'])
-        target_point = Point(track_analyze.graph.nodes[target_node]['y'], track_analyze.graph.nodes[target_node]['x'])
-        #d = geopy.distance.distance(origin_point, target_point).m
-        d = origin_point.haversine_distance(target_node)*1000
-
+        origin_point = Point(self.graph.get_nodes()[origin_node]['y'], self.graph.get_nodes()[origin_node]['x'])
+        target_point = Point(self.graph.get_nodes()[target_node]['y'], self.graph.get_nodes()[target_node]['x'])
         try:
-            dest, aux = self.calculate_point(track_analyze, segment, origin_node, target_node, origin_point, target_point)
+            dest, aux = self.calculate_point(segment, origin_node, target_node, origin_point, target_point)
             next = dest
             while aux > 24 and len(segment) < 30:
-                dest, aux = self.calculate_point(track_analyze, segment, origin_node, target_node, next, target_point)
+                dest, aux = self.calculate_point(segment, origin_node, target_node, next, target_point)
                 next = dest
         except KeyError:
             pass
@@ -112,18 +125,13 @@ class TrackSimulator(Simulator):
         :param target_point: Target point of the segment
         :return:
         """
-        if track_analysis.trackpoint_route_distance:
-            rnd_distance = random.choice(track_analysis.trackpoint_route_distance) / 1000
-        else:
-            rnd_distance = 0.04
-        rnd_distance = 0.04
+
         # Cargar la estructura de lista del segmento
-        coords = self.graph.edges[(origin_node, target_node, 0)]['geometry'].coords[:]
+        coords = self.graph.get_edges(origin_node, target_node)['geometry'].coords[:]
         coord_list = [list(reversed(item)) for item in coords]
 
         # Calcular el indice del punto GPS más cercano del segmento
         idx = self.get_closest_segment_point(coord_list, origin_node, target_node, origin_point)
-        # print("indice del punto más cercano: " + str(idx))
 
         # Calculamos la dirección entre el punto que origen y el siguiente punto encontrado
         try:
@@ -134,7 +142,7 @@ class TrackSimulator(Simulator):
             destPoint = (target_point[0], target_point[1])
             # Si nos hemos pasado con el indice apuntaremos directamente al final.
 
-        bearing = Point(origin_point[0], origin_point[1]).calculate_initial_compass_bearing(destPoint[0], destPoint[1])
+        bearing = Point(origin_point[0], origin_point[1]).get_bearing(destPoint[1])
 
         # Calculamos una desviación
         rndbear = np.random.uniform(bearing - 20, bearing + 20)
@@ -164,42 +172,17 @@ class TrackSimulator(Simulator):
         # Devolvemos el punto y la distancia de este al final
         return dest, aux
 
-    def create_path(self,track_analysis, origin, dist):
-        """
-        Create the most frequent path given frequencies stored at track_analysis object.
-        Given an origin node and a maximum distance it creates the most frequent path.
-        Once the track_analysis is updated the path may change.
-        It does not recognise returns of route.
-        :param track_analysis:  Object of TrackAnalyzer class
-        :param origin: Origin node of the simulated route
-        :param dist: Distance of the route.
-        :return: created path, distance of this path.
-        """
-        path = []
-        distance_created = 0
-        prev_node = origin
-        path.append(origin)
-        while distance_created < dist:
-            next_node = self.get_most_frequent_node(track_analysis, prev_node, path)
-            distance_aux = distance_created + track_analysis.graph.edges[(prev_node, next_node, 0)]['length']
-            if distance_aux < dist:
-                distance_created = distance_aux
-                path.append(next_node)
-                prev_node = next_node
-            else:
-                return path, distance_created
-        return path, distance_created
+
 
     def get_most_frequent_node(self, node, path):
         """
         Every segment have a frequency. It returns choose one of the options according the frequencies.
         :param path:
-        :param track_analysis: Object od TrackAnalyzer_impl class
         :param node: Node of the selection
         :return: selected target node
         """
         roll = random.random()
-        target_list = [[i[1], i[2]['frequency']] for i in self.graph.get_edges()]
+        target_list = [[i[1], i[2]['frequency']] for i in self.graph.get_edge_by_node(node)]
         target_list.sort(key=lambda x: x[1])
         aux = 0
         selected_target = 67
@@ -208,7 +191,7 @@ class TrackSimulator(Simulator):
             aux = aux + target[1]
             if roll < aux:
                 selected_target = target[0]
-                if self.graph.degree(selected_target) > 1 and len(path) > 2 and path[-2] == selected_target:
+                if self.graph.get_degree(selected_target) > 1 and len(path) > 2 and path[-2] == selected_target:
                     retro_roll = random.random()
                     if retro_roll < PROB_RETURN:
                         selected_target = target[0]
@@ -217,3 +200,30 @@ class TrackSimulator(Simulator):
                 break
             idx_target = idx_target + 1
         return selected_target
+
+    def calculate_initial_compass_bearing(self, pointA, pointB):
+        if (type(pointA) != tuple) or (type(pointB) != tuple):
+            raise TypeError("Only tuples are supported as arguments")
+        lat1 = math.radians(pointA[0])
+        lat2 = math.radians(pointB[0])
+        diffLong = math.radians(pointB[1] - pointA[1])
+        x = math.sin(diffLong) * math.cos(lat2)
+        y = math.cos(lat1) * math.sin(lat2) - (math.sin(lat1)
+                                               * math.cos(lat2) * math.cos(diffLong))
+        initial_bearing = math.atan2(x, y)
+        # Now we have the initial bearing but math.atan2 return values
+        # from -180° to + 180° which is not what we want for a compass bearing
+        # The solution is to normalize the initial bearing as shown below
+        initial_bearing = math.degrees(initial_bearing)
+        compass_bearing = (initial_bearing + 360) % 360
+        return compass_bearing
+
+    def get_closest_segment_point(self, coord_list:[], origin_node, target_node, point):
+        coord_list.map(lambda x:utils.haversine_distance(Point(x), point))
+        distances = [[x,y,utils.haversine_distance(Point(x,y), point)]]
+        
+        # por cada elemento buscar la distancia.
+        # ordenar por esta nueva columna
+        # coger el primer elemento
+        pass
+

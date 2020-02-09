@@ -14,8 +14,20 @@ class Graph(dGraph):
     def get_edges(self):
         return self.graph.edges(data=True)
 
+    def get_edge_by_nodes(self, node_origin, node_target):
+        return self.graph.edges[(node_origin, node_target, 0)]
+
     def get_nodes(self):
         return self.graph.nodes()
+
+    def get_node_by_node(self, node):
+        return self.graph.nodes(node)
+
+    def get_degree(self, point):
+        return self.graph.degree(point)
+
+    def get_closest_node(self, point):
+        osmnx.get_nearest_node(self.graph, point)
 
     def get_shortest_path_length(self, origin_node, target_node):
         try:
@@ -71,7 +83,7 @@ class Graph(dGraph):
         :param source_node: Source node of the edge visited
         :param target_node: Target node of the edge visited
         """
-        self.graph.get_edges()[(source_node, target_node, 0)]['num of detections'] += 1
+        self.graph.graph.edges[(source_node, target_node, 0)]['num of detections'] += 1
         total = self.df['num of detections'][self.df['source'] == source_node].sum()  #?? TODO: Check
         for edge in self.graph.edges(source_node):
             self.graph.edges[(edge[0], edge[1], 0)]['frequency'] = self.graph.edges[(edge[0],edge[1],0)][ 'num of detections']/total

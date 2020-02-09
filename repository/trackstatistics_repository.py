@@ -1,5 +1,6 @@
 import abc
 
+
 class TrackStatisticsRepository(abc.ABC):
 
     @abc.abstractmethod
@@ -7,9 +8,7 @@ class TrackStatisticsRepository(abc.ABC):
         pass
 
     def write_track_statistics(self,
-                                        id_track,
-                                        distance_point_projection,
-                                        ac_dis_point_projection,
-                                        distance_between_points,
-                                        ac_dis_between_points):
+                               id_track,
+                               distance_point_projection,
+                               distance_between_points, ):
         pass
