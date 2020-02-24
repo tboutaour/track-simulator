@@ -34,11 +34,9 @@ class TrackAnalyzer(Analyzer):
         self.information_repository.write_trackinformation_dataframe(mongo_main_df)
         self.statistics_repository.write_track_statistics(self.id_track,
                                                           distance_point_projection,
-                                                          list(ac_dis_point_projection),
-                                                          distance_between_points,
-                                                          list(ac_dis_between_points))
+                                                          list(ac_dis_point_projection))
 
         reduced_track = statistics.reduce_track()
-        reduced_track.map(lambda x: self.graph.update_edge_freq(x['Origin'], x['Target']))
+        reduced_track.apply(lambda x: self.graph.update_edge_freq(x.Origin, x.Target), axis=1)
 
         return main_df, mapped_points

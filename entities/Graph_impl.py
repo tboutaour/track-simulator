@@ -83,10 +83,10 @@ class Graph(dGraph):
         :param source_node: Source node of the edge visited
         :param target_node: Target node of the edge visited
         """
-        self.graph.graph.edges[(source_node, target_node, 0)]['num of detections'] += 1
-        total = self.df['num of detections'][self.df['source'] == source_node].sum()  #?? TODO: Check
-        for edge in self.graph.edges(source_node):
-            self.graph.edges[(edge[0], edge[1], 0)]['frequency'] = self.graph.edges[(edge[0],edge[1],0)][ 'num of detections']/total
+        self.get_edge_by_nodes(source_node, target_node)['num of detections'] += 1
+        total = sum([a[2]['num of detections'] for a in self.graph.edges(source_node, data=True)])
+        for edge in self.graph.edges(source_node, data=True):
+            edge[2]['frequency'] = edge[2]['num of detections']/total
 
     def plot_graph(self):
         fig, ax = osmnx.plot_graph(self.graph, node_color='black', node_zorder=3, show=False, close=False)

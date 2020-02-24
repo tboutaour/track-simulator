@@ -50,6 +50,35 @@ def main():
     # plot_accumultaive_distribution(ac_dis_point_projection)
     # plot_accumultaive_distribution(ac_dis_between_points)
 
+def main_analyze():
+    logging.info("Main started")
+    statisticsRepository = TrackStatisticsRepository('localhost', 27017)
+    informationRepository = TrackInformationRepository('localhost', 27017)
+
+    bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023)
+    hidden_markov_model = HMM(graph=bellver_graph)
+    # fig, ax = bellver_graph.plot_graph()
+
+    id_track = 0
+    for gpx_file in os.listdir(FILE_DIRECTORY):
+        if gpx_file.endswith(".gpx"):
+            test_file = LoaderSaver(FILE_DIRECTORY + gpx_file)  # Esto puede ir iterando
+            points = list(list(zip(*test_file.parseFile()))[2])
+
+            # Analize
+            logging.warning("Analizing: " + os.path.splitext(gpx_file)[0])
+            hmm = MapMatching(points, hidden_markov_model)
+            analyzer = TrackAnalyzer(bellver_graph,
+                                     hmm,
+                                     os.path.splitext(gpx_file)[0],
+                                     informationRepository,
+                                     statisticsRepository)
+            main_df, mapped_points = analyzer.analyze()
+            logging.warning("Analysis finished")
+            id_track += 1
+
+
+
 
 if __name__ == '__main__':
-    main()
+    main_analyze()
