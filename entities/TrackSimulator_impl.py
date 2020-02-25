@@ -84,7 +84,7 @@ class TrackSimulator(Simulator):
         path.append(origin)
         while distance_created < dist:
             next_node = self.get_most_frequent_node(prev_node, path)
-            distance_aux = distance_created + self.graph.get_edge_by_node((prev_node, next_node))['length']
+            distance_aux = distance_created + self.graph.get_edge_by_nodes((prev_node, next_node))['length']
             if distance_aux < dist:
                 distance_created = distance_aux
                 path.append(next_node)
