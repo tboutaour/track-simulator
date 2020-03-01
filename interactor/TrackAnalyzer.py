@@ -1,7 +1,7 @@
 import abc
 
 
-class Analyzer(abc.ABC):
+class TrackAnalyzer(abc.ABC):
     @abc.abstractmethod
     def analyze(self):
         """."""

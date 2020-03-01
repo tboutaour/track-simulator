@@ -2,16 +2,15 @@ import os
 
 import matplotlib.pyplot as plt
 import logging
-import utils
 import numpy as np
 import pandas as pd
 from entities.GPXLoaderSaver_impl import GPXLoaderSaver as LoaderSaver
 from entities.Graph_impl import Graph
 from entities.HMMMapMatching_impl import MapMatching
 from entities.HiddenMarkovModel_impl import HMM
-from entities.TrackAnalyzer_impl import TrackAnalyzer
-from repository.trackinformation_repository_impl import TrackInformationRepositoryImpl as TrackInformationRepository
-from repository.trackstatistics_repository_impl import TrackStatisticsRepositoryImpl as TrackStatisticsRepository
+from interactor.TrackAnalyzer_impl import TrackAnalyzerImpl
+from repository.Trackinformation_repository_impl import TrackInformationRepositoryImpl as TrackInformationRepository
+from repository.Trackstatistics_repository_impl import TrackStatisticsRepositoryImpl as TrackStatisticsRepository
 
 FILE_DIRECTORY = "tracks/Ficheros/rutasMFlores/"
 
@@ -68,11 +67,11 @@ def main_analyze():
             # Analize
             logging.warning("Analizing: " + os.path.splitext(gpx_file)[0])
             hmm = MapMatching(points, hidden_markov_model)
-            analyzer = TrackAnalyzer(bellver_graph,
-                                     hmm,
-                                     os.path.splitext(gpx_file)[0],
-                                     informationRepository,
-                                     statisticsRepository)
+            analyzer = TrackAnalyzerImpl(bellver_graph,
+                                         hmm,
+                                         os.path.splitext(gpx_file)[0],
+                                         informationRepository,
+                                         statisticsRepository)
             main_df, mapped_points = analyzer.analyze()
             logging.warning("Analysis finished")
             id_track += 1

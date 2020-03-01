@@ -2,9 +2,7 @@ from entities.HiddenMarkovModel import HiddenMarkovModel
 import math
 import networkx
 import numpy as np
-from entities.TrackAnalyzer_impl import TrackAnalyzer
 from entities.TrackPoint_impl import TrackPoint as Point
-from entities.Graph_impl import Graph
 import osmnx
 import logging
 from entities.TrackSegment_impl import TrackSegment

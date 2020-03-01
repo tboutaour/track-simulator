@@ -1,8 +1,8 @@
 import networkx
+import numpy as np
 import osmnx
+
 from entities.Graph import Graph as dGraph
-from entities.TrackSegment_impl import TrackSegment as Segment
-from entities.TrackPoint_impl import TrackPoint as Point
 
 
 class Graph(dGraph):
@@ -97,8 +97,7 @@ class Graph(dGraph):
         self.initialize_information()
         self.initialize_path_frequency(self.graph.edges)
 
-    def load_analyze_information(self, df):
-        pass
-        # get path and update frquencies
-        #
-
+    def get_next_node(self, node):
+        node_list = [[i[1], i[2]['frequency']] for i in self.graph.get_edge_by_node(node)]
+        node_list.sort(key=lambda x: x[1])
+        return np.random.choice([l[0] for l in node_list], p=[l[1] for l in node_list])

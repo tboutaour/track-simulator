@@ -2,7 +2,7 @@ import json
 import pandas as pd
 from pymongo import MongoClient
 from datetime import datetime
-from repository.trackstatistics_repository import TrackStatisticsRepository
+from repository.Trackstatistics_repository import TrackStatisticsRepository
 
 
 def get_connection(host, port):

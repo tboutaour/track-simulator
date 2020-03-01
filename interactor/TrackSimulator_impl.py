@@ -1,4 +1,4 @@
-from entities.Simulator import Simulator
+from interactor.Simulator import Simulator
 from entities.Graph_impl import Graph
 from entities.TrackAnalyzerStatistics_impl import TrackAnalyzerStatistics as Statistics
 from entities.TrackPoint_impl import TrackPoint as Point
@@ -39,6 +39,7 @@ class TrackSimulator(Simulator):
         list_original = []
         list_distances = []
         list_reduced = []
+
         # Realizamos 5 y nos quedamos con el que tenga menos repeticiones.
         for i in range(0, NUMBER_SIMULATIONS):
             simulated_path_aux, distance_generated = self.create_path(origin, distance)
@@ -51,6 +52,7 @@ class TrackSimulator(Simulator):
         idx_to_return = list_reduced.index(max(list_reduced, key=len))
         simulated_path = list_original[idx_to_return]
         distance_to_return = list_distances[idx_to_return]
+
         # Iterar para cada uno de los nodos del camino escogido
         path = []
         for d in range(0, len(simulated_path) - 1):
@@ -58,6 +60,7 @@ class TrackSimulator(Simulator):
 
         # Lista de colores para los segmentos
         colors = ["green", "red", "blue", "purple", "pink", "orange", "yellow", "black"]
+
         # Indice para crear segmentos de colores distintos
         idx_color = 0
         for segment in path:

@@ -4,9 +4,9 @@ from entities.GPXLoaderSaver_impl import GPXLoaderSaver as LoaderSaver
 from entities.Graph_impl import Graph
 from entities.HMMMapMatching_impl import MapMatching
 from entities.HiddenMarkovModel_impl import HMM
-from entities.TrackAnalyzer_impl import TrackAnalyzer
-from repository.trackinformation_repository_impl import TrackInformationRepositoryImpl as TrackInformationRepository
-from repository.trackstatistics_repository_impl import TrackStatisticsRepositoryImpl as TrackStatisticsRepository
+from interactor.TrackAnalyzer_impl import TrackAnalyzerImpl
+from repository.Trackinformation_repository_impl import TrackInformationRepositoryImpl as TrackInformationRepository
+from repository.Trackstatistics_repository_impl import TrackStatisticsRepositoryImpl as TrackStatisticsRepository
 
 
 class MyTestCase(unittest.TestCase):
@@ -24,7 +24,7 @@ class MyTestCase(unittest.TestCase):
 
         # Analize
         hmm = MapMatching(points, hidden_markov_model)
-        analyzer = TrackAnalyzer(bellver_graph, hmm, ACTIVITY, information_repository, statistics_repository)
+        analyzer = TrackAnalyzerImpl(bellver_graph, hmm, ACTIVITY, information_repository, statistics_repository)
         main_df, mapped_points = analyzer.analyze()
 
         # Show information

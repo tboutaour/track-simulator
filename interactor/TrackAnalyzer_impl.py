@@ -1,8 +1,8 @@
 import utils
-from entities.Analyzer import Analyzer
+from interactor.TrackAnalyzer import TrackAnalyzer
 from entities.TrackAnalyzerStatistics_impl import TrackAnalyzerStatistics as Statistics
-from repository.trackinformation_repository_impl import TrackInformationRepositoryImpl
-from repository.trackstatistics_repository_impl import TrackStatisticsRepositoryImpl
+from repository.Trackinformation_repository_impl import TrackInformationRepositoryImpl
+from repository.Trackstatistics_repository_impl import TrackStatisticsRepositoryImpl
 
 def get_df_to_mongo(data):
     data['Point_X'] = data['Point'].map(lambda x: x.get_latitude())
@@ -13,7 +13,7 @@ def get_df_to_mongo(data):
     return data
 
 
-class TrackAnalyzer(Analyzer):
+class TrackAnalyzerImpl(TrackAnalyzer):
     def __init__(self, graph, hmm, id_track, information_repository: TrackInformationRepositoryImpl, statistics_repository: TrackStatisticsRepositoryImpl):
         self.graph = graph
         self.hmm = hmm
@@ -24,18 +24,26 @@ class TrackAnalyzer(Analyzer):
 
     def analyze(self):
         self.hmm.points.pop()
+        #  Realize map-matching process
         mapped_points = self.hmm.match()
+
+        #  Complete information of mapped points into one single dataframe
         main_df = utils.join_track_projection_data(self.hmm.points, mapped_points, self.id_track)
+
+        #  Generation of statistics information
         statistics = Statistics(self.graph, main_df)
         distance_point_projection, ac_dis_point_projection = statistics.get_distance_point_projection()
         distance_between_points, ac_dis_between_points = statistics.get_distance_between_points()
 
         mongo_main_df = get_df_to_mongo(main_df)
+
+        #  Save information generated in mongoDB
         self.information_repository.write_trackinformation_dataframe(mongo_main_df)
         self.statistics_repository.write_track_statistics(self.id_track,
                                                           distance_point_projection,
                                                           list(ac_dis_point_projection))
 
+        #  Uptdate graph information
         reduced_track = statistics.reduce_track()
         reduced_track.apply(lambda x: self.graph.update_edge_freq(x.Origin, x.Target), axis=1)
 
