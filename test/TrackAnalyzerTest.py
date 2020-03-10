@@ -11,8 +11,8 @@ from repository.Trackstatistics_repository_impl import TrackStatisticsRepository
 
 class MyTestCase(unittest.TestCase):
     def test_something(self):
-        statistics_repository = TrackStatisticsRepository('localhost', 27017)
-        information_repository = TrackInformationRepository('localhost', 27017)
+        statistics_repository = TrackStatisticsRepository('localhost', 27019)
+        information_repository = TrackInformationRepository('localhost', 27019)
 
         bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023)
         hidden_markov_model = HMM(graph=bellver_graph)

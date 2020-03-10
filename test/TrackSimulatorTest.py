@@ -5,7 +5,7 @@ from repository.Trackstatistics_repository_impl import TrackStatisticsRepository
 
 class MyTestCase(unittest.TestCase):
     def test_something(self):
-        statistics_repository = TrackStatisticsRepository('localhost', 27017)
+        statistics_repository = TrackStatisticsRepository('localhost', 27019)
 
         graph = 'graph'
         statistics = 'statistics'

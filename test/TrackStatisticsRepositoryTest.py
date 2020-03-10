@@ -7,7 +7,7 @@ from repository.Trackstatistics_repository_impl import TrackStatisticsRepository
 
 class MyTestCase(unittest.TestCase):
     def test_something(self):
-        mongodbConnection = TrackStatistics('localhost', 27017)
+        mongodbConnection = TrackStatistics('localhost', 27019)
         data1 = [1, 3, 3, 4, 45]
         data2 = [2, 4, 6, 8, 10]
         mongodbConnection.write_track_statistics(1, data1, 0, data2, 0)
