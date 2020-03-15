@@ -3,7 +3,7 @@ import numpy as np
 import osmnx
 
 from entities.Graph import Graph as dGraph
-
+from shapely.geometry import LineString
 
 class Graph(dGraph):
     def __init__(self, north, south, east, west):
@@ -15,7 +15,7 @@ class Graph(dGraph):
         return self.graph.edges(data=True)
 
     def get_edge_by_nodes(self, node_origin, node_target):
-        return self.graph.edges[(node_origin, node_target, 0)]
+        return self.graph[node_origin][node_target][0]
 
     def get_nodes(self):
         return self.graph.nodes()
@@ -28,6 +28,13 @@ class Graph(dGraph):
 
     def get_closest_node(self, point):
         osmnx.get_nearest_node(self.graph, point)
+
+    def load_graph_analysis_statistics(self, data):
+        frequency = {(row.source, row.target, 0): data['frequency'] for idx, row in data.iterrows()}
+        num_of_detections = {(row.source, row.target, 0): data['num of detections'] for idx, row in data.iterrows()}
+        networkx.set_edge_attributes(self.graph, frequency, 'frequency')
+        networkx.set_edge_attributes(self.graph, num_of_detections, 'num of detections')
+
 
     def get_shortest_path_length(self, origin_node, target_node):
         try:
@@ -94,8 +101,39 @@ class Graph(dGraph):
 
     # TODO implement graph clean
     def graph_clean_and_normalize(self):
+        self.complete_graph()
         self.initialize_information()
         self.initialize_path_frequency(self.graph.edges)
+
+    def complete_graph(self):
+        """
+        From the graph realize a copy and convertes it in a directed graph with de geometrical information of route
+        inveted.
+        :param graph: Graph to realitze a directed copy.
+        :return: Directed copy of the graph passed by parameter.
+        """
+        graph_aux = self.graph.copy()
+        for edge in graph_aux.edges(data=True):
+            try:
+                #crearemos la arista
+                reverted = edge
+                attr = reverted[2]
+                #Almacenamos la información de los puntos
+                a = reverted[2]['geometry'].coords[:]
+                #Giramos los puntos (están en a)
+                a.reverse()
+                reverted[2]['geometry'] = LineString(a)
+                e = (reverted[1], reverted[0], 0)
+                # print("Vamos a añadir: ",e,attr)
+                self.graph.add_edge(*e, **attr)
+            except KeyError:
+                attr = reverted[2]
+                e = (reverted[1], reverted[0],0)
+                self.graph.add_edge(*e, **attr)
+                # graph.edges[(edge[0], edge[1], 0)]['oneway'] = False
+        # for n1, n2, d in graph.edges(data=True):
+        #     for att in DEL_ATTRIB:
+        #         d.pop(att, None)
 
     def get_next_node(self, node):
         node_list = [[i[1], i[2]['frequency']] for i in self.graph.get_edge_by_node(node)]

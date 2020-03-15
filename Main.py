@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import logging
 import numpy as np
 import pandas as pd
+import networkx as nx
 from entities.GPXLoaderSaver_impl import GPXLoaderSaver as LoaderSaver
 from entities.Graph_impl import Graph
 from entities.HMMMapMatching_impl import MapMatching
@@ -11,14 +12,15 @@ from entities.HiddenMarkovModel_impl import HMM
 from interactor.TrackAnalyzer_impl import TrackAnalyzerImpl
 from repository.Trackinformation_repository_impl import TrackInformationRepositoryImpl as TrackInformationRepository
 from repository.Trackstatistics_repository_impl import TrackStatisticsRepositoryImpl as TrackStatisticsRepository
+from repository.GraphInformation_repository_impl import GraphInformationRepositoryImpl as GraphInformationRepository
 
 FILE_DIRECTORY = "tracks/Ficheros/rutasMFlores/"
 
 
 def main():
     logging.info("Main started")
-    statisticsRepository = TrackStatisticsRepository('localhost', 27017)
-    informationRepository = TrackInformationRepository('localhost', 27017)
+    statisticsRepository = TrackStatisticsRepository('localhost', 27019)
+    informationRepository = TrackInformationRepository('localhost', 27019)
 
     bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023)
     fig, ax = bellver_graph.plot_graph()
@@ -51,8 +53,9 @@ def main():
 
 def main_analyze():
     logging.info("Main started")
-    statisticsRepository = TrackStatisticsRepository('localhost', 27017)
-    informationRepository = TrackInformationRepository('localhost', 27017)
+    statisticsRepository = TrackStatisticsRepository('localhost', 27019)
+    informationRepository = TrackInformationRepository('localhost', 27019)
+    graphRepository = GraphInformationRepository('localhost', 27019)
 
     bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023)
     hidden_markov_model = HMM(graph=bellver_graph)
@@ -75,6 +78,8 @@ def main_analyze():
             main_df, mapped_points = analyzer.analyze()
             logging.warning("Analysis finished")
             id_track += 1
+
+    graphRepository.write_graphinformation_dataframe(nx.to_pandas_edgelist(bellver_graph.graph))
 
 
 
