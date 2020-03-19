@@ -87,7 +87,7 @@ class TrackSimulator(Simulator):
         path.append(origin)
         while distance_created < dist:
             next_node = self.get_most_frequent_node(prev_node, path)
-            distance_aux = distance_created + self.graph.get_edge_by_nodes((prev_node, next_node))['length']
+            distance_aux = distance_created + self.graph.get_edge_by_nodes(prev_node, next_node)['length']
             if distance_aux < dist:
                 distance_created = distance_aux
                 path.append(next_node)
@@ -130,7 +130,7 @@ class TrackSimulator(Simulator):
         """
 
         # Cargar la estructura de lista del segmento
-        coords = self.graph.get_edges(origin_node, target_node)['geometry'].coords[:]
+        coords = self.graph.get_edge_by_nodes(origin_node, target_node)['geometry'].coords[:]
         coord_list = [list(reversed(item)) for item in coords]
 
         # Calcular el indice del punto GPS más cercano del segmento
@@ -184,25 +184,13 @@ class TrackSimulator(Simulator):
         :param node: Node of the selection
         :return: selected target node
         """
-        roll = random.random()
         target_list = [[i[1], i[2]['frequency']] for i in self.graph.get_edge_by_node(node)]
         target_list.sort(key=lambda x: x[1])
-        aux = 0
-        selected_target = 67
-        idx_target = 0
-        for target in target_list:
-            aux = aux + target[1]
-            if roll < aux:
-                selected_target = target[0]
-                if self.graph.get_degree(selected_target) > 1 and len(path) > 2 and path[-2] == selected_target:
-                    retro_roll = random.random()
-                    if retro_roll < PROB_RETURN:
-                        selected_target = target[0]
-                    else:
-                        selected_target = target_list[idx_target - 1][0]
-                break
-            idx_target = idx_target + 1
-        return selected_target
+        target_node_list = [item[0] for item in target_list]
+        target_prob_list = [item[1] for item in target_list]
+        selected_target = np.random.choice(target_node_list, 1, p=target_prob_list)
+
+        return selected_target.item()
 
     def calculate_initial_compass_bearing(self, pointA, pointB):
         if (type(pointA) != tuple) or (type(pointB) != tuple):
@@ -221,9 +209,9 @@ class TrackSimulator(Simulator):
         compass_bearing = (initial_bearing + 360) % 360
         return compass_bearing
 
-    def get_closest_segment_point(self, coord_list:[], origin_node, target_node, point):
-        coord_list.map(lambda x:utils.haversine_distance(Point(x), point))
-        distances = [[x,y,utils.haversine_distance(Point(x,y), point)]]
+    def get_closest_segment_point(self, coord_list, origin_node, target_node, point):
+        coord_list.map(lambda x: utils.haversine_distance(Point(x), point))
+        distances = [[x, y, utils.haversine_distance(Point(x,y), point)]]
         
         # por cada elemento buscar la distancia.
         # ordenar por esta nueva columna

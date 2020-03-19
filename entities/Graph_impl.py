@@ -17,6 +17,9 @@ class Graph(dGraph):
     def get_edge_by_nodes(self, node_origin, node_target):
         return self.graph[node_origin][node_target][0]
 
+    def get_edge_by_node(self, node_origin):
+        return self.graph.edges(node_origin, data=True)
+
     def get_nodes(self):
         return self.graph.nodes()
 

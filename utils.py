@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib.cm as cm
 import seaborn as sns;sns.set()
 import math
 import entities.TrackPoint_impl as Point
@@ -91,3 +92,10 @@ def plot_histogram(data, axis):
     sns.distplot(data, color="blue", ax=axis)
 
 
+def get_color_list(n, color_map='plasma', start=0, end=1):
+    return [cm.get_cmap(color_map)(x) for x in np.linspace(start, end, n)]
+
+def get_node_colors_by_stat(G, data, criteria, start=0, end=1):
+    df = data.sort_values(criteria)
+    df['colors'] = get_color_list(len(df), start=start, end=end)
+    return df['colors']
