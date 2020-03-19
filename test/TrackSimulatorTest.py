@@ -43,6 +43,17 @@ class MyTestCase(unittest.TestCase):
         fig, ax = osmnx.plot_graph(bellver_graph.graph, node_color='black', edge_color=ec, edge_linewidth=2.5)
         plt.show()
 
+    def test_get_closest_segment_point(self):
+        coord_list = [(2.6149201, 39.5580067), (2.6142689, 39.5584694), (2.6140847, 39.5585311)]
+        point = (2.6149201, 39.5580067)
+        bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023)
+        simulator = TrackSimulator(bellver_graph, 0)
+        result = simulator.get_closest_segment_point(coord_list, point)
+        assert(0 == result)
+        point = (2.6149201, 39.5580066)
+        result = simulator.get_closest_segment_point(coord_list, point)
+        assert(0 == result)
+
 if __name__ == '__main__':
     unittest.main()
 

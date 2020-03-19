@@ -113,19 +113,18 @@ class TrackSimulator(Simulator):
             pass
         return np.array(segment)
 
-    def calculate_point(self, track_analysis, segment, origin_node, target_node, origin_point, target_point):
+    def calculate_point(self, segment, origin_node, target_node, origin_point, segment_target_point):
         """
         Calculates the point for the simulated segment.
         This point is calculated by a distance and a bearing.
         While the distance from the generated point to the closest point of the segment is not sustainable we recalculate
         the point.
 
-        :param track_analysis: Object of TrackAnalyzer class
         :param segment: Segment related to the generated point
         :param origin_node: Origin node of the segment
         :param target_node: Target node of the segment
-        :param origin_point: Origin GPS point of the segment
-        :param target_point: Target point of the segment
+        :param origin_point: Origin GPS point
+        :param segment_target_point: Target point of the segment
         :return:
         """
 
@@ -133,8 +132,8 @@ class TrackSimulator(Simulator):
         coords = self.graph.get_edge_by_nodes(origin_node, target_node)['geometry'].coords[:]
         coord_list = [list(reversed(item)) for item in coords]
 
-        # Calcular el indice del punto GPS más cercano del segmento
-        idx = self.get_closest_segment_point(coord_list, origin_node, target_node, origin_point)
+        # Calcular el punto GPS más cercano del segmento
+        idx = self.get_closest_segment_point(coord_list)
 
         # Calculamos la dirección entre el punto que origen y el siguiente punto encontrado
         try:
@@ -142,7 +141,7 @@ class TrackSimulator(Simulator):
 
         except IndexError:
             print("Error de indice")
-            destPoint = (target_point[0], target_point[1])
+            destPoint = Point(segment_target_point[0], segment_target_point[1])
             # Si nos hemos pasado con el indice apuntaremos directamente al final.
 
         bearing = Point(origin_point[0], origin_point[1]).get_bearing(destPoint[1])
@@ -151,8 +150,8 @@ class TrackSimulator(Simulator):
         rndbear = np.random.uniform(bearing - 20, bearing + 20)
 
         # Calculamos distacia al punto que queremos crear
-        point_distance = utils.get_random_value(track_analysis.trackpoint_distance) / 8000
-        # point_distance = rnd_distance
+        #point_distance = utils.get_random_value(track_analysis.trackpoint_distance) / 8000
+        point_distance = 50
 
         # Generamos el punto
         dest = Point(origin_point[0], origin_point[1]).generate_point(rndbear, point_distance)
@@ -167,7 +166,7 @@ class TrackSimulator(Simulator):
             dist_gen_point = geopy.distance.distance(dest, (destPoint[0], destPoint[1])).m
 
         # Calculamos la distancia entre este punto y el final
-        aux = geopy.distance.distance(dest, target_point).m
+        aux = geopy.distance.distance(dest, segment_target_point).m
 
         # Meter el punto en el segmento resultante
         segment.append(Point(dest[0], dest[1]))
@@ -209,12 +208,11 @@ class TrackSimulator(Simulator):
         compass_bearing = (initial_bearing + 360) % 360
         return compass_bearing
 
-    def get_closest_segment_point(self, coord_list, origin_node, target_node, point):
-        coord_list.map(lambda x: utils.haversine_distance(Point(x), point))
-        distances = [[x, y, utils.haversine_distance(Point(x,y), point)]]
-        
-        # por cada elemento buscar la distancia.
-        # ordenar por esta nueva columna
-        # coger el primer elemento
-        pass
+    def get_closest_segment_point(self, coord_list, point):
+        # Por cada elemento buscar la distancia.
+        distances = [[x[0], x[1], utils.haversine_distance(Point(x[0],x[1]), Point(point))] for x in coord_list]
+
+        # Ordenar por esta nueva columna y coger el primer elemento
+        closest_element = sorted(distances, key=lambda x: x[2])[0]
+        return coord_list.index((closest_element[0], closest_element[1]))
 

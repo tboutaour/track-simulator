@@ -102,7 +102,6 @@ class Graph(dGraph):
         fig, ax = osmnx.plot_graph(self.graph, node_color='black', node_zorder=3, show=False, close=False)
         return fig, ax
 
-    # TODO implement graph clean
     def graph_clean_and_normalize(self):
         self.complete_graph()
         self.initialize_information()
