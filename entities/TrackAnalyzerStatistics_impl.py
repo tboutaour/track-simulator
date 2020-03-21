@@ -32,9 +32,7 @@ class TrackAnalyzerStatistics(Statistics):
 
     def get_distance_between_points(self):
         point = self.dataset['Point'].tolist()
-        distance = []
-        for i in range(0, len(point) - 1):
-            distance.append(point[i].haversine_distance(point[i + 1]))
+        distance = [point[i].haversine_distance(point[i + 1]) for i in range(0, len(point) - 1)]
         return distance, generate_accumulative_distribution(distance)
 
     def get_distance_point_projection(self):

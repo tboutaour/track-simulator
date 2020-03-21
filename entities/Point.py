@@ -3,6 +3,10 @@ import abc
 
 class Point(abc.ABC):
 
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
     @abc.abstractmethod
     def get_latitude(self):
         pass

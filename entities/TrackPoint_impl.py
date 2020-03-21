@@ -6,7 +6,7 @@ from shapely.geometry import Point as sPoint
 EARTH_RADIUM = 6378100  # Radius of the Earth
 
 
-class TrackPoint(Point, sPoint):
+class TrackPoint(Point):
     def get_latitude(self):
         return self.y
 
