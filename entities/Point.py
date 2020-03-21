@@ -16,7 +16,7 @@ class Point(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def generate_point(self):
+    def generate_point(self, bearing, distance):
         pass
 
     @abc.abstractmethod

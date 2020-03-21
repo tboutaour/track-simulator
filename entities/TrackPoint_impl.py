@@ -3,18 +3,21 @@ from entities.Point import Point
 import math
 from shapely.geometry import Point as sPoint
 
-EARTH_RADIUM = 6378.1  # Radius of the Earth
+EARTH_RADIUM = 6378100  # Radius of the Earth
 
 
 class TrackPoint(Point, sPoint):
     def get_latitude(self):
-        return self.x
+        return self.y
 
     def get_longitude(self):
-        return self.y
+        return self.x
 
     def get_latlong(self):
         return self.get_latitude(), self.get_longitude()
+
+    def get_longlat(self):
+        return self.get_longitude(), self.get_latitude()
 
     def haversine_distance(self, other):
         """ Haversine formula to calculate the distance between two lat/long points on a sphere """
@@ -30,11 +33,14 @@ class TrackPoint(Point, sPoint):
         except AttributeError:
             return 100000
 
+    def __str__(self):
+        return "POINT" + str(self.get_longlat())
+
     def generate_point(self, bearing, distance):
         bearing_radians = math.radians(bearing)
-
-        lat_point = math.radians(self.get_longitude())  # Current lat point converted to radians
-        lon_point = math.radians(self.get_latitude())  # Current long point converted to radians
+        distance_in_km = distance*1000
+        lon_point = math.radians(self.get_longitude())  # Current lat point converted to radians
+        lat_point = math.radians(self.get_latitude())  # Current long point converted to radians
 
         lat_result = math.asin(math.sin(lat_point) * math.cos(distance / EARTH_RADIUM) +
                                math.cos(lat_point) * math.sin(distance / EARTH_RADIUM) * math.cos(bearing_radians))
@@ -47,7 +53,7 @@ class TrackPoint(Point, sPoint):
         lat_result = math.degrees(lat_result)
         lon_result = math.degrees(lon_result)
 
-        return Point(lat_result, lon_result)
+        return TrackPoint(lon_result, lat_result)
 
     def get_bearing(self, target_point):
         """

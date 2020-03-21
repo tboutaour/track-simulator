@@ -33,8 +33,8 @@ class Graph(dGraph):
         osmnx.get_nearest_node(self.graph, point)
 
     def load_graph_analysis_statistics(self, data):
-        frequency = {(row.source, row.target, 0): data['frequency'] for idx, row in data.iterrows()}
-        num_of_detections = {(row.source, row.target, 0): data['num of detections'] for idx, row in data.iterrows()}
+        frequency = {(row.source, row.target, 0): data.iloc[idx]['frequency'] for idx, row in data.iterrows()}
+        num_of_detections = {(row.source, row.target, 0): data.iloc[idx]['num of detections'] for idx, row in data.iterrows()}
         networkx.set_edge_attributes(self.graph, frequency, 'frequency')
         networkx.set_edge_attributes(self.graph, num_of_detections, 'num of detections')
 
