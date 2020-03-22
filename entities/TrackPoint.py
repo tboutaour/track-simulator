@@ -1,8 +1,5 @@
-from abc import ABC
-from entities.Point import Point
 import math
-from shapely.geometry import Point as sPoint
-
+from shapely.geometry import Point
 EARTH_RADIUM = 6378100  # Radius of the Earth
 
 

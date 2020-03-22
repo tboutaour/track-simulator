@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import seaborn as sns;sns.set()
 import math
-import entities.TrackPoint_impl as Point
+import entities.TrackPoint as Point
 
 
 def get_random_value(data):

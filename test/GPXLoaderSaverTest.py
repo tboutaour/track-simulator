@@ -1,14 +1,13 @@
 import unittest
-from entities.GPXLoaderSaver_impl import GPXLoaderSaver as LoaderSaver
-import gpxpy
-import gpxpy.gpx
+
+from repository.GPXTrack_repository_impl import GPXTrackRepositoryImpl as GPXTrackRepository
 
 
 class MyTestCase(unittest.TestCase):
     def test_gpx_file_Loading(self):
-        test_file = LoaderSaver("../tracks/Ficheros/RutasSegmentadas/RutaCastilloBellver1.gpx")
+        test_file = GPXTrackRepository("../tracks/Ficheros/RutasSegmentadas/RutaCastilloBellver1.gpx")
         parsed_file = test_file.parseFile()
-        self.assertIsInstance(parsed_file, gpxpy.gpx.GPX)
+        self.assertEqual(len(parsed_file), 4)
 
 if __name__ == '__main__':
     unittest.main()

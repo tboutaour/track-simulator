@@ -1,9 +1,9 @@
-from entities.Segment import Segment
-from entities.TrackPoint_impl import TrackPoint as Point
+from entities.TrackPoint import TrackPoint as Point
 from shapely.geometry import LineString, MultiPoint
 from shapely.ops import nearest_points
 
-class TrackSegment(Segment, LineString):
+
+class TrackSegment(LineString):
     def get_points(self):
         return self.coords[:]
 
@@ -27,5 +27,5 @@ class TrackSegment(Segment, LineString):
     def get_nearest_point_from_segment(self, point: [Point]):
         #line_interpolate_point(linestring, line_locate_point(LineString, Point))
         #return self.interpolate(self.project(point))
-        reversed_segment = TrackSegment([Point(tuple(reversed(track_point))) for track_point in self.get_points()])
+        reversed_segment = TrackSegment([Point(track_point) for track_point in self.get_points()])
         return Point(nearest_points(reversed_segment, point)[0].coords)

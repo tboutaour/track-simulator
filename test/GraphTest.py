@@ -1,9 +1,8 @@
 import unittest
+
 import osmnx
-import networkx
-import pandas
+
 from entities.Graph_impl import Graph
-from entities.TrackSegment_impl import TrackSegment as Segment
 
 
 class MyTestCase(unittest.TestCase):

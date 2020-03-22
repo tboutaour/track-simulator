@@ -1,7 +1,7 @@
 from interactor.Simulator import Simulator
-from entities.Graph_impl import Graph
-from entities.TrackAnalyzerStatistics_impl import TrackAnalyzerStatistics as Statistics
-from entities.TrackPoint_impl import TrackPoint as Point
+from entities.Graph import Graph
+from entities.Statistics import Statistics
+from entities.TrackPoint import TrackPoint
 
 import numpy as np
 import utils
@@ -101,8 +101,8 @@ class TrackSimulator(Simulator):
         origin_node = segment[0]
         target_node = segment[1]
         segment = []
-        origin_point = Point(self.graph.get_nodes()[origin_node]['x'], self.graph.get_nodes()[origin_node]['y'])
-        target_point = Point(self.graph.get_nodes()[target_node]['x'], self.graph.get_nodes()[target_node]['y'])
+        origin_point = TrackPoint(self.graph.get_nodes()[origin_node]['x'], self.graph.get_nodes()[origin_node]['y'])
+        target_point = TrackPoint(self.graph.get_nodes()[target_node]['x'], self.graph.get_nodes()[target_node]['y'])
         try:
             dest, aux = self.calculate_point(segment, origin_node, target_node, origin_point, target_point)
             next = dest
@@ -113,7 +113,7 @@ class TrackSimulator(Simulator):
             pass
         return segment
 
-    def calculate_point(self, segment, origin_node, target_node, origin_point: Point, segment_target_point: Point):
+    def calculate_point(self, segment, origin_node, target_node, origin_point: TrackPoint, segment_target_point: TrackPoint):
         """
         Calculates the point for the simulated segment.
         This point is calculated by a distance and a bearing.
@@ -136,7 +136,7 @@ class TrackSimulator(Simulator):
 
         # Calculamos la dirección entre el punto que origen y el siguiente punto encontrado
         try:
-            next_point = Point(coord_list[idx + 1][0], coord_list[idx + 1][1])
+            next_point = TrackPoint(coord_list[idx + 1][0], coord_list[idx + 1][1])
         except IndexError:
             # Si nos hemos pasado con el indice apuntaremos directamente al final.
             print("Error de indice")
@@ -202,6 +202,7 @@ class TrackSimulator(Simulator):
         initial_bearing = math.atan2(x, y)
         # Now we have the initial bearing but math.atan2 return values
         # from -180° to + 180° which is not what we want for a compass bearing
+
         # The solution is to normalize the initial bearing as shown below
         initial_bearing = math.degrees(initial_bearing)
         compass_bearing = (initial_bearing + 360) % 360
@@ -209,7 +210,7 @@ class TrackSimulator(Simulator):
 
     def get_closest_segment_point(self, coord_list, point):
         # Por cada elemento buscar la distancia.
-        distances = [[x[0], x[1], utils.haversine_distance(Point(x[0], x[1]), Point(point))] for x in coord_list]
+        distances = [[x[0], x[1], utils.haversine_distance(TrackPoint(x[0], x[1]), TrackPoint(point))] for x in coord_list]
 
         # Ordenar por esta nueva columna y coger el primer elemento
         closest_element = sorted(distances, key=lambda x: x[2])[0]

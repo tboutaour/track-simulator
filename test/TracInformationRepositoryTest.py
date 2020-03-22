@@ -1,6 +1,6 @@
 import unittest
 from repository.Trackinformation_repository_impl import TrackInformationRepositoryImpl as TrackInformationRepository
-from entities.TrackPoint_impl import TrackPoint as Point
+from entities.TrackPoint import TrackPoint as Point
 import pandas as pd
 
 

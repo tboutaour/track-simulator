@@ -1,8 +1,7 @@
-from entities.LoaderSaver import LoaderSaver
+from repository.GPXTrack_repository import GPXTrackRepository
 import gpxpy
 import gpxpy.gpx
-import numpy as np
-from entities.TrackPoint_impl import TrackPoint as Point
+from entities.TrackPoint import TrackPoint as Point
 
 
 def create_gpx_track(data):
@@ -30,11 +29,11 @@ def load_file_points(file):
         for segment in track.segments:  # OJO SOLO HAY UN SEGMENT
             for iA in range(0, len(segment.points) - 1):
                 point = segment.points[iA]
-                points_a.append([point.latitude, point.longitude, Point(point.latitude, point.longitude)])
+                points_a.append([point.longitude, point.latitude, Point(point.longitude, point.latitude)])
     return points_a
 
 
-class GPXLoaderSaver(LoaderSaver):
+class GPXTrackRepositoryImpl(GPXTrackRepository):
 
     def __init__(self, source):
         self.source = source

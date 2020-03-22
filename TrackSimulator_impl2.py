@@ -1,6 +1,6 @@
 from interactor.Simulator import Simulator
 from entities.Graph_impl import Graph
-from entities.TrackPoint_impl import TrackPoint as Point
+from entities.TrackPoint import TrackPoint as Point
 
 import numpy as np
 import geopy

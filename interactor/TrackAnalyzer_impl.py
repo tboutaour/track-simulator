@@ -1,8 +1,8 @@
 import utils
 from interactor.TrackAnalyzer import TrackAnalyzer
-from entities.TrackAnalyzerStatistics_impl import TrackAnalyzerStatistics as Statistics
-from repository.Trackinformation_repository_impl import TrackInformationRepositoryImpl
-from repository.Trackstatistics_repository_impl import TrackStatisticsRepositoryImpl
+from entities.Statistics import Statistics
+from repository.Trackinformation_repository import TrackInformationRepository
+from repository.Trackstatistics_repository import TrackStatisticsRepository
 
 def get_df_to_mongo(data):
     data['Point_X'] = data['Point'].map(lambda x: x.get_latitude())
@@ -14,7 +14,7 @@ def get_df_to_mongo(data):
 
 
 class TrackAnalyzerImpl(TrackAnalyzer):
-    def __init__(self, graph, hmm, id_track, information_repository: TrackInformationRepositoryImpl, statistics_repository: TrackStatisticsRepositoryImpl):
+    def __init__(self, graph, hmm, id_track, information_repository: TrackInformationRepository, statistics_repository: TrackStatisticsRepository):
         self.graph = graph
         self.hmm = hmm
         self.statistics_repository = statistics_repository

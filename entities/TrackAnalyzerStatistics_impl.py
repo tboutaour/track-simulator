@@ -1,5 +1,5 @@
 from entities.Statistics import Statistics
-from entities.TrackPoint_impl import TrackPoint as Point
+from entities.TrackPoint import TrackPoint as Point
 import pandas as pd
 import numpy as np
 
@@ -13,10 +13,6 @@ def generate_accumulative_distribution(data):
 
 
 class TrackAnalyzerStatistics(Statistics):
-    def __init__(self, graph, track):
-        self.dataset = track
-        self.graph = graph
-
     def get_statistics(self):
         pass
 

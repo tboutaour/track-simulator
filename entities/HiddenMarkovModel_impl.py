@@ -2,10 +2,10 @@ from entities.HiddenMarkovModel import HiddenMarkovModel
 import math
 import networkx
 import numpy as np
-from entities.TrackPoint_impl import TrackPoint as Point
+from entities.TrackPoint import TrackPoint as Point
 import osmnx
 import logging
-from entities.TrackSegment_impl import TrackSegment
+from entities.TrackSegment import TrackSegment
 
 SIGMA = 4
 BETA = 0.1
@@ -86,18 +86,6 @@ class HMM(HiddenMarkovModel):
             max_prob_record.append(max_prob)
         return path, max_prob_record
 
-    def complete_path(self, path, point):
-        aux_path = networkx.shortest_path(self.graph, path[-1][1][1], point[1][0])
-        points = []
-        for i in range(0, len(aux_path) - 1):
-            mid_point = self.get_mid_track_point(aux_path[i], aux_path[i + 1])
-            # print(aux_path[i], aux_path[i + 1],mid_point)
-            if mid_point is not None:
-                path.append(np.array([path[-1][0], (aux_path[i], aux_path[i + 1])]))
-            else:
-                path.append(np.array([point[0], (aux_path[i], aux_path[i + 1])]))
-        path.append(point)
-
     def get_closest_nodes(self, points: Point):
         nearest_edges = self.get_nearest_edge(points)
         return [[TrackSegment(edge[0][0].coords[:]).get_nearest_point_from_segment(points), edge[0][1], edge[0][2]] for
@@ -116,6 +104,6 @@ class HMM(HiddenMarkovModel):
         ]
 
         edges_with_distances = sorted(edges_with_distances, key=lambda x: x[1])
-        closest_edges_to_point = edges_with_distances[:3]
+        closest_edges_to_point = edges_with_distances[:4]
 
         return closest_edges_to_point

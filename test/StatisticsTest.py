@@ -2,7 +2,7 @@ import unittest
 import pandas as pd
 from entities.Graph_impl import Graph
 from entities.TrackAnalyzerStatistics_impl import TrackAnalyzerStatistics as Statistics
-from entities.TrackPoint_impl import TrackPoint as Point
+from entities.TrackPoint import TrackPoint as Point
 
 
 class MyTestCase(unittest.TestCase):

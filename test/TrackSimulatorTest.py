@@ -1,12 +1,13 @@
 import unittest
-import osmnx as osmnx
-import numpy as np
+
 import matplotlib.pyplot as plt
+import osmnx as osmnx
+
 import utils
-from interactor.TrackSimulator_impl import TrackSimulator
 from entities.Graph_impl import Graph
+from entities.TrackPoint import TrackPoint as Point
+from interactor.TrackSimulator_impl import TrackSimulator
 from repository.GraphInformation_repository_impl import GraphInformationRepositoryImpl as GraphInformationRepository
-from entities.TrackPoint_impl import TrackPoint as Point
 
 
 class MyTestCase(unittest.TestCase):

@@ -1,8 +1,8 @@
 import unittest
 import matplotlib.pyplot as plt
-from entities.GPXLoaderSaver_impl import GPXLoaderSaver as LoaderSaver
+from repository.GPXTrack_repository_impl import GPXTrackRepositoryImpl as LoaderSaver
 from entities.Graph_impl import Graph
-from entities.HMMMapMatching_impl import MapMatching
+from interactor.HMMMapMatching_impl import MapMatching
 from entities.HiddenMarkovModel_impl import HMM
 from interactor.TrackAnalyzer_impl import TrackAnalyzerImpl
 from repository.Trackinformation_repository_impl import TrackInformationRepositoryImpl as TrackInformationRepository

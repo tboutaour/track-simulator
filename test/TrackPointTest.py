@@ -1,11 +1,11 @@
 import unittest
-from entities.TrackPoint_impl import TrackPoint as Point
-from entities.TrackSegment_impl import TrackSegment as Segment
+from entities.TrackPoint import TrackPoint
+from entities.TrackSegment import TrackSegment as Segment
 
 class MyTestCase(unittest.TestCase):
     def test_segment_operations(self):
-        point = Point(2, 1)
-        point_b = Point(4, 4)
+        point = TrackPoint(2, 1)
+        point_b = TrackPoint(4, 4)
         segm = Segment([point.get_longlat(), point_b.get_longlat()])
 
         self.assertEqual(point.get_longitude(), 2)
@@ -18,8 +18,8 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(point.get_bearing(point_b), 33.62695665710845)
 
     def test_point_operations(self):
-        point = Point(2, 1)
-        point_b = Point(4,4)
+        point = TrackPoint(2, 1)
+        point_b = TrackPoint(4,4)
         self.assertEqual(point.get_latitude(), 1)
         self.assertEqual(point.get_longitude(), 2)
         self.assertEqual(point.haversine_distance(point_b), 400787.4747541121)
