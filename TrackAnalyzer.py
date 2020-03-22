@@ -175,7 +175,7 @@ class TrackAnalyzer:
     def __get_number_points(self,set):
         """
         Obtain number of points of a set and save the information.
-        This update the TrackAnalyzer object.
+        This update the track_analyzer object.
         :param set: Set of GPS points
         """
         count = [len(list(group)) for key, group in groupby(sorted(set))]
