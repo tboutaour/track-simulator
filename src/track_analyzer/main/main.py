@@ -5,7 +5,7 @@ import logging
 import numpy as np
 import pandas as pd
 import networkx as nx
-from src.track_analyzer.repository.gpx_track_repository_impl import GPXTrackRepositoryImpl as LoaderSaver
+from src.track_analyzer.repository.resource.gpx_resource_impl import GPXResourceImpl
 from src.track_analyzer.entities.graph_impl import Graph
 from src.track_analyzer.interactor.hmm_map_matching_impl import MapMatching
 from src.track_analyzer.entities.hidden_markov_model_impl import HMM
@@ -27,7 +27,7 @@ def main():
 
     id_track = "activity_3689734814"
     main_df = informationRepository.get_trackinformation_dataframe(id_track)
-    distance_point_projection, distance_point_point = statisticsRepository.get_track_statistics()
+    distance_point_projection, distance_point_point = statisticsRepository.read_track_statistics()
     distance_point_projection.sort()
     cd_dx = np.linspace(0., 1., len(distance_point_projection))
     ser_dx = pd.Series(cd_dx, index=distance_point_projection)
@@ -64,7 +64,7 @@ def main_analyze():
     id_track = 0
     for gpx_file in os.listdir(FILE_DIRECTORY):
         if gpx_file.endswith(".gpx"):
-            test_file = LoaderSaver(FILE_DIRECTORY + gpx_file)  # Esto puede ir iterando
+            test_file = GPXResourceImpl(FILE_DIRECTORY + gpx_file)  # Esto puede ir iterando
             points = list(list(zip(*test_file.parseFile()))[2])
 
             # Analize
@@ -79,7 +79,7 @@ def main_analyze():
             logging.warning("Analysis finished")
             id_track += 1
 
-    graphRepository.write_graphinformation_dataframe(nx.to_pandas_edgelist(bellver_graph.graph))
+    graphRepository.write_graph_information_dataframe(nx.to_pandas_edgelist(bellver_graph.graph))
 
 
 

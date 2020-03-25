@@ -1,6 +1,6 @@
 import unittest
 import matplotlib.pyplot as plt
-from src.track_analyzer.repository.gpx_track_repository_impl import GPXTrackRepositoryImpl as LoaderSaver
+from src.track_analyzer.repository.resource.gpx_resource_impl import GPXResourceImpl as LoaderSaver
 from src.track_analyzer.entities.graph_impl import Graph
 from src.track_analyzer.interactor.hmm_map_matching_impl import MapMatching
 from src.track_analyzer.entities.hidden_markov_model_impl import HMM

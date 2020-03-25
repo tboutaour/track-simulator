@@ -21,7 +21,7 @@ class TrackSimulator(Simulator):
     def simulate(self):
         pass
 
-    def simulate_route(self, origin, end, distance, ax):
+    def simulate_route(self, origin, distance):
         """
         Simulates creation of route given an origin and target point.
         This simulation is made by searching Dijkstra's path and simulating points segment by segment.

@@ -1,35 +1,24 @@
 from src.track_analyzer.repository.graph_information_repository import GraphInformationRepository
-from pymongo import MongoClient
+from src.track_analyzer.repository.resource.mongo_resource import MongoResource
 import pandas as pd
 import json
 
 
-def get_connection(host, port):
-    return MongoClient(host, port)
-
-
 class GraphInformationRepositoryImpl(GraphInformationRepository):
 
-    def __init__(self, host, port):
-        self.host = host
-        self.port = port
-        self.connection = get_connection(host, port)
+    def __init__(self, mongo_resource: MongoResource):
+        self.mongo_resource = mongo_resource
 
-    def get_graphinformation_dataframe(self, id_graph):
-        client = self.connection
-        db = client.testdb
-        collection = db.graphDataframe
-        return pd.DataFrame(list(collection.find({"graph_id": id_graph})))
+    def read_graph_information_dataframe(self, id_graph):
+        query = {'graph_id': id_graph}
+        return pd.DataFrame(list(self.mongo_resource.read(collection='graphDataframe', query=query)))
 
-    def write_graphinformation_dataframe(self, data):
-        client = self.connection
-        db = client.testdb
-        collection = db.graphDataframe
+    def write_graph_information_dataframe(self, data):
         data_to_export = data[['source', 'target', 'num of detections', 'frequency']]
         today = pd.Timestamp('today')
         data_to_export['graph_id'] = 'Graph_Analysis_{:%m%d%Y}'.format(today)
         print('Graph_Analysis_{:%m%d%Y}'.format(today))
         records = json.loads(data_to_export.T.to_json()).values()
-        collection.insert(records)
+        self.mongo_resource.write(collection='graphDataframe', records=records)
 
 

@@ -1,4 +1,4 @@
-from src.track_analyzer.repository.gpx_track_repository import GPXTrackRepository
+from src.track_analyzer.repository.resource.gpx_resource import GPXResource
 import gpxpy
 import gpxpy.gpx
 from src.track_analyzer.entities.track_point import TrackPoint as Point
@@ -33,22 +33,15 @@ def load_file_points(file):
     return points_a
 
 
-class GPXTrackRepositoryImpl(GPXTrackRepository):
+class GPXResourceImpl(GPXResource):
 
-    def __init__(self, source):
-        self.source = source
-        self.source_file = self.loadFile()
+    def read(self, file_path):
+        with open(file_path) as source_file:
+            data = gpxpy.parse(source_file)
+            points = load_file_points(data)
+        return list(list(zip(*points))[2])
 
-    def loadFile(self):
-        return open(self.source)
-
-    def parseFile(self):
-        data = gpxpy.parse(self.source_file)
-        points = load_file_points(data)
-        self.source_file.close()
-        return points
-
-    def saveFile(self, output, data):
+    def write(self, output, data):
         with open(output, "w") as f:
             f.write(data)
 

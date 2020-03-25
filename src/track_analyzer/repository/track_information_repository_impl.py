@@ -1,29 +1,20 @@
 from src.track_analyzer.repository.track_information_repository import TrackInformationRepository
-from pymongo import MongoClient
+from src.track_analyzer.repository.resource.mongo_resource import MongoResource
 import pandas as pd
 import json
 
 
-def get_connection(host, port):
-    return MongoClient(host, port)
-
-
 class TrackInformationRepositoryImpl(TrackInformationRepository):
 
-    def __init__(self, host, port):
-        self.host = host
-        self.port = port
-        self.connection = get_connection(host, port)
+    def __init__(self, mongo_resource: MongoResource):
+        self.mongo_resource = mongo_resource
+
 
     def get_trackinformation_dataframe(self, id_track):
-        client = self.connection
-        db = client.testdb
-        collection = db.trackdataframe
-        return pd.DataFrame(list(collection.find({"id": id_track})))
+        query = {"id": id_track}
+        self.mongo_resource.read(collection='trackdataframe', query=query)
+        return pd.DataFrame(list(self.mongo_resource.read(collection='trackdataframe', query=query)))
 
     def write_trackinformation_dataframe(self, data):
-        client = self.connection
-        db = client.testdb
-        collection = db.trackdataframe
         records = json.loads(data.T.to_json()).values()
-        collection.insert(records)
+        self.mongo_resource.write(collection='trackdataframe', records=records)

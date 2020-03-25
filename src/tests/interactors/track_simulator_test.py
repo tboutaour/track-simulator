@@ -16,7 +16,7 @@ class MyTestCase(unittest.TestCase):
         bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023)
 
         id_track = "Graph_Analysis_03152020"
-        data = mongodbConnection.get_graphinformation_dataframe(id_track)
+        data = mongodbConnection.read_graph_information_dataframe(id_track)
 
         #Graph information load
         bellver_graph.load_graph_analysis_statistics(data)
@@ -33,7 +33,7 @@ class MyTestCase(unittest.TestCase):
         bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023)
 
         id_track = "Graph_Analysis_03152020"
-        data = mongodbConnection.get_graphinformation_dataframe(id_track)
+        data = mongodbConnection.read_graph_information_dataframe(id_track)
 
         #Graph information load
         bellver_graph.load_graph_analysis_statistics(data)
@@ -102,7 +102,7 @@ class MyTestCase(unittest.TestCase):
         bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023)
 
         id_track = "Graph_Analysis_03152020"
-        data = mongodbConnection.get_graphinformation_dataframe(id_track)
+        data = mongodbConnection.read_graph_information_dataframe(id_track)
 
         # Graph information load
         bellver_graph.load_graph_analysis_statistics(data)

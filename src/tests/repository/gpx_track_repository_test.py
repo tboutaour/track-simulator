@@ -1,6 +1,5 @@
 import unittest
-
-from src.track_analyzer.repository.gpx_track_repository_impl import GPXTrackRepositoryImpl as GPXTrackRepository
+from src.track_analyzer.repository.resource.gpx_resource_impl import GPXResourceImpl as GPXTrackRepository
 
 
 class MyTestCase(unittest.TestCase):
