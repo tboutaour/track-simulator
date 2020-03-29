@@ -1,7 +1,7 @@
 import abc
 
 
-class MapMatching(abc.ABC):
+class GetMapMatching(abc.ABC):
     @abc.abstractmethod
     def match(self):
         pass

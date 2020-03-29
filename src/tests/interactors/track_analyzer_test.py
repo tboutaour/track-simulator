@@ -2,9 +2,9 @@ import unittest
 import matplotlib.pyplot as plt
 from src.track_analyzer.repository.resource.gpx_resource_impl import GPXResourceImpl as LoaderSaver
 from src.track_analyzer.entities.graph_impl import Graph
-from src.track_analyzer.interactor.hmm_map_matching_impl import MapMatching
+from src.track_analyzer.interactor.get_map_matching_impl import GetMapMatchingImpl
 from src.track_analyzer.entities.hidden_markov_model_impl import HMM
-from src.track_analyzer.interactor.track_analyzer_impl import TrackAnalyzerImpl
+from src.track_analyzer.interactor.analyze_track_impl import AnalyzeTrackImpl
 from src.track_analyzer.repository.track_information_repository_impl import TrackInformationRepositoryImpl as TrackInformationRepository
 from src.track_analyzer.repository.track_statistics_repository_impl import TrackStatisticsRepositoryImpl as TrackStatisticsRepository
 
@@ -23,8 +23,8 @@ class MyTestCase(unittest.TestCase):
         points = list(list(zip(*test_file.parseFile()))[2])
 
         # Analize
-        hmm = MapMatching(points, hidden_markov_model)
-        analyzer = TrackAnalyzerImpl(bellver_graph, hmm, ACTIVITY, information_repository, statistics_repository)
+        hmm = GetMapMatchingImpl(points, hidden_markov_model)
+        analyzer = AnalyzeTrackImpl(bellver_graph, hmm, ACTIVITY, information_repository, statistics_repository)
         main_df, mapped_points = analyzer.analyze()
 
         # Show information

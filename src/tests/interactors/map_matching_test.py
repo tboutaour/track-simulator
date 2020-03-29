@@ -1,5 +1,5 @@
 import unittest
-from src.track_analyzer.interactor.hmm_map_matching_impl import MapMatching
+from src.track_analyzer.interactor.get_map_matching_impl import GetMapMatchingImpl
 from src.track_analyzer.entities.hidden_markov_model_impl import HMM
 from src.track_analyzer.repository.resource.gpx_resource_impl import GPXResourceImpl as LoaderSaver
 from src.track_analyzer.entities.track_point import TrackPoint as Point
@@ -37,7 +37,7 @@ class MyTestCase(unittest.TestCase):
         for p in parsed_file:
             plt.scatter(p[2].get_longitude(), p[2].get_latitude(), c="green")
         parsed_point_list = [x[2]for x in parsed_file]
-        hmm = MapMatching(parsed_point_list, hidden_markov_model)
+        hmm = GetMapMatchingImpl(parsed_point_list, hidden_markov_model)
         result = hmm.match()
         for r in result:
             plt.scatter(r[0].get_longitude(), r[0].get_latitude(), c="red")

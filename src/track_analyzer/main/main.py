@@ -7,9 +7,9 @@ import pandas as pd
 import networkx as nx
 from src.track_analyzer.repository.resource.gpx_resource_impl import GPXResourceImpl
 from src.track_analyzer.entities.graph_impl import Graph
-from src.track_analyzer.interactor.hmm_map_matching_impl import MapMatching
+from src.track_analyzer.interactor.get_map_matching_impl import GetMapMatchingImpl
 from src.track_analyzer.entities.hidden_markov_model_impl import HMM
-from src.track_analyzer.interactor.track_analyzer_impl import TrackAnalyzerImpl
+from src.track_analyzer.interactor.analyze_track_impl import AnalyzeTrackImpl
 from src.track_analyzer.repository.track_information_repository_impl import TrackInformationRepositoryImpl as TrackInformationRepository
 from src.track_analyzer.repository.track_statistics_repository_impl import TrackStatisticsRepositoryImpl as TrackStatisticsRepository
 from src.track_analyzer.repository.graph_information_repository_impl import GraphInformationRepositoryImpl as GraphInformationRepository
@@ -69,12 +69,12 @@ def main_analyze():
 
             # Analize
             logging.warning("Analizing: " + os.path.splitext(gpx_file)[0])
-            hmm = MapMatching(points, hidden_markov_model)
-            analyzer = TrackAnalyzerImpl(bellver_graph,
-                                         hmm,
-                                         os.path.splitext(gpx_file)[0],
-                                         informationRepository,
-                                         statisticsRepository)
+            hmm = GetMapMatchingImpl(points, hidden_markov_model)
+            analyzer = AnalyzeTrackImpl(bellver_graph,
+                                        hmm,
+                                        os.path.splitext(gpx_file)[0],
+                                        informationRepository,
+                                        statisticsRepository)
             main_df, mapped_points = analyzer.analyze()
             logging.warning("Analysis finished")
             id_track += 1

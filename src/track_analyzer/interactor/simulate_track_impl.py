@@ -1,4 +1,4 @@
-from src.track_analyzer.interactor.simulator import Simulator
+from src.track_analyzer.interactor.simulate_track import SimulateTrack
 from src.track_analyzer.entities.graph import Graph
 from src.track_analyzer.entities.statistics import Statistics
 from src.track_analyzer.entities.track_point import TrackPoint
@@ -13,7 +13,7 @@ NUMBER_SIMULATIONS = 4
 PROB_RETURN = 0.4
 
 
-class TrackSimulator(Simulator):
+class SimulateTrackImpl(SimulateTrack):
     def __init__(self, graph: Graph, statistics: Statistics):
         self.graph = graph
         self.statistics = statistics

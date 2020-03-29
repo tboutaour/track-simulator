@@ -1,5 +1,5 @@
 import utils
-from src.track_analyzer.interactor.track_analyzer import TrackAnalyzer
+from src.track_analyzer.interactor.analyze_track import AnalyzeTrack
 from src.track_analyzer.entities.statistics import Statistics
 from src.track_analyzer.repository.track_information_repository import TrackInformationRepository
 from src.track_analyzer.repository.track_statistics_repository import TrackStatisticsRepository
@@ -13,7 +13,7 @@ def get_df_to_mongo(data):
     return data
 
 
-class TrackAnalyzerImpl(TrackAnalyzer):
+class AnalyzeTrackImpl(AnalyzeTrack):
     def __init__(self, graph, hmm, id_track, information_repository: TrackInformationRepository, statistics_repository: TrackStatisticsRepository):
         self.graph = graph
         self.hmm = hmm
