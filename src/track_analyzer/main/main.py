@@ -8,11 +8,12 @@ import networkx as nx
 from src.track_analyzer.repository.resource.gpx_resource_impl import GPXResourceImpl
 from src.track_analyzer.entities.graph_impl import Graph
 from src.track_analyzer.interactor.get_map_matching_impl import GetMapMatchingImpl
-from src.track_analyzer.entities.hidden_markov_model_impl import HMM
 from src.track_analyzer.interactor.analyze_track_impl import AnalyzeTrackImpl
 from src.track_analyzer.repository.track_information_repository_impl import TrackInformationRepositoryImpl as TrackInformationRepository
 from src.track_analyzer.repository.track_statistics_repository_impl import TrackStatisticsRepositoryImpl as TrackStatisticsRepository
 from src.track_analyzer.repository.graph_information_repository_impl import GraphInformationRepositoryImpl as GraphInformationRepository
+from track_analyzer.pipelines.track_analysis_pipeline import TrackAnalysisPipeline
+from track_analyzer.entities.hidden_markov_model_impl import HMM
 
 FILE_DIRECTORY = "tracks/Ficheros/rutasMFlores/"
 
@@ -64,7 +65,7 @@ def main_analyze():
     id_track = 0
     for gpx_file in os.listdir(FILE_DIRECTORY):
         if gpx_file.endswith(".gpx"):
-            test_file = GPXResourceImpl(FILE_DIRECTORY + gpx_file)  # Esto puede ir iterando
+            test_file = GPXResourceImpl()  # Esto puede ir iterando
             points = list(list(zip(*test_file.parseFile()))[2])
 
             # Analize
@@ -81,6 +82,15 @@ def main_analyze():
 
     graphRepository.write_graph_information_dataframe(nx.to_pandas_edgelist(bellver_graph.graph))
 
+
+
+def main_with_analysis_pipeline():
+    gpx_resource = GPXResourceImpl()
+    bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023)
+    get_map_matching = GetMapMatchingImpl(HMM(bellver_graph))
+    track_analyzer_pipeline = TrackAnalysisPipeline(gpx_resource, get_map_matching)
+    for gpx_file in os.listdir(FILE_DIRECTORY):
+        track_analyzer_pipeline.run(FILE_DIRECTORY + gpx_file)
 
 
 

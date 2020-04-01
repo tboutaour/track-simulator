@@ -14,7 +14,12 @@ def get_df_to_mongo(data):
 
 
 class AnalyzeTrackImpl(AnalyzeTrack):
-    def __init__(self, graph, hmm, id_track, information_repository: TrackInformationRepository, statistics_repository: TrackStatisticsRepository):
+    def __init__(self,
+                 graph,
+                 hmm,
+                 id_track,
+                 information_repository: TrackInformationRepository,
+                 statistics_repository: TrackStatisticsRepository):
         self.graph = graph
         self.hmm = hmm
         self.statistics_repository = statistics_repository

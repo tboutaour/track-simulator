@@ -1,13 +1,12 @@
 
 from src.track_analyzer.interactor.get_map_matching import GetMapMatching as dMapMatching
-from src.track_analyzer.entities.hidden_markov_model import HiddenMarkovModel
+from track_analyzer.entities.hidden_markov_model import HiddenMarkovModel
 
 
 class GetMapMatchingImpl(dMapMatching):
-    def __init__(self, points, map_matching_method):
-        self.points = points
-        self.map_matching_method = map_matching_method
+    def __init__(self, detection_model: HiddenMarkovModel):
+        self.detection_model = detection_model
 
-    def match(self):
-        mapped_track, _ = self.map_matching_method.viterbi_algorithm(self.points)
+    def match(self, points):
+        mapped_track, _ = self.detection_model.viterbi_algorithm(points)
         return mapped_track
