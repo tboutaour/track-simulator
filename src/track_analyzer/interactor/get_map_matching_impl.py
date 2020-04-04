@@ -1,5 +1,5 @@
 
-from src.track_analyzer.interactor.get_map_matching import GetMapMatching as dMapMatching
+from track_analyzer.interactor.get_map_matching import GetMapMatching as dMapMatching
 from track_analyzer.entities.hidden_markov_model import HiddenMarkovModel
 
 

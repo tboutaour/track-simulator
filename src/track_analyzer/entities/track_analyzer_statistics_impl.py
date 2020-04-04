@@ -1,4 +1,4 @@
-from src.track_analyzer.entities.statistics import Statistics
+from track_analyzer.entities.statistics import Statistics
 import pandas as pd
 import numpy as np
 

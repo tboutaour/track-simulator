@@ -1,7 +1,7 @@
 import unittest
-from src.track_analyzer.repository.resource.gpx_resource_impl import GPXResourceImpl
-from src.track_analyzer.entities.graph_impl import Graph
-from src.track_analyzer.interactor.get_map_matching_impl import GetMapMatchingImpl
+from track_analyzer.repository.resource.gpx_resource_impl import GPXResourceImpl
+from track_analyzer.entities.graph_impl import Graph
+from track_analyzer.interactor.get_map_matching_impl import GetMapMatchingImpl
 from track_analyzer.pipelines.track_analysis_pipeline import TrackAnalysisPipeline
 from track_analyzer.entities.hidden_markov_model_impl import HMM
 

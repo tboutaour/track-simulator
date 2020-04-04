@@ -1,6 +1,6 @@
 import unittest
-from src.track_analyzer.entities.track_point import TrackPoint
-from src.track_analyzer.entities.track_segment import TrackSegment as Segment
+from track_analyzer.entities.track_point import TrackPoint
+from track_analyzer.entities.track_segment import TrackSegment as Segment
 
 class MyTestCase(unittest.TestCase):
     def test_segment_operations(self):

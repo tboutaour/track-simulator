@@ -1,6 +1,6 @@
 import unittest
-from src.track_analyzer.repository.track_information_repository_impl import TrackInformationRepositoryImpl
-from src.track_analyzer.repository.resource.mongo_resource_impl import MongoResourceImpl
+from track_analyzer.repository.track_information_repository_impl import TrackInformationRepositoryImpl
+from track_analyzer.repository.resource.mongo_resource_impl import MongoResourceImpl
 import pandas as pd
 
 

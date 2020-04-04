@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 
-from src.track_analyzer.repository.resource.mongo_resource import MongoResource
-from src.track_analyzer.repository.track_statistics_repository import TrackStatisticsRepository
+from track_analyzer.repository.resource.mongo_resource import MongoResource
+from track_analyzer.repository.track_statistics_repository import TrackStatisticsRepository
 
 
 def get_connection(host, port):

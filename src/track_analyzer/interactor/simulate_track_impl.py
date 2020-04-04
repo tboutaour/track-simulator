@@ -1,37 +1,23 @@
-from src.track_analyzer.interactor.simulate_track import SimulateTrack
-from src.track_analyzer.entities.graph import Graph
-from src.track_analyzer.entities.statistics import Statistics
-from src.track_analyzer.entities.track_point import TrackPoint
-
-import numpy as np
-import utils
-import geopy
-import geopy.distance
+from track_analyzer.interactor.simulate_track import SimulateTrack
 import math
 
-NUMBER_SIMULATIONS = 4
-PROB_RETURN = 0.4
+import geopy
+import geopy.distance
+import matplotlib.pyplot as plt
+import numpy as np
+import utils
+from track_analyzer.entities.graph import Graph
+from track_analyzer.entities.track_point import TrackPoint
+
+COLORS = ["green", "red", "blue", "purple", "pink", "orange", "yellow", "black"]
 
 
 class SimulateTrackImpl(SimulateTrack):
-    def __init__(self, graph: Graph, statistics: Statistics):
+    def __init__(self, graph: Graph, number_simulations):
+        self.number_simulations = number_simulations
         self.graph = graph
-        self.statistics = statistics
 
-    def simulate(self):
-        pass
-
-    def simulate_route(self, origin, distance):
-        """
-        Simulates creation of route given an origin and target point.
-        This simulation is made by searching Dijkstra's path and simulating points segment by segment.
-
-        :param track_analysis: Object of track_analyzer class
-        :param origin: Origin node of the simulated route
-        :param end: Target node of the simulated route
-        :param ax: axes for plotting points
-        :return: Numpy array of points of the simulated route
-        """
+    def simulate(self, origin_node, distance):
         simulated_track = []
         # Simular creación de trayectoria completa
 
@@ -41,8 +27,8 @@ class SimulateTrackImpl(SimulateTrack):
         list_reduced = []
 
         # Realizamos 5 y nos quedamos con el que tenga menos repeticiones.
-        for i in range(0, NUMBER_SIMULATIONS):
-            simulated_path_aux, distance_generated = self.create_path(origin, distance)
+        for i in range(0, self.number_simulations):
+            simulated_path_aux, distance_generated = self.create_path(origin_node, distance)
             list_original.append(simulated_path_aux)
             list_distances.append(distance_generated)
             res = []
@@ -58,29 +44,17 @@ class SimulateTrackImpl(SimulateTrack):
         for d in range(0, len(simulated_path) - 1):
             path.append([simulated_path[d], simulated_path[d + 1]])
 
-        # Lista de colores para los segmentos
-        colors = ["green", "red", "blue", "purple", "pink", "orange", "yellow", "black"]
-
         # Indice para crear segmentos de colores distintos
-        idx_color = 0
         for segment in path:
             seg = self.simulate_segment(segment)
-            idx_color = idx_color + 1
             for s in seg:
                 simulated_track.append(s)
 
-        return np.array(simulated_track), distance_to_return
+        fig, ax = self.graph.plot_graph()
+        utils.plot_points(ax, simulated_track, COLORS[0])
+        plt.show()
 
     def create_path(self, origin, dist):
-        """
-        Create the most frequent path given frequencies stored at track_analysis object.
-        Given an origin node and a maximum distance it creates the most frequent path.
-        Once the track_analysis is updated the path may change.
-        It does not recognise returns of route.
-        :param origin: Origin node of the simulated route
-        :param dist: Distance of the route.
-        :return: created path, distance of this path.
-        """
         path = []
         distance_created = 0
         prev_node = origin
@@ -114,19 +88,6 @@ class SimulateTrackImpl(SimulateTrack):
         return segment
 
     def calculate_point(self, segment, origin_node, target_node, origin_point: TrackPoint, segment_target_point: TrackPoint):
-        """
-        Calculates the point for the simulated segment.
-        This point is calculated by a distance and a bearing.
-        While the distance from the generated point to the closest point of the segment is not sustainable we recalculate
-        the point.
-
-        :param segment: Segment related to the generated point
-        :param origin_node: Origin node of the segment
-        :param target_node: Target node of the segment
-        :param origin_point: Origin GPS point
-        :param segment_target_point: Target point of the segment
-        :return:
-        """
         # Cargar la estructura de lista del segmento
         coords = self.graph.get_edge_by_nodes(origin_node, target_node)['geometry'].coords[:]
         coord_list = [tuple(item) for item in coords]
@@ -174,12 +135,6 @@ class SimulateTrackImpl(SimulateTrack):
 
 
     def get_most_frequent_node(self, node, path):
-        """
-        Every segment have a frequency. It returns choose one of the options according the frequencies.
-        :param path:
-        :param node: Node of the selection
-        :return: selected target node
-        """
         target_list = [[i[1], i[2]['frequency']] for i in list(self.graph.get_edge_by_node(node))]
         target_list.sort(key=lambda x: x[1])
         target_node_list = [item[0] for item in target_list]

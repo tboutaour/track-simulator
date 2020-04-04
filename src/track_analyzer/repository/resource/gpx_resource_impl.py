@@ -1,7 +1,7 @@
-from src.track_analyzer.repository.resource.gpx_resource import GPXResource
+from track_analyzer.repository.resource.gpx_resource import GPXResource
 import gpxpy
 import gpxpy.gpx
-from src.track_analyzer.entities.track_point import TrackPoint as Point
+from track_analyzer.entities.track_point import TrackPoint as Point
 
 
 def create_gpx_track(data):

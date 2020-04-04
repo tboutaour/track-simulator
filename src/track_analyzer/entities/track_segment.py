@@ -1,4 +1,4 @@
-from src.track_analyzer.entities.track_point import TrackPoint as Point
+from track_analyzer.entities.track_point import TrackPoint as Point
 from shapely.geometry import LineString
 from shapely.ops import nearest_points
 

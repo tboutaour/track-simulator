@@ -1,7 +1,7 @@
 import unittest
 import pandas as pd
-from src.track_analyzer.repository.graph_information_repository_impl import GraphInformationRepositoryImpl
-from src.track_analyzer.repository.resource.mongo_resource_impl import MongoResourceImpl
+from track_analyzer.repository.graph_information_repository_impl import GraphInformationRepositoryImpl
+from track_analyzer.repository.resource.mongo_resource_impl import MongoResourceImpl
 
 class MyTestCase(unittest.TestCase):
     def test_writting(self):

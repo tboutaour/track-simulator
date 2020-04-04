@@ -1,9 +1,9 @@
-from src.track_analyzer.entities.hidden_markov_model import HiddenMarkovModel
+from track_analyzer.entities.hidden_markov_model import HiddenMarkovModel
 import math
-from src.track_analyzer.entities.track_point import TrackPoint as Point
+from track_analyzer.entities.track_point import TrackPoint as Point
 import osmnx
 import logging
-from src.track_analyzer.entities.track_segment import TrackSegment
+from track_analyzer.entities.track_segment import TrackSegment
 
 SIGMA = 4
 BETA = 0.1

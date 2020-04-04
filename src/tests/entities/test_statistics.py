@@ -1,8 +1,8 @@
 import unittest
 import pandas as pd
-from src.track_analyzer.entities.graph_impl import Graph
-from src.track_analyzer.entities.track_analyzer_statistics_impl import TrackAnalyzerStatistics as Statistics
-from src.track_analyzer.entities.track_point import TrackPoint as Point
+from track_analyzer.entities.graph_impl import Graph
+from track_analyzer.entities.track_analyzer_statistics_impl import TrackAnalyzerStatistics as Statistics
+from track_analyzer.entities.track_point import TrackPoint as Point
 
 
 class MyTestCase(unittest.TestCase):

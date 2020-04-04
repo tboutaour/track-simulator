@@ -1,5 +1,5 @@
-from src.track_analyzer.repository.graph_information_repository import GraphInformationRepository
-from src.track_analyzer.repository.resource.mongo_resource import MongoResource
+from track_analyzer.repository.graph_information_repository import GraphInformationRepository
+from track_analyzer.repository.resource.mongo_resource import MongoResource
 import pandas as pd
 import json
 

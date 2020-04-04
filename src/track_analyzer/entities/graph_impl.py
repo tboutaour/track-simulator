@@ -2,7 +2,7 @@ import networkx
 import numpy as np
 import osmnx
 
-from src.track_analyzer.entities.graph import Graph as dGraph
+from track_analyzer.entities.graph import Graph as dGraph
 from shapely.geometry import LineString
 
 class Graph(dGraph):
