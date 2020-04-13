@@ -154,3 +154,4 @@ dmypy.json
 pyvenv.cfg
 pip-selfcheck.json
 
+/src/data/

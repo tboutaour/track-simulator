@@ -1,6 +1,7 @@
 from track_analyzer.interactor.simulate_track import SimulateTrack
+from track_analyzer.repository.track_statistics_repository import TrackStatisticsRepository
 import math
-
+import pandas as pd
 import geopy
 import geopy.distance
 import matplotlib.pyplot as plt
@@ -13,9 +14,14 @@ COLORS = ["green", "red", "blue", "purple", "pink", "orange", "yellow", "black"]
 
 
 class SimulateTrackImpl(SimulateTrack):
-    def __init__(self, graph: Graph, number_simulations):
+    def __init__(self, graph: Graph,
+                 number_simulations,
+                 track_statistics_repository: TrackStatisticsRepository):
         self.number_simulations = number_simulations
         self.graph = graph
+        self.accumulative_point_distance_distribution = self.__get_accumulative_distribution(
+            track_statistics_repository.read_distance_point_to_next(), 40)
+
 
     def simulate(self, origin_node, distance):
         simulated_track = []
@@ -80,14 +86,15 @@ class SimulateTrackImpl(SimulateTrack):
         try:
             dest, aux = self.calculate_point(segment, origin_node, target_node, origin_point, target_point)
             next = dest
-            while aux > 24 and len(segment) < 30:
+            while aux > 24:
                 dest, aux = self.calculate_point(segment, origin_node, target_node, next, target_point)
                 next = dest
         except KeyError:
             pass
         return segment
 
-    def calculate_point(self, segment, origin_node, target_node, origin_point: TrackPoint, segment_target_point: TrackPoint):
+    def calculate_point(self, segment, origin_node, target_node, origin_point: TrackPoint,
+                        segment_target_point: TrackPoint):
         # Cargar la estructura de lista del segmento
         coords = self.graph.get_edge_by_nodes(origin_node, target_node)['geometry'].coords[:]
         coord_list = [tuple(item) for item in coords]
@@ -106,22 +113,23 @@ class SimulateTrackImpl(SimulateTrack):
         bearing = origin_point.get_bearing(next_point)
 
         # Calculamos una desviación
-        random_bearing = np.random.uniform(bearing - 20, bearing + 20)
+        random_bearing = np.random.uniform(bearing - 50, bearing + 50)
 
         # Calculamos distacia al punto que queremos crear
-        #point_distance = utils.get_random_value(track_analysis.trackpoint_distance) / 8000
-        point_distance = 20
+        point_distance = self.__get_random_value(self.accumulative_point_distance_distribution)
 
         # Generamos el punto
         generated_point = origin_point.generate_point(random_bearing, point_distance)
-        generated_point_distance = geopy.distance.distance((generated_point.get_longlat()), (next_point.get_longlat())).m
+        generated_point_distance = geopy.distance.distance((generated_point.get_longlat()),
+                                                           (next_point.get_longlat())).m
         i = 0
         while generated_point_distance > 70 and i < 30:
             i = i + 1
             random_bearing = np.random.uniform(bearing - 20, bearing + 20)
 
             generated_point = origin_point.generate_point(random_bearing, point_distance)
-            generated_point_distance = geopy.distance.distance((generated_point.get_longlat()), (next_point.get_longlat())).m
+            generated_point_distance = geopy.distance.distance((generated_point.get_longlat()),
+                                                               (next_point.get_longlat())).m
 
         # Calculamos la distancia entre este punto y el final
         aux = geopy.distance.distance((generated_point.get_longlat()), (segment_target_point.get_longlat())).m
@@ -132,14 +140,16 @@ class SimulateTrackImpl(SimulateTrack):
         # Devolvemos el punto y la distancia de este al final
         return generated_point, aux
 
-
-
     def get_most_frequent_node(self, node, path):
         target_list = [[i[1], i[2]['frequency']] for i in list(self.graph.get_edge_by_node(node))]
         target_list.sort(key=lambda x: x[1])
-        target_node_list = [item[0] for item in target_list]
-        target_prob_list = [item[1] for item in target_list]
-        target_prob_list /= sum(target_prob_list)
+        target_node_list = np.array([item[0] for item in target_list])
+        target_prob_list = np.array([item[1] for item in target_list])
+        try:
+            target_prob_list /= sum(target_prob_list)
+        except TypeError:
+            print(target_prob_list)
+            print(sum(target_prob_list))
         if round(sum(target_prob_list)) != 1:
             print(target_prob_list)
         selected_target = np.random.choice(target_node_list, 1, p=target_prob_list)
@@ -165,9 +175,22 @@ class SimulateTrackImpl(SimulateTrack):
 
     def get_closest_segment_point(self, coord_list, point):
         # Por cada elemento buscar la distancia.
-        distances = [[x[0], x[1], utils.haversine_distance(TrackPoint(x[0], x[1]), TrackPoint(point))] for x in coord_list]
+        distances = [[x[0], x[1], utils.haversine_distance(TrackPoint(x[0], x[1]), TrackPoint(point))] for x in
+                     coord_list]
 
         # Ordenar por esta nueva columna y coger el primer elemento
         closest_element = sorted(distances, key=lambda x: x[2])[0]
         return coord_list.index((closest_element[0], closest_element[1]))
+
+    def __get_random_value(self, ac_serie):
+        rnd = np.random.random()
+        return np.argmax(ac_serie > rnd)
+
+    def __get_accumulative_distribution(self, data, out_threshold):
+        dx2 = [i for i in data if i < out_threshold]
+        dx2 = np.array(dx2)
+        dx2 = np.sort(dx2)
+        cd_dx = np.linspace(0., 1., len(dx2))
+        ser_dx = pd.Series(cd_dx, index=dx2)
+        return ser_dx
 

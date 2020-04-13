@@ -95,7 +95,7 @@ def plot_histogram(data, axis):
 def get_color_list(n, color_map='plasma', start=0, end=1):
     return [cm.get_cmap(color_map)(x) for x in np.linspace(start, end, n)]
 
-def get_node_colors_by_stat(G, data, criteria, start=0, end=1):
+def get_node_colors_by_stat(data, criteria, start=0, end=1):
     df = data.sort_values(criteria)
     df['colors'] = get_color_list(len(df), start=start, end=end)
     return df['colors']

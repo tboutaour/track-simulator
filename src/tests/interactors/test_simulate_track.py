@@ -1,7 +1,7 @@
 import unittest
 
 import matplotlib.pyplot as plt
-import osmnx as osmnx
+import osmnx
 
 import utils
 from track_analyzer.entities.graph_impl import Graph
@@ -11,6 +11,7 @@ from track_analyzer.repository.graph_information_repository_impl import GraphInf
 
 
 class MyTestCase(unittest.TestCase):
+    @unittest.skip
     def test_path_creation(self):
         mongodbConnection = GraphInformationRepository('localhost', 27019)
         bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023)
@@ -28,6 +29,7 @@ class MyTestCase(unittest.TestCase):
         fig, ax = osmnx.plot_graph_route(bellver_graph.graph, path)
         plt.show()
 
+    @unittest.skip
     def test_path_creation_with_heat_map(self):
         mongodbConnection = GraphInformationRepository('localhost', 27019)
         bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023)
@@ -39,10 +41,11 @@ class MyTestCase(unittest.TestCase):
         bellver_graph.load_graph_analysis_statistics(data)
         simulator = TrackSimulatorPipeline(bellver_graph, 0)
 
-        ec = utils.get_node_colors_by_stat(bellver_graph.graph, data=data, criteria='num of detections')
+        ec = utils.get_node_colors_by_stat(data=data, criteria='num of detections')
         fig, ax = osmnx.plot_graph(bellver_graph.graph, node_color='black', edge_color=ec, edge_linewidth=2.5)
         plt.show()
 
+    @unittest.skip
     def test_get_closest_segment_point(self):
         coord_list = [(2.6149201, 39.5580067), (2.6142689, 39.5584694), (2.6140847, 39.5585311)]
         point = (2.6149201, 39.5580067)
@@ -54,6 +57,7 @@ class MyTestCase(unittest.TestCase):
         result = simulator.get_closest_segment_point(coord_list, point)
         assert(0 == result)
 
+    @unittest.skip
     def test_calculate_point(self):
         segment = [1248507104, 293027796, 1248507094, 1248507104, 293027796, 1248507104, 293027796, 1248507104, 317813195, 317813354, 317813195, 317813354, 317813453, 1357490350, 317813453, 317813462, 317813485, 1342069005, 317813485, 1342069005, 1594898117, 317813511, 1594898117, 317813511, 317813546, 317813577, 317813546, 317813511, 1594898117, 1342069005, 1594916474, 1342069005]
 
@@ -66,7 +70,7 @@ class MyTestCase(unittest.TestCase):
         generated_point = simulator.calculate_point(segment, origin_node, target_node, origin_point, target_point)
         print(generated_point[0])
 
-
+    @unittest.skip
     def test_simulate_segment(self):
         segment = [1248507104, 293027796, 1248507094, 1248507104, 293027796, 1248507104, 293027796, 1248507104, 317813195, 317813354, 317813195, 317813354, 317813453, 1357490350, 317813453, 317813462, 317813485, 1342069005, 317813485, 1342069005, 1594898117, 317813511, 1594898117, 317813511, 317813546, 317813577, 317813546, 317813511, 1594898117, 1342069005, 1594916474, 1342069005]
         bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023)
@@ -78,6 +82,7 @@ class MyTestCase(unittest.TestCase):
         plt.show()
         print(simulated_segment)
 
+    @unittest.skip
     def test_simulate_segments(self):
         segments = [1248507104, 293027796, 1248507094, 1248507104, 293027796, 1248507104, 293027796, 1248507104,
                    317813195, 317813354, 317813195, 317813354, 317813453, 1357490350, 317813453, 317813462,
@@ -95,7 +100,7 @@ class MyTestCase(unittest.TestCase):
         utils.plot_points(ax, printable, 'blue')
         plt.show()
 
-
+    @unittest.skip
     def test_all(self):
         COLOURS = ["green", "blue", "purple", "pink", "orange", "yellow", "black"]
         mongodbConnection = GraphInformationRepository('localhost', 27019)

@@ -4,12 +4,15 @@ from track_analyzer.entities.hidden_markov_model_impl import HMM
 from track_analyzer.repository.resource.gpx_resource_impl import GPXResourceImpl as LoaderSaver
 from track_analyzer.entities.track_point import TrackPoint as Point
 from track_analyzer.entities.graph_impl import Graph
+from track_analyzer.repository.resource.mongo_resource_impl import MongoResourceImpl
+from track_analyzer.repository.track_information_repository_impl import TrackInformationRepositoryImpl
 import matplotlib.pyplot as plt
 import osmnx
 import seaborn as sns; sns.set()
 
 
 class MyTestCase(unittest.TestCase):
+    @unittest.skip
     def test_get_nearest_segment_points(self):
         test_file = LoaderSaver("../../../tracks/Ficheros/rutasMFlores/activity_3689734814.gpx")
         point = Point(39.5586107, 2.6227118)
@@ -27,8 +30,9 @@ class MyTestCase(unittest.TestCase):
         plt.show()
         self.assertEqual(True, False)
 
+    @unittest.skip
     def test_viterbi_algorithm(self):
-        test_file = LoaderSaver("../../../tracks/Ficheros/rutasMFlores/activity_3689734814.gpx")
+        test_file = LoaderSaver("../../data/tracks_to_analysis/activity_3689734814.gpx")
         point = Point(2.6227118, 39.5586107)
         parsed_file = test_file.parseFile()
         bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023)
@@ -44,6 +48,22 @@ class MyTestCase(unittest.TestCase):
             print(r)
         plt.show()
         self.assertEqual(True, True)
+
+    def test_read_from_data(self):
+        bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023)
+        mongo_resource = MongoResourceImpl()
+        track_information = TrackInformationRepositoryImpl(mongo_resource)
+        track = track_information.get_trackinformation_dataframe("activity_3783539967.gpx")
+        _, _ = bellver_graph.plot_graph()
+        for index, row in track.iterrows():
+            try:
+                plt.scatter(row['Point_lon'], row['Point_lat'], c="red")
+                plt.scatter(row['Projection_lon'], row['Projection_lat'], c="green")
+            except AttributeError:
+                print("Point not found idx: " + str(index))
+        plt.show()
+
+
 
 if __name__ == '__main__':
     unittest.main()

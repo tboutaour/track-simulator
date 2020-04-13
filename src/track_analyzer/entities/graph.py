@@ -60,3 +60,6 @@ class Graph(abc.ABC):
 
     def get_next_node(self, node):
         pass
+
+    def get_edgelist_dataframe(self):
+        pass

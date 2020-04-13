@@ -99,7 +99,14 @@ class Graph(dGraph):
             edge[2]['frequency'] = edge[2]['num of detections']/total
 
     def plot_graph(self):
-        fig, ax = osmnx.plot_graph(self.graph, node_color='black', node_zorder=3, show=False, close=False)
+        fig, ax = osmnx.plot_graph(self.graph,
+                                   bgcolor='k',
+                                   node_color='black',
+                                   edge_linewidth=1.5,
+                                   edge_alpha=1,
+                                   node_zorder=3,
+                                   show=False,
+                                   close=False)
         return fig, ax
 
     def graph_clean_and_normalize(self):
@@ -141,3 +148,6 @@ class Graph(dGraph):
         node_list = [[i[1], i[2]['frequency']] for i in self.graph.get_edge_by_node(node)]
         node_list.sort(key=lambda x: x[1])
         return np.random.choice([l[0] for l in node_list], p=[l[1] for l in node_list])
+
+    def get_edgelist_dataframe(self):
+        return networkx.to_pandas_edgelist(self.graph)

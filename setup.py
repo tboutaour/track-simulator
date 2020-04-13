@@ -25,8 +25,11 @@ dependencies = [
     'geopy==1.20.0',
     'networkx==2.4',
     'numpy==1.17.3',
-    'shapely==1.7.0'
-
+    'shapely==1.7.0',
+    'pymongo==3.10.1',
+    'gpxpy==1.3.5',
+    'osmnx==0.10',
+    'seaborn==0.9.0'
 ]
 
 setup(
