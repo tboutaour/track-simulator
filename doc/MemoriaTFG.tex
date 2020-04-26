@@ -1,0 +1,290 @@
+%% ----------------ATENCIÓ-----------------------
+%% Aquest document està preparat per codificació 
+%% UTF-8. Si es llegeix amb un editor 
+%% preparat per una altra codificació alguns 
+%% caràcters no es veuran correctament.
+%%---------------------------------------------- 
+%%
+%% Aquest document vos pot servir de base per la
+%% realització de la memòria del treball final de
+%% grau. Es recomana seguir els consells que 
+%% apareixen en els diferents comentaris del 
+%% document. Convindrà mantenir l'estructura
+%% d'aquest exemple i introduir canvis sols 
+%% allà on s'indiqui.
+%%
+%%-----------------------------------------------
+%%
+%% La plantilla preparada per a la realització de
+%% la memòria és la classe LaTeX TFGEPSUIB.cls
+%% que es fonamenta en la classe memoir. Aquesta
+%% emula alguns `packages` que, per tant, no serà
+%% necessari incloure dins el vostre document. El
+%% manual de memoir explica quins són aquests
+%% paquets (per exemple booktabs, array, tabluarx). 
+%% Per altra banda, TFGEPSUIB també carrega 
+%% automàticament els paquets, fontenc, xcolor, 
+%% graphicx i microtype.
+%%
+%%-----------------------------------------
+%% Opcions de la classe TFGEPSUIB:
+%%
+%% Per defecte, la classe TFGEPSUIB suposa
+%% que la memòria es redactarà en català i que 
+%% els estudis són els de Grau en Enginyeria
+%% telemàtica. 
+%%
+%% Si preferiu utilitzar el castellà o anglés
+%% per a la redacció de la memòria podeu
+%% fer-ho indicant-ho a les opcions.
+%\documentclass[catalan]{TFGEPSUIB}
+\documentclass[spanish,GINF]{TFGEPSUIB}
+%%
+%% Per indicar quins són els estudis pels quals
+%% es redacta la memòria heu d'incloure una de
+%% les següents opcions:
+%%
+%% GTEL - Grau en Enginyeria Telemàtica
+%% GMAT - Grau de Matemàtiques
+%% GINF - Grau d'Enginyeria Informàtica
+%% GEDI - Grau d'Enginyeria d'Edificació
+%% GELE - Grau d'Eng. Elec. Ind. i Automàtica
+%% GAGR - Grau en Eng. Agroali. i del Medi Rural
+%%
+%% Per escriure la memòria en castellà pels estudis
+%% de matemàtiques, la línia inicial serà
+%\documentclass[spanish,GMAT]{TFGEPSUIB}
+%%------------------------------------------
+
+% Indicau la codificació que usau en
+% cas que no sigui UTF. 
+%\usepackage[latin1]{inputenc}
+% Per incloure expressions matemàtiques en
+% el document és recomanable usar els paquets
+%\usepackage{amsmath,amssymb,mathtools} 
+\usepackage{float}
+\usepackage{svg}
+% Per incloure fragments de codi hi ha diferents
+% paquets disponibles. Triau el que vos sigui 
+% més convenient, per exemple listings. 
+\usepackage{listings} 
+
+
+\lstset{language=Python}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+
+\renewcommand{\lstlistingname}{Algoritmo}
+
+% Amb tcolorbox podeu definir caixes per llistats,
+% teoremes, exemples, ...
+%\usepackage{tcolorbox}
+
+% Si voleu que les referències bibliogràfiques
+% apareguin amb el format "autor-any" en comptes 
+% de "número" heu d'usar el paquet natbib.
+%\usepackage[round,colon,sort&compress]{natbib} 
+
+% En general, la documentació tècnica pot
+% incloure molts acrònims. Per això es recomana
+% usar el següent paquet. Consultau el corresponent
+% manual per saber com s'usa.
+\usepackage[printonlyused]{acronym}
+
+% Les diferents unitats de mesura tenen un
+% format estàndard de representació que convé
+% respectar. Per això s'usa el paquet `siunitx`.
+% També permet representar nombres en notació
+% científica i alinear correctament els valors 
+% numèrics a les taules. Pegau una ullada al 
+% manual. Si no voleu usar-lo comentau la línia. 
+\usepackage{siunitx}
+
+% Com que és convenient que el paquet hyperref
+% sigui un dels darrers en carregar-se, si voleu 
+% afegir nous paquets, feis-ho a continuació.
+%\usepackage{}
+
+% El paquet "hyperref" crea enllaços automàticament 
+% dins el document. Aquests enllaços permeten la 
+% navegació a través de les diferents referències 
+% figures, bibliografia, fórmules, índex, ...
+% tant sols assenyalant-los amb el ratolí. 
+\usepackage[draft=false, backref, hyperindex, plainpages=false, breaklinks=true, bookmarksnumbered=true]{hyperref}
+
+% Aquests enllaços, per defecte, apareixen com a 
+% requadres de diferents colors, el que resulta molt 
+% pràctic en la versió electrònica del document.
+% Aquests requadres NO apareixen en la 
+% versió impresa. 
+
+%----------------------------------------------
+% Dades de la Portada amb els valors adequats
+% La portada inclou informació del estudis,
+% títol del projecte, autor(s) del projecte,
+% tutor(s) (i supervisor(s)) i data. Títol,
+% autor i tutor són dades obligatòries. El
+% supervisor és opcional i la data també, però
+% per defecte sempre apareix la del dia.
+% Aquests valor s'han de definir si es vol usar
+% la comanda \portada o \maketitle.
+%
+% Els estudis ja s'han definit amb la opció
+% corresponent, però si el projecte
+% és d'uns altres estudis no definits a les
+% opcions, com són, per exemple, els dels plans
+% anteriors, sempre podeu usar la comanda \estudis
+% per definir-los.
+% Per exemple, per l'enginyeria tècnica en 
+% telemàtica podeu usar:
+%\estudis{\MakeUppercase{Enginyeria Tècnica en Telecomunicacions, especialitat Telemàtica}}
+
+\estudis{\MakeUppercase{Grado en Ingeniería informática}}
+
+% Aquí podeu posar el títol de la vostra memòria
+\title{Generador pseudo-aleatorio de trayectorias}
+
+% Es recomana posar el nom de l'autor en 
+% majúscules. Es pot fer automàticament amb la
+% comanda \MakeUppercase. Si hi ha més d'un autor
+% es poden separar mitjançant la comanda \and.
+% Basta substituir els personatges de rondalla
+% pels vostres noms.
+\author{\MakeUppercase{Ahmed Antonio Boutaour Sanchez}}
+
+% La comanda \tutor mostra el nom del director
+% a la portada. Si hi ha més d'un tutor
+% es poden separar mitjançant la comanda \and.
+\tutor{Isaac Lera Castro}
+
+% La comanda \supervisor permet incloure el nom 
+% del professor de la UIB que avala el treball,
+% en el cas que el director no sigui professor
+% de la UIB.Si hi ha més d'un supervisor es poden 
+% separar mitjançant la comanda \and. És una 
+% comanda opcional
+%\supervisor{Pere Catorze \and Joanet de Sa Gerra }
+
+% Per defecte, la data apareix en el format 
+% "dia de mes de any". Si vols que sols aparegui 
+% el més pots activar i modificar la línia
+%\date{juliol de 2012}
+
+%---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+% Durant l'escriptura de la memòria haureu de 
+% compilar-la moltes vegades. Si voleu guanyar
+% una mica de temps, podeu dividir el contingut
+% en diferents fitxers i compilar-ne sols alguns.
+% La comanda següent és la que vos permet
+% definir quins compilar i quins no.
+%\includeonly{Instruccions,Annexos}
+
+% Quan vulgueu treballar amb tot el document, 
+% simplement, comentau la línia anterior.  
+
+%\addto\captionsspanish{\def\nomprojecte{Proyecto Fin de Carrera}}
+\begin{document}
+
+
+% Recordau haver indicat, títol, autor i tutor
+% abans d'usar la comanda següent
+\portada
+
+% No toqueu la línia següent 
+\frontmatter
+
+% Si després de la portada voleu incloure una 
+% pàgina de títol, podeu activar la línia
+%\maketitle
+%MemoriaTFG.tex
+% Voleu dedicar i agrair el treball a algú?
+% Activau les línies següents i escriu el
+% que vulguis dins l'entorn 'agraiments' 
+%
+%\cleartorecto \thispagestyle{empty}
+%\begin{agraiments}
+%%Posau aquí tot el que vulgueu
+%\end{agraiments}
+
+% A continuació el Sumari
+\cleartorecto \tableofcontents
+
+% Si voleu que apareguin una llista de figures
+% i taules, activau les línies corresponents
+\cleartorecto \listoffigures
+\cleartorecto \lstlistoflistings
+%\cleartorecto \listoftables 
+
+% Si apareixen molts acrònims a la documentació
+% convindrà fer-ne una llista. Podeu veure com
+% crear-la consultant el fitxer 'Acronims.tex',
+% que és el que s'inclou aquí.
+\include{Acronimos} 
+% Si no usau acrònims, comentau la línia anterior
+
+% En l'arxiu Resum.tex es posarà el resum
+% del treball.
+%\include{Resum} 
+
+% No toqueu la línia següent 
+\mainmatter\pagestyle{ruled}
+
+%%%%%% COS DEL TREBALL %%%%%%%%%%%%
+
+\include{Abstract}
+\include{Introduccion}
+\include{ConceptosPrincipales}
+\include{Arquitectura}
+\include{AnalisisDatos}
+\include{Simulacion}
+\include{Experimentacion}
+\include{GuiaUso}
+\include{Conclusiones}
+
+%%%%%%% Fi cos del treball %%%%%%%%%%%
+
+% Si el vostre document no conté apèndixs 
+% comentau les dues línies següents
+%\appendix 
+%\include{Annexos} 
+
+% En aquest cas sols hi ha un fitxer d'annexos,
+% però podeu afegir tants \include com calgui. 
+
+%%%%%%% Fi apèndix 
+
+% No toqueu la línia següent 
+\backmatter
+
+% La comanda següent defineix l'estil bibliogràfic
+\bibliographystyle{IEEEtran}
+
+% La comanda següent defineix el fitxer que
+% conté les referències bibliogràfiques.
+% En aquest cas és el fitxer Bibliografia.bib
+\bibliography{Bibliografia} 
+
+\end{document}

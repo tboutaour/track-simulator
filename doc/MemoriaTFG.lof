@@ -1,0 +1,32 @@
+\babel@toc {spanish}{}
+\addvspace {10pt}
+\addvspace {10pt}
+\addvspace {10pt}
+\addvspace {10pt}
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Ejemplo de la aplicacion ArcGis}}{6}{figure.3.1}% 
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Ejemplo de la aplicacion QGIS}}{6}{figure.3.2}% 
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Ejemplo de territorio en formato r\IeC {\'a}ster. \cite {ArgGis01}}}{7}{figure.3.3}% 
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Ejemplo de Ruta del Puig de l'Ofre, Mallorca, Illes Balears, Espa\IeC {\~n}a.}}{8}{figure.3.4}% 
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Ejemplo de c\IeC {\'o}digo de un fichero .\ac {GPX}}}{8}{figure.3.5}% 
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Ejemplo de muestra de OSM de las Illes Balears, Espa\IeC {\~n}a.}}{9}{figure.3.6}% 
+\addvspace {10pt}
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Ejemplo de detecci\IeC {\'o}n real de la trayectoria de un individuo por la Serra de Tramuntana, Illes Balears, Mallorca, Spain}}{11}{figure.4.1}% 
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Diagrama de funcionamiento de TrackSimulator}}{12}{figure.4.2}% 
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Diagrama de funcionamiento de TrackSimulator}}{14}{figure.4.3}% 
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Flujo de datos de TrackSimulator}}{15}{figure.4.4}% 
+\addvspace {10pt}
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Estructura de un \textit {waypoint} dentro de un fichero .\ac {GPX}}}{19}{figure.5.1}% 
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Ejemplo de estructura LineString}}{22}{figure.5.2}% 
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Ejemplo de aplicaci\IeC {\'o}n de algortimo de Viterbi para detecci\IeC {\'o}n de trayectorias.}}{23}{figure.5.3}% 
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Ejemplo de aplicaci\IeC {\'o}n de algortimo de Viterbi para detecci\IeC {\'o}n de trayectorias.}}{24}{figure.5.4}% 
+\contentsline {figure}{\numberline {5.5}{\ignorespaces Ejemplo de aplicaci\IeC {\'o}n de algortimo de Viterbi para detecci\IeC {\'o}n de trayectorias.}}{24}{figure.5.5}% 
+\contentsline {figure}{\numberline {5.6}{\ignorespaces Muestra de an\IeC {\'a}lisis: Distancia punto a proyecci\IeC {\'o}n.}}{27}{figure.5.6}% 
+\contentsline {figure}{\numberline {5.7}{\ignorespaces Muestra de an\IeC {\'a}lisis: Distancia punto a punto.}}{27}{figure.5.7}% 
+\addvspace {10pt}
+\contentsline {figure}{\numberline {6.1}{\ignorespaces Generaci\IeC {\'o}n de camino.}}{29}{figure.6.1}% 
+\contentsline {figure}{\numberline {6.2}{\ignorespaces Generaci\IeC {\'o}n de puntos.}}{29}{figure.6.2}% 
+\contentsline {figure}{\numberline {6.3}{\ignorespaces Ejemplo de generaci\IeC {\'o}n de punto a partir de una distancia $d$ y un \IeC {\'a}ngulo $\alpha $.}}{31}{figure.6.3}% 
+\contentsline {figure}{\numberline {6.4}{\ignorespaces Ejemplo de detecci\IeC {\'o}n de proyecci\IeC {\'o}n cercana y generaci\IeC {\'o}n de punto.}}{31}{figure.6.4}% 
+\addvspace {10pt}
+\addvspace {10pt}
+\addvspace {10pt}
