@@ -11,7 +11,7 @@ from track_analyzer.entities.graph import Graph
 from track_analyzer.entities.track_point import TrackPoint
 
 COLORS = ["green", "red", "blue", "purple", "pink", "orange", "yellow", "black"]
-
+DISTANCE_TO_FINAL_NODE = 24
 
 class SimulateTrackImpl(SimulateTrack):
     def __init__(self, graph: Graph,
@@ -58,7 +58,8 @@ class SimulateTrackImpl(SimulateTrack):
 
         fig, ax = self.graph.plot_graph()
         utils.plot_points(ax, simulated_track, COLORS[0])
-        plt.show()
+        # plt.show()
+        return path
 
     def create_path(self, origin, dist):
         path = []
@@ -86,7 +87,7 @@ class SimulateTrackImpl(SimulateTrack):
         try:
             dest, aux = self.calculate_point(segment, origin_node, target_node, origin_point, target_point)
             next = dest
-            while aux > 24:
+            while aux > DISTANCE_TO_FINAL_NODE:
                 dest, aux = self.calculate_point(segment, origin_node, target_node, next, target_point)
                 next = dest
         except KeyError:
@@ -175,7 +176,7 @@ class SimulateTrackImpl(SimulateTrack):
 
     def get_closest_segment_point(self, coord_list, point):
         # Por cada elemento buscar la distancia.
-        distances = [[x[0], x[1], utils.haversine_distance(TrackPoint(x[0], x[1]), TrackPoint(point))] for x in
+        distances = [[x[0], x[1], TrackPoint(x[0], x[1]).haversine_distance(TrackPoint(point))] for x in
                      coord_list]
 
         # Ordenar por esta nueva columna y coger el primer elemento

@@ -1,11 +1,13 @@
 import unittest
 from track_analyzer.interactor.get_map_matching_impl import GetMapMatchingImpl
+from track_analyzer.repository.resource.gpx_resource_impl import GPXResourceImpl
 from track_analyzer.entities.hidden_markov_model_impl import HMM
 from track_analyzer.repository.resource.gpx_resource_impl import GPXResourceImpl as LoaderSaver
 from track_analyzer.entities.track_point import TrackPoint as Point
 from track_analyzer.entities.graph_impl import Graph
 from track_analyzer.repository.resource.mongo_resource_impl import MongoResourceImpl
 from track_analyzer.repository.track_information_repository_impl import TrackInformationRepositoryImpl
+from track_analyzer.interactor.get_map_matching_impl import GetMapMatchingImpl
 import matplotlib.pyplot as plt
 import osmnx
 import seaborn as sns; sns.set()
@@ -30,21 +32,19 @@ class MyTestCase(unittest.TestCase):
         plt.show()
         self.assertEqual(True, False)
 
-    @unittest.skip
+
     def test_viterbi_algorithm(self):
-        test_file = LoaderSaver("../../data/tracks_to_analysis/activity_3689734814.gpx")
-        point = Point(2.6227118, 39.5586107)
-        parsed_file = test_file.parseFile()
         bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023)
+        gpx_resource = GPXResourceImpl()
+        points = gpx_resource.read('./../../data/tracks_to_analysis/activity_3584116575.gpx')
         hidden_markov_model = HMM(graph=bellver_graph)
-        fig, ax = osmnx.plot_graph(bellver_graph.graph, node_color='black', node_zorder=3, show=False, close=False)
-        for p in parsed_file:
-            plt.scatter(p[2].get_longitude(), p[2].get_latitude(), c="green")
-        parsed_point_list = [x[2]for x in parsed_file]
-        hmm = GetMapMatchingImpl(parsed_point_list, hidden_markov_model)
-        result = hmm.match()
+        get_map_matching = GetMapMatchingImpl(hidden_markov_model)
+        result = get_map_matching.match(points)
+        bellver_graph.plot_graph()
+        for p in points:
+            plt.scatter(p.get_longitude(), p.get_latitude(), c="red")
         for r in result:
-            plt.scatter(r[0].get_longitude(), r[0].get_latitude(), c="red")
+            plt.scatter(r[0].get_longitude(), r[0].get_latitude(), c="green")
             print(r)
         plt.show()
         self.assertEqual(True, True)

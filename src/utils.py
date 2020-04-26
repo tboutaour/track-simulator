@@ -22,17 +22,6 @@ def generate_accumulative_distribution(data):
     ser_dx = pd.Series(cd_dx, index=data)
     return ser_dx
 
-def haversine_distance(origin_point: Point, target_point: Point):
-    """ Haversine formula to calculate the distance between two lat/long points on a sphere """
-    radius = 6371.0  # FAA approved globe radius in km
-    dlat = math.radians(target_point.get_latitude() - origin_point.get_latitude())
-    dlon = math.radians(target_point.get_longitude() - origin_point.get_longitude())
-    a = math.sin(dlat / 2.) * math.sin(dlat / 2.) + math.cos(math.radians(origin_point.get_latitude())) \
-        * math.cos(math.radians(target_point.get_latitude())) * math.sin(dlon / 2.) * math.sin(dlon / 2.)
-    c = 2.0 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
-    d = radius * c
-    return d * 1000
-
 # plot
 def plot_accumultaive_distribution(data):
     fig, ax = plt.subplots()

@@ -12,4 +12,4 @@ class TrackSimulatorPipeline:
         if distance is None:
             distance = 10000
 
-        self.simulate_track.simulate(origin, distance)
+        return self.simulate_track.simulate(origin, distance)

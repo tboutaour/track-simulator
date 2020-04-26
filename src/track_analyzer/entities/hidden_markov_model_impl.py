@@ -8,49 +8,24 @@ from track_analyzer.entities.track_segment import TrackSegment
 SIGMA = 4
 BETA = 0.1
 
-
-def haversine_distance(origin_point: Point, target_point: Point):
-    """ Haversine formula to calculate the distance between two lat/long points on a sphere """
-    radius = 6371.0  # FAA approved globe radius in km
-    dlat = math.radians(target_point.get_latitude() - origin_point.get_latitude())
-    dlon = math.radians(target_point.get_longitude() - origin_point.get_longitude())
-    a = math.sin(dlat / 2.) * math.sin(dlat / 2.) + math.cos(math.radians(origin_point.get_latitude())) \
-        * math.cos(math.radians(target_point.get_latitude())) * math.sin(dlon / 2.) * math.sin(dlon / 2.)
-    c = 2.0 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
-    d = radius * c
-    return d * 1000
-
-
 class HMM(HiddenMarkovModel):
     def __init__(self, graph):
         self.graph = graph
-        # self.segmentDf = networkx.to_pandas_edgelist(graph.graph)
 
-    def get_emission_prob(self, point, projection):
-        # d = (1 / (math.sqrt(2 * math.pi)) * SIGMA) * math.e ** (
-        #         -(haversine_distance(point, projection[0])) ** 2 / (2 * SIGMA) ** 2)
-
+    def get_emission_prob(self, point: Point, projection):
         c = (1 / (SIGMA * math.sqrt(2 * math.pi)))
-        distancia = osmnx.great_circle_vec(point.get_latitude(),
-                                           point.get_longitude(),
-                                           projection[0].get_latitude(),
-                                           projection[0].get_longitude())
-        prob = c * math.e ** (-0.5 * ((distancia / SIGMA) ** 2))
+        distance = point.haversine_distance(projection[0])
+        prob = c * math.e ** (-0.5 * ((distance / SIGMA) ** 2))
         return prob
-        # return d
 
-    def get_transition_prob(self, point, projection, next_point, next_projection):
-        great_circle_distance = osmnx.great_circle_vec(point.get_latitude(),
-                                          point.get_longitude(),
-                                          next_point.get_latitude(),
-                                          next_point.get_longitude())
-        route_distance = self.graph.get_shortest_path_length(projection[2],
-                                                            next_projection[1])
-
-        prob = (1 / BETA) * math.e ** (-(abs(great_circle_distance - route_distance)))
+    def get_transition_prob(self, point: Point, projection, next_point: Point, next_projection):
+        distance = point.haversine_distance(next_point)
+        route_distance = self.graph.get_shortest_path_length(projection[2], next_projection[1])
+        prob = (1 / BETA) * math.e ** (-(abs(distance - route_distance)))
         return prob
 
     def viterbi_algorithm(self, points):
+        global estimated_point
         path = []
         max_prob_record = []
         # Para cada uno de los puntos GPS

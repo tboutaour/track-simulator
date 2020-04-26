@@ -20,7 +20,8 @@ class GetTrackAnalysisStatisticsImpl(GetTrackAnalysisStatistics):
         return data.drop(columns=['point_lat_shift', 'point_lon_shift'])
 
     def __add_point_projection_distance(self, data: DataFrame) -> DataFrame:
-        data['DistancePointProjection'] = data.apply(lambda x: Point(x['Point_lon'], x['Point_lat']).haversine_distance(
+        data['DistancePointProjection'] = data.apply(lambda x: Point(x['Point_lon'],
+                                                                     x['Point_lat']).haversine_distance(
             Point(x['Projection_lon'],
                   x['Projection_lat'])),
                                                      axis=1)

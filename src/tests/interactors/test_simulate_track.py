@@ -2,31 +2,44 @@ import unittest
 
 import matplotlib.pyplot as plt
 import osmnx
-
+import numpy as np
 import utils
 from track_analyzer.entities.graph_impl import Graph
 from track_analyzer.entities.track_point import TrackPoint as Point
+from track_analyzer.interactor.simulate_track_impl import SimulateTrackImpl
 from track_analyzer.pipelines.track_simulator_pipeline import TrackSimulatorPipeline
-from track_analyzer.repository.graph_information_repository_impl import GraphInformationRepositoryImpl as GraphInformationRepository
+from track_analyzer.repository.graph_information_repository_impl import \
+    GraphInformationRepositoryImpl as GraphInformationRepository, GraphInformationRepositoryImpl
+from track_analyzer.repository.resource.mongo_resource_impl import MongoResourceImpl
+from track_analyzer.repository.track_statistics_repository_impl import TrackStatisticsRepositoryImpl
 
 
 class MyTestCase(unittest.TestCase):
-    @unittest.skip
     def test_path_creation(self):
-        mongodbConnection = GraphInformationRepository('localhost', 27019)
+        mongo_resource = MongoResourceImpl()
+        graph_information = GraphInformationRepositoryImpl(mongo_resource)
+        track_statistics_repository = TrackStatisticsRepositoryImpl(mongo_resource)
+        id_graph = "Graph_Analysis_04-13-2020"
         bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023)
 
-        id_track = "Graph_Analysis_03152020"
-        data = mongodbConnection.read_graph_information_dataframe(id_track)
+        id_track = "Graph_Analysis_04-13-2020"
+        data = graph_information.read_graph_information_dataframe(id_track)
 
-        #Graph information load
+        simulate_track = SimulateTrackImpl(bellver_graph, 4, track_statistics_repository)
+        # Graph information load
         bellver_graph.load_graph_analysis_statistics(data)
-        simulator = TrackSimulatorPipeline(bellver_graph, 0)
+        simulator = TrackSimulatorPipeline(simulate_track)
 
-        path, distance = simulator.create_path(1248507104, 4000)
-        print(path, distance)
+        path = simulator.run(1248507104, 7000)
+        a = [x[0] for x in path]
+        print(path)
         # ec = ['b' if (u == 2503944129 and v == 1357504260) else 'r' for u, v, k in bellver_graph.graph.edges(keys=True)]
-        fig, ax = osmnx.plot_graph_route(bellver_graph.graph, path)
+        fig, ax = osmnx.plot_graph_route(bellver_graph.graph, a,
+                                         bgcolor='k',
+                                         node_color='black',
+                                         edge_linewidth=1.5,
+                                         edge_alpha=1,
+                                         node_zorder=3)
         plt.show()
 
     @unittest.skip
@@ -37,7 +50,7 @@ class MyTestCase(unittest.TestCase):
         id_track = "Graph_Analysis_03152020"
         data = mongodbConnection.read_graph_information_dataframe(id_track)
 
-        #Graph information load
+        # Graph information load
         bellver_graph.load_graph_analysis_statistics(data)
         simulator = TrackSimulatorPipeline(bellver_graph, 0)
 
@@ -52,14 +65,17 @@ class MyTestCase(unittest.TestCase):
         bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023)
         simulator = TrackSimulatorPipeline(bellver_graph, 0)
         result = simulator.get_closest_segment_point(coord_list, point)
-        assert(0 == result)
+        assert (0 == result)
         point = (2.6149201, 39.5580066)
         result = simulator.get_closest_segment_point(coord_list, point)
-        assert(0 == result)
+        assert (0 == result)
 
     @unittest.skip
     def test_calculate_point(self):
-        segment = [1248507104, 293027796, 1248507094, 1248507104, 293027796, 1248507104, 293027796, 1248507104, 317813195, 317813354, 317813195, 317813354, 317813453, 1357490350, 317813453, 317813462, 317813485, 1342069005, 317813485, 1342069005, 1594898117, 317813511, 1594898117, 317813511, 317813546, 317813577, 317813546, 317813511, 1594898117, 1342069005, 1594916474, 1342069005]
+        segment = [1248507104, 293027796, 1248507094, 1248507104, 293027796, 1248507104, 293027796, 1248507104,
+                   317813195, 317813354, 317813195, 317813354, 317813453, 1357490350, 317813453, 317813462, 317813485,
+                   1342069005, 317813485, 1342069005, 1594898117, 317813511, 1594898117, 317813511, 317813546,
+                   317813577, 317813546, 317813511, 1594898117, 1342069005, 1594916474, 1342069005]
 
         origin_node = 1248507104
         target_node = 293027796
@@ -72,12 +88,15 @@ class MyTestCase(unittest.TestCase):
 
     @unittest.skip
     def test_simulate_segment(self):
-        segment = [1248507104, 293027796, 1248507094, 1248507104, 293027796, 1248507104, 293027796, 1248507104, 317813195, 317813354, 317813195, 317813354, 317813453, 1357490350, 317813453, 317813462, 317813485, 1342069005, 317813485, 1342069005, 1594898117, 317813511, 1594898117, 317813511, 317813546, 317813577, 317813546, 317813511, 1594898117, 1342069005, 1594916474, 1342069005]
+        segment = [1248507104, 293027796, 1248507094, 1248507104, 293027796, 1248507104, 293027796, 1248507104,
+                   317813195, 317813354, 317813195, 317813354, 317813453, 1357490350, 317813453, 317813462, 317813485,
+                   1342069005, 317813485, 1342069005, 1594898117, 317813511, 1594898117, 317813511, 317813546,
+                   317813577, 317813546, 317813511, 1594898117, 1342069005, 1594916474, 1342069005]
         bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023)
         simulator = TrackSimulatorPipeline(bellver_graph, 0)
 
         simulated_segment = simulator.simulate_segment(segment)
-        fig, ax = osmnx.plot_graph(bellver_graph.graph, fig_height=10, fig_width=10, show=False, close=False,)
+        fig, ax = osmnx.plot_graph(bellver_graph.graph, fig_height=10, fig_width=10, show=False, close=False, )
         utils.plot_points(ax, simulated_segment, 'blue')
         plt.show()
         print(simulated_segment)
@@ -85,16 +104,15 @@ class MyTestCase(unittest.TestCase):
     @unittest.skip
     def test_simulate_segments(self):
         segments = [1248507104, 293027796, 1248507094, 1248507104, 293027796, 1248507104, 293027796, 1248507104,
-                   317813195, 317813354, 317813195, 317813354, 317813453, 1357490350, 317813453, 317813462,
-                   317813485, 1342069005, 317813485, 1342069005, 1594898117, 317813511, 1594898117, 317813511,
-                   317813546, 317813577, 317813546, 317813511, 1594898117, 1342069005, 1594916474, 1342069005]
+                    317813195, 317813354, 317813195, 317813354, 317813453, 1357490350, 317813453, 317813462,
+                    317813485, 1342069005, 317813485, 1342069005, 1594898117, 317813511, 1594898117, 317813511,
+                    317813546, 317813577, 317813546, 317813511, 1594898117, 1342069005, 1594916474, 1342069005]
         segment_list = [[segments[idx], segments[idx + 1]] for idx in range(len(segments) - 1)]
 
         bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023)
         simulator = TrackSimulatorPipeline(bellver_graph, 0)
         simulated_track = [simulator.simulate_segment(s) for s in segment_list]
         printable = sum(simulated_track, [])
-
 
         fig, ax = osmnx.plot_graph(bellver_graph.graph, fig_height=10, fig_width=10, show=False, close=False, )
         utils.plot_points(ax, printable, 'blue')
@@ -126,6 +144,3 @@ class MyTestCase(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
-
-

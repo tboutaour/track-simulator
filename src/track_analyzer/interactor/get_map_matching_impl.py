@@ -1,9 +1,9 @@
 
-from track_analyzer.interactor.get_map_matching import GetMapMatching as dMapMatching
+from track_analyzer.interactor.get_map_matching import GetMapMatching
 from track_analyzer.entities.hidden_markov_model import HiddenMarkovModel
 
 
-class GetMapMatchingImpl(dMapMatching):
+class GetMapMatchingImpl(GetMapMatching):
     def __init__(self, detection_model: HiddenMarkovModel):
         self.detection_model = detection_model
 
