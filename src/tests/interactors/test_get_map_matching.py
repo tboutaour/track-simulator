@@ -1,16 +1,28 @@
+import os
 import unittest
-from track_analyzer.interactor.get_map_matching_impl import GetMapMatchingImpl
-from track_analyzer.repository.resource.gpx_resource_impl import GPXResourceImpl
-from track_analyzer.entities.hidden_markov_model_impl import HMM
-from track_analyzer.repository.resource.gpx_resource_impl import GPXResourceImpl as LoaderSaver
-from track_analyzer.entities.track_point import TrackPoint as Point
-from track_analyzer.entities.graph_impl import Graph
-from track_analyzer.repository.resource.mongo_resource_impl import MongoResourceImpl
-from track_analyzer.repository.track_information_repository_impl import TrackInformationRepositoryImpl
-from track_analyzer.interactor.get_map_matching_impl import GetMapMatchingImpl
+from unittest import mock
+
 import matplotlib.pyplot as plt
 import osmnx
-import seaborn as sns; sns.set()
+import seaborn as sns;
+from track_analyzer.entities.graph_impl import Graph
+from track_analyzer.entities.hidden_markov_model_impl import HMM
+from track_analyzer.entities.track_point import TrackPoint as Point
+from track_analyzer.interactor.get_map_matching_impl import GetMapMatchingImpl
+from track_analyzer.repository.resource.gpx_resource_impl import GPXResourceImpl
+from track_analyzer.repository.resource.gpx_resource_impl import GPXResourceImpl as LoaderSaver
+
+sns.set()
+
+k = mock.patch.dict(os.environ, {"MONGO_HOST": "localhost",
+                                 "MONGO_PORT": "27019",
+                                 "MONGO_DATABASE": "tracksimulatordb2"})
+k.start()
+from track_analyzer.repository.resource.mongo_resource_impl import MongoResourceImpl
+from track_analyzer.repository.track_information_repository_impl import TrackInformationRepositoryImpl
+
+k.stop()
+
 
 
 class MyTestCase(unittest.TestCase):

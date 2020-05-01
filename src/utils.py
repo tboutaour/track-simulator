@@ -151,7 +151,7 @@ def plot_example_transition_prob():
 
 
 def create_folder(path):
-    today = datetime.now()
+    today = datetime.utcnow()
     str_day = today.strftime('%Y%m%d_%H%M') + "00"
     folder_path = path + "/" + str_day
     try:

@@ -17,12 +17,11 @@ services:
     build: .
     volumes:
     - ./src:/app
+    - ./src/data:/data
     depends_on:
       - db
     networks:
       - app-tier
-    tty: true
-    stdin_open: true
     expose:
       - "27017"
 

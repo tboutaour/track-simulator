@@ -1,29 +1,55 @@
+import logging
+import os
+import sys
 import unittest
+from unittest import mock
 
 import matplotlib.pyplot as plt
 import osmnx
 import utils
 from track_analyzer.entities.graph_impl import Graph
-from track_analyzer.interactor.simulate_track_impl import SimulateTrackImpl
+
 from track_analyzer.pipelines.track_simulator_pipeline import TrackSimulatorPipeline
+
+k = mock.patch.dict(os.environ, {"MONGO_HOST": "localhost",
+                                 "MONGO_PORT": "27019",
+                                 "MONGO_DATABASE": "tracksimulatordb2",
+                                 "ROOT_DIRECTORY": "/Users/tonibous/Documents/1-UIB/TrabajoFinal/TrackAnalyzer",
+                                 "FILE_DIRECTORY": "/Users/tonibous/Documents/1-UIB/TrabajoFinal/TrackAnalyzer/src"
+                                                   "/data/tracks_to_analysis",
+                                 "EXPORT_ANALYSIS_IMAGES_FOLDER": "/Users/tonibous/Documents/1-UIB/TrabajoFinal"
+                                                                  "/TrackAnalyzer/src/data/analysis",
+                                 "EXPORT_SIMULATIONS_IMAGES_FOLDER": "/Users/tonibous/Documents/1-UIB/TrabajoFinal"
+                                                                  "/TrackAnalyzer/src/data/simulation/images",
+                                 "EXPORT_SIMULATIONS_GPX_FOLDER": "/Users/tonibous/Documents/1-UIB/TrabajoFinal"
+                                                                  "/TrackAnalyzer/src/data/simulation/gpx",
+                                 "PYTHONPATH": "/Users/tonibous/Documents/1-UIB/TrabajoFinal/TrackAnalyzer/src/",
+                                 "RUNPATH": "/Users/tonibous/Documents/1-UIB/TrabajoFinal/TrackAnalyzer/src"
+                                            "/track_analyzer/main "
+                                 })
+k.start()
+from track_analyzer.repository.resource.gpx_resource_impl import GPXResourceImpl
+from track_analyzer.repository.resource.pyplot_resource_impl import PyplotResourceImpl
 from track_analyzer.repository.graph_information_repository_impl import \
     GraphInformationRepositoryImpl
-from track_analyzer.repository.resource.mongo_resource import MongoResource
 from track_analyzer.repository.resource.mongo_resource_impl import MongoResourceImpl
 from track_analyzer.repository.track_statistics_repository import TrackStatisticsRepository
 from track_analyzer.repository.track_statistics_repository_impl import TrackStatisticsRepositoryImpl
-from unittest import mock
-import sys
-import logging
+from track_analyzer.interactor.simulate_track_impl import SimulateTrackImpl
+
+k.stop()
+
 
 class MyTestCase(unittest.TestCase):
     logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+
     def test_path_creation(self):
         mongo_resource = MongoResourceImpl()
         graph_information = GraphInformationRepositoryImpl(mongo_resource)
         track_statistics_repository = TrackStatisticsRepositoryImpl(mongo_resource)
         bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023)
-
+        gpx_resource = GPXResourceImpl()
+        pyplot_resource = PyplotResourceImpl()
         id_track = "Graph_Analysis_04-13-2020"
         try:
             data = graph_information.read_graph_information_dataframe(id_track)
@@ -31,7 +57,7 @@ class MyTestCase(unittest.TestCase):
             logging.warning("NOT found in MongoDB")
             return
 
-        simulate_track = SimulateTrackImpl(bellver_graph, 4, track_statistics_repository)
+        simulate_track = SimulateTrackImpl(bellver_graph, 4, gpx_resource, pyplot_resource, track_statistics_repository)
         # Graph information load
         bellver_graph.load_graph_analysis_statistics(data)
         simulator = TrackSimulatorPipeline(simulate_track)

@@ -1,14 +1,16 @@
 # MongoDB
-MONGO_HOST = 'localhost'
-MONGO_PORT = 27019
-MONGO_DATABASE = 'tracksimulatordb2'
+import os
+
+MONGO_HOST = os.environ.get('MONGO_HOST')
+MONGO_PORT = int(os.environ.get('MONGO_PORT'))
+MONGO_DATABASE = os.environ.get('MONGO_DATABASE')
 MONGO_GRAPH_INFORMATION_COLLECTION = 'graphDataframe'
 MONGO_TRACK_INFORMATION_COLLECTION = 'trackDataframe'
 MONGO_TRACK_STATISTICS_COLLECTION = 'trackStatistics'
 
 # Files directories
-ROOT_DIRECTORY = '/Users/tonibous/Documents/1-UIB/TrabajoFinal/TrackAnalyzer'
-FILE_DIRECTORY = ROOT_DIRECTORY + '/src/data/tracks_to_analysis'
-EXPORT_ANALYSIS_IMAGES_FOLDER = ROOT_DIRECTORY + '/src/data/analysis'
-EXPORT_SIMULATIONS_GPX_FOLDER = ROOT_DIRECTORY + '/src/data/simulation/gpx'
-EXPORT_SIMULATIONS_IMAGES_FOLDER = ROOT_DIRECTORY + '/src/data/simulation/images'
+ROOT_DIRECTORY = os.environ.get('ROOT_DIRECTORY')
+FILE_DIRECTORY = os.environ.get('FILE_DIRECTORY')
+EXPORT_ANALYSIS_IMAGES_FOLDER = os.environ.get('EXPORT_ANALYSIS_IMAGES_FOLDER')
+EXPORT_SIMULATIONS_GPX_FOLDER = os.environ.get('EXPORT_SIMULATIONS_GPX_FOLDER')
+EXPORT_SIMULATIONS_IMAGES_FOLDER = os.environ.get('EXPORT_SIMULATIONS_IMAGES_FOLDER')
