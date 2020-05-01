@@ -4,14 +4,18 @@
 %OGC® Geography Markup Language (GML) — Extended schemas and encoding rules
 
 \chapter{Conceptos principales}
-En esta sección se pretenden introducir los conceptos básicos referentes al tipo de información, 
-herramientas y formatos de datos geográficos con los que se trabaja durante toda la propuesta.
+Para entender completamente el objetivo la problemática a resolver, la propuesta, 
+y las tecnologías que se presentan en este documento se debe realizar una introducción al 
+lector a la información sobre los sistemas de navegación por satélite, qué tipos principales
+existen, los tipos de formatos de datos que encontramos y las herramientas principales a 
+tener en cuenta. Todos estos temas serán descritos en detalle en los siguientes apartados.
 
 \section{Sistemas de navegación por satélite}
 Los \ac{GNSS} son mecanismos formados por una red de satélites utilizados 
 para situar elementos en la superficie terrestre. Destacan los sistemas GALILEO, GLONASS y GPS,
 de origen Europeo, Ruso y Americano respectivamente, siendo este último el que explicaremos 
-con más detalle.
+con más detalle debido a su mayor uso.
+
 El Sistema de Posicionamiento Global, también llamado \ac{GPS} por sus siglas en inglés 
 lo forma un mínimo de 24 satélites en órbita que proporcionan información de posicionamiento y tiempo 
 accesible para cualquier usuario. El funcionamiento de estos sistemas se basan el cálculo de la 
@@ -22,25 +26,26 @@ respectivamente al 95$\%$ de probabilidad \cite{ElRabbany01}.
 \subsection{GIS}
 %Qué es un GIS
 Los Sistemas de Información Geográfica, \ac{GIS},  son aplicaciones que permiten almacenar, manipular y presentar la información geográfica \cite{EPA01}.Entre el gran número de aplicaciones GIS destacan ArcGIS y QGIS, siendo la primera software no libre publicado por la empresa Esri y la segunda software libre por la Open Source Geospatial Foundation.
-\begin{figure}[htb]
-\begin{center}
-\includegraphics[width=0.6\textwidth]{./Imagenes/ArcGIS.png}
+
+\begin{figure}[!htb]
+\begin{minipage}{0.48\textwidth}
+\centering
+\includegraphics[width=0.9\textwidth]{./Imagenes/ArcGIS.png}
 \caption{Ejemplo de la aplicacion ArcGis}
 \label{fig:ArcGis01}
-\end{center}
-\end{figure}
-\begin{figure}[htb]
-\begin{center}
-\includegraphics[width=0.6\textwidth]{./Imagenes/QGIS.png}
+\end{minipage}\hfill
+\begin{minipage}{0.48\textwidth}
+\centering
+\includegraphics[width=0.9\textwidth]{./Imagenes/QGIS.png}
 \caption{Ejemplo de la aplicacion QGIS}
 \label{fig:QGIS01}
-\end{center}
+\end{minipage}
 \end{figure}
-
 \newpage
+
 \subsection{Fuentes de datos}
 Estas herramientas necesitan que los datos obtenidos por \ac{GPS}  sigan un formato compatible. 
-Estas herramientas soportan una gran diversidad de formatos que se dividen en ráster y Vectoriales. 
+Soportan una gran diversidad de formatos que se dividen en en dos bloques: ráster y Vectoriales. 
 
 \subsubsection{Formato ráster}
 La respresentación de los datos se hace a partir de píxeles regulares de valor único.
@@ -57,7 +62,7 @@ populares estan Esri Grid, GeoTIFF, JPEG2000 \cite{Morales01}.
 \end{figure}
 
 \subsubsection{Formato vectorial}
-los formatos vectoriales se basan en la representación mediante puntos, líneas y polígonos.
+Los formatos vectoriales se basan en la representación mediante puntos, líneas y polígonos.
 De este segundo grupo destacamos los siguientes:
 \begin{description}
 \item [\ac{GML}] Lenguaje procedente del esquema \ac{XML} que almacena información geográfica \cite{OGC01}.

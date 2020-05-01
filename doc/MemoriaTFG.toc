@@ -10,9 +10,9 @@
 \contentsline {subsection}{\numberline {3.1.1}GIS}{5}{subsection.3.1.1}% 
 \contentsline {subsection}{\numberline {3.1.2}Fuentes de datos}{6}{subsection.3.1.2}% 
 \contentsline {subsubsection}{Formato r\IeC {\'a}ster}{6}{section*.10}% 
-\contentsline {subsubsection}{Formato vectorial}{7}{section*.11}% 
+\contentsline {subsubsection}{Formato vectorial}{6}{section*.11}% 
 \contentsline {section}{\numberline {3.2}Estructura de los ficheros \ac {GPX}}{7}{section.3.2}% 
-\contentsline {section}{\numberline {3.3}Open Street Map}{9}{section.3.3}% 
+\contentsline {section}{\numberline {3.3}Open Street Map}{8}{section.3.3}% 
 \contentsline {chapter}{\chapternumberline {4}Arquitectura de la aplicaci\IeC {\'o}n}{11}{chapter.4}% 
 \contentsline {section}{\numberline {4.1}\textit {TrackSimulator}}{11}{section.4.1}% 
 \contentsline {section}{\numberline {4.2}Funcionalidades de \textit {TrackSimulator}}{13}{section.4.2}% 
@@ -27,22 +27,23 @@
 \contentsline {subsection}{\numberline {5.1.1}Importaci\IeC {\'o}n de datos GPS a \textit {TrackSimulator}}{19}{subsection.5.1.1}% 
 \contentsline {subsection}{\numberline {5.1.2}Importaci\IeC {\'o}n de la red compleja de datos}{20}{subsection.5.1.2}% 
 \contentsline {section}{\numberline {5.2}Map Matching}{20}{section.5.2}% 
-\contentsline {subsection}{\numberline {5.2.1}\ac {HMM}}{21}{subsection.5.2.1}% 
-\contentsline {subsection}{\numberline {5.2.2}Aproximaci\IeC {\'o}n \ac {HMM} a Map-matching}{21}{subsection.5.2.2}% 
+\contentsline {subsection}{\numberline {5.2.1}Hidden Markov Model (\ac {HMM})}{21}{subsection.5.2.1}% 
+\contentsline {subsection}{\numberline {5.2.2}Aproximaci\IeC {\'o}n de Hidden Markov Model a Map-matching}{21}{subsection.5.2.2}% 
 \contentsline {subsection}{\numberline {5.2.3}Algoritmo de Viterbi}{22}{subsection.5.2.3}% 
 \contentsline {subsection}{\numberline {5.2.4}Ejemplo de aplicaci\IeC {\'o}n del algoritmo de Viterbi}{23}{subsection.5.2.4}% 
-\contentsline {subsection}{\numberline {5.2.5}Implementaci\IeC {\'o}n de Map-matching}{25}{subsection.5.2.5}% 
-\contentsline {section}{\numberline {5.3}Explotaci\IeC {\'o}n del dato}{25}{section.5.3}% 
-\contentsline {subsection}{\numberline {5.3.1}An\IeC {\'a}lisis de distancias}{25}{subsection.5.3.1}% 
-\contentsline {subsection}{\numberline {5.3.2}Demostraci\IeC {\'o}n de an\IeC {\'a}lisis}{27}{subsection.5.3.2}% 
+\contentsline {subsection}{\numberline {5.2.5}Implementaci\IeC {\'o}n de Map-matching}{26}{subsection.5.2.5}% 
+\contentsline {section}{\numberline {5.3}Explotaci\IeC {\'o}n del dato}{26}{section.5.3}% 
+\contentsline {subsection}{\numberline {5.3.1}An\IeC {\'a}lisis de distancias}{26}{subsection.5.3.1}% 
+\contentsline {subsection}{\numberline {5.3.2}Demostraci\IeC {\'o}n de an\IeC {\'a}lisis}{28}{subsection.5.3.2}% 
 \contentsline {chapter}{\chapternumberline {6}Simulaci\IeC {\'o}n de trayectorias}{29}{chapter.6}% 
 \contentsline {section}{\numberline {6.1}Generaci\IeC {\'o}n de un camino}{29}{section.6.1}% 
 \contentsline {section}{\numberline {6.2}Generaci\IeC {\'o}n de los segmentos}{30}{section.6.2}% 
-\contentsline {section}{\numberline {6.3}Generaci\IeC {\'o}n del punto pseudo-aleatorio}{31}{section.6.3}% 
-\contentsline {section}{\numberline {6.4}Exportaci\IeC {\'o}n de trayectoria a fichero .\ac {GPX}}{31}{section.6.4}% 
+\contentsline {section}{\numberline {6.3}Generaci\IeC {\'o}n del punto pseudo-aleatorio}{32}{section.6.3}% 
+\contentsline {section}{\numberline {6.4}Exportaci\IeC {\'o}n de trayectoria a fichero .\ac {GPX}}{32}{section.6.4}% 
 \contentsline {chapter}{\chapternumberline {7}Experimentacion}{33}{chapter.7}% 
 \contentsline {section}{\numberline {7.1}Experimentaci\IeC {\'o}n sin importaci\IeC {\'o}n de datos reales}{33}{section.7.1}% 
 \contentsline {section}{\numberline {7.2}Experimentaci\IeC {\'o}n con importaci\IeC {\'o}n de datos reales}{33}{section.7.2}% 
 \contentsline {chapter}{\chapternumberline {8}Gu\IeC {\'\i }a de instalaci\IeC {\'o}n y uso}{35}{chapter.8}% 
 \contentsline {chapter}{\chapternumberline {9}Conclusiones}{37}{chapter.9}% 
 \contentsline {section}{\numberline {9.1}Posibles mejoras}{37}{section.9.1}% 
+\contentsline {chapter}{Bibliograf\'{\i }a}{39}{chapter*.21}% 

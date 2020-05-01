@@ -29,7 +29,16 @@ Para generar un camino, se realizará un proceso iterativo por el cual mediante 
 asignado por parámetro de entrada, se seleccionará uno de los caminos, manteniendo la 
 distribución probabilística del conjunto de aristas, de forma que si una de las aristas tiene una 
 frecuencia del 25\% de las detecciones, con un número suficiente de muestras se cumpliría dicha 
-distribución. El proceso de selección de aristas continuará hasta que la suma de las distancias 
+distribución. 
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=0.75\textwidth]{./Imagenes/SimulationProbabilities.png}
+\caption{Ejemplo de probabilidades dentro de un nodo intermedio entre rutas.}
+\label{fig:PointGeneration02}
+\end{center}
+\end{figure}
+
+El proceso de selección de aristas continuará hasta que la suma de las distancias 
 acumule el total de distancia por recorrer, que será otro de los parámetros de entrada.
 La implementación de este proceso se encuentra en el método \textit{create\_path} de la 
 implementación del \textbf{\textit{interactor}} \textit{simulate\_track\_impl}

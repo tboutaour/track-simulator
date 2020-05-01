@@ -14,7 +14,7 @@ Los waypoints tienen la estructura que podemos ver en esta imagen:
 \begin{center}
 \includegraphics[width=0.9\textwidth]{./Imagenes/WayPointStructure.png}
 \caption{Estructura de un \textit{waypoint} dentro de un fichero .\ac{GPX}}
-\label{WayPointStructure}
+\label{figure: WayPointStructure}
 \end{center}
 \end{figure}
 
@@ -105,8 +105,6 @@ La red compleja queda de la siguiente forma una vez aplicado el procesado:
 \label{TablaArista}
 \end{table}
 
-
-
 \section{Map Matching}\label{section: MapMatching}
 Uno de los grandes retos del análisis de trayectorias es la identificación y asignación de cada uno de los 
 puntos GPS en su correspondiente trayectoria. Los puntos GPS se transmiten a partir de un dispositivo. 
@@ -119,7 +117,7 @@ Existen diversos procedimientos para abordar el problema del \textit{Map-matchin
 aproximación al problema la realizamos aplicando el modelo probabilístico de las cadenas de Markov, 
 que explicamos en el siguiente apartado.
 
-\subsection{\ac{HMM}}
+\subsection{Hidden Markov Model (\ac{HMM})}
 %Explicar que es una cardena de Markov
 \ac{HMM} sigue el modelo estadístico tradicional de Markov. \cite{Malvar08}. En 1907, A. A. Markov 
 comenzó el estudio de un proceso donde un experimento podía afectar a la salida del siguiente 
@@ -139,7 +137,7 @@ un tiempo $t$ solo dependerá de $t-1$. De esta forma las observaciones ${O-2,..
 afectaran directamente a $t$.
 
 %(https://buildmedia.readthedocs.org/media/pdf/hidden-markov/latest/hidden-markov.pdf)
-\subsection{Aproximación \ac{HMM} a Map-matching}
+\subsection{Aproximación de Hidden Markov Model a Map-matching}
 Nuestra estructura del territorio está definida como un grafo formado por diferentes \textit{nodos} 
 y \textit{aristas}. Los nodos corresponden a la intersección entre caminos, mientras que en las aristas 
 se almacena la información referente a la constitución geográfica de estos.
@@ -151,7 +149,7 @@ y como se muestra en la siguiente imagen:
 \begin{center}
 \includegraphics[width=0.6\textwidth]{./Imagenes/LineString.png}
 \caption{Ejemplo de estructura LineString}
-\label{LineString}
+\label{figure: LineString}
 \end{center}
 \end{figure}
 
@@ -194,6 +192,28 @@ P_{transition}=\frac{distance(p_{i-1}, p_{i})}{e^{SP(p_{i-1}, p_{i})}}
 \end{equation}
 \end{description}
 
+Los valores de $\sigma$ y $\beta$ se han obtenido mediante pruebas. Como vemos en las siguientes figuras,
+se han escogido $\sigma = 4$ debido a que es un valor que da unos valores de probabilidad válidos para 
+el rango de 5 a 10 metros. 
+
+\begin{figure}[!htb]
+\begin{minipage}{0.46\textwidth}
+\centering
+\includegraphics[width=1.2\textwidth]{./Imagenes/EmissionProb.png}
+\caption{Análisis de la función de $P_{emission}$ para $\sigma$.}
+\label{figure:EmissionProb}
+\end{minipage}\hfill
+\begin{minipage}{0.46\textwidth}
+\centering
+\includegraphics[width=1.2\textwidth]{./Imagenes/TransitionProb.png}
+\caption{Análisis de la $P_{transition}$ de transición para $\beta$.}
+\label{figure:TransitionProb}
+\end{minipage}
+\end{figure}
+Por otro lado se ha determinado que $\beta = 0.1$ por que la probabilidad de transición 
+debido a que es tolerante con valores entre 1 y 3 nodos de distancia, y para los datos tratados ofrece valores válidos.
+
+Cabe destacar que estos valores son modificables según la exactitud con la que cuenten los datos.
 %(https://buildmedia.readthedocs.org/media/pdf/hidden-markov/latest/hidden-markov.pdf)
 
 %Implementación propia
@@ -231,23 +251,23 @@ El algoritmo realiza una detección punto a punto de su proyección dentro del c
 aparecer situaciones en las que por desviación de precisión en la detección \ac{GPS} un punto parezca 
 situarse cerca de un camino no correcto. No obstante, la probabilidad de transición descrita en 
 el apartado anterior se encarga de ofrecer como opción más probable, aquella donde el 
-\textit{shortest path} del grafo sea menor. \ref{fig:GoodDetection}
+\textit{shortest path} del grafo sea menor. \ref{figure:GoodDetection}
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width=0.6\textwidth]{./Imagenes/BuenaDeteccion.png}
 \caption{Ejemplo de aplicación de algortimo de Viterbi para detección de trayectorias.}
-\label{fig:GoodDetection}
+\label{figure:GoodDetection}
 \end{center}
 \end{figure}
 
 No obstante pueden aparecer casos aislados donde la deteccion \ac{GPS} es tan cercana a una 
 proyección de un camino incorrecto que hace imposible su no elección respecto a la proyección 
-correcta. \ref{fig:BadDetection}
+correcta. \ref{figure:BadDetection}
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width=0.6\textwidth]{./Imagenes/MalaDeteccion.png}
 \caption{Ejemplo de aplicación de algortimo de Viterbi para detección de trayectorias.}
-\label{fig:BadDetection}
+\label{figure:BadDetection}
 \end{center}
 \end{figure}
 
