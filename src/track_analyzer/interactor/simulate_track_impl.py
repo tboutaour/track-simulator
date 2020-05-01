@@ -1,6 +1,9 @@
 from track_analyzer.interactor.simulate_track import SimulateTrack
+from track_analyzer.repository.resource.gpx_resource import GPXResource
+from track_analyzer.repository.resource.pyplot_resource import PyplotResource
 from track_analyzer.repository.track_statistics_repository import TrackStatisticsRepository
 import math
+import uuid
 import pandas as pd
 import geopy
 import geopy.distance
@@ -9,6 +12,7 @@ import numpy as np
 import utils
 from track_analyzer.entities.graph import Graph
 from track_analyzer.entities.track_point import TrackPoint
+from track_analyzer.conf.config import EXPORT_SIMULATIONS_IMAGES_FOLDER
 
 COLORS = ["green", "red", "blue", "purple", "pink", "orange", "yellow", "black"]
 DISTANCE_TO_FINAL_NODE = 24
@@ -16,9 +20,13 @@ DISTANCE_TO_FINAL_NODE = 24
 class SimulateTrackImpl(SimulateTrack):
     def __init__(self, graph: Graph,
                  number_simulations,
+                 gpx_resource: GPXResource,
+                 pyplot_resource: PyplotResource,
                  track_statistics_repository: TrackStatisticsRepository):
         self.number_simulations = number_simulations
         self.graph = graph
+        self.gpx_resource = gpx_resource
+        self.pyplot_resource = pyplot_resource
         self.accumulative_point_distance_distribution = self.__get_accumulative_distribution(
             track_statistics_repository.read_distance_point_to_next(), 40)
 
@@ -55,10 +63,11 @@ class SimulateTrackImpl(SimulateTrack):
             seg = self.simulate_segment(segment)
             for s in seg:
                 simulated_track.append(s)
+        generated_uid = str(uuid.uuid4())
 
-        fig, ax = self.graph.plot_graph()
-        utils.plot_points(ax, simulated_track, COLORS[0])
-        # plt.show()
+        self.gpx_resource.write(generated_uid, simulated_track)
+        self.pyplot_resource.write(generated_uid, self.graph, simulated_track)
+
         return path
 
     def create_path(self, origin, dist):
@@ -114,10 +123,13 @@ class SimulateTrackImpl(SimulateTrack):
         bearing = origin_point.get_bearing(next_point)
 
         # Calculamos una desviación
-        random_bearing = np.random.uniform(bearing - 50, bearing + 50)
+        random_bearing = np.random.uniform(bearing - 20, bearing + 20)
 
         # Calculamos distacia al punto que queremos crear
-        point_distance = self.__get_random_value(self.accumulative_point_distance_distribution)
+        if len(self.accumulative_point_distance_distribution) > 0:
+            point_distance = self.__get_random_value(self.accumulative_point_distance_distribution)
+        else:
+            point_distance = 20
 
         # Generamos el punto
         generated_point = origin_point.generate_point(random_bearing, point_distance)

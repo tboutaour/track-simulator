@@ -8,12 +8,16 @@ from track_analyzer.interactor.simulate_track_impl import SimulateTrackImpl
 from track_analyzer.pipelines.track_simulator_pipeline import TrackSimulatorPipeline
 from track_analyzer.repository.graph_information_repository_impl import \
     GraphInformationRepositoryImpl
+from track_analyzer.repository.resource.mongo_resource import MongoResource
 from track_analyzer.repository.resource.mongo_resource_impl import MongoResourceImpl
+from track_analyzer.repository.track_statistics_repository import TrackStatisticsRepository
 from track_analyzer.repository.track_statistics_repository_impl import TrackStatisticsRepositoryImpl
-
+from unittest import mock
+import sys
+import logging
 
 class MyTestCase(unittest.TestCase):
-    @unittest.skip
+    logging.basicConfig(stream=sys.stdout, level=logging.INFO)
     def test_path_creation(self):
         mongo_resource = MongoResourceImpl()
         graph_information = GraphInformationRepositoryImpl(mongo_resource)
@@ -21,7 +25,11 @@ class MyTestCase(unittest.TestCase):
         bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023)
 
         id_track = "Graph_Analysis_04-13-2020"
-        data = graph_information.read_graph_information_dataframe(id_track)
+        try:
+            data = graph_information.read_graph_information_dataframe(id_track)
+        except IndexError:
+            logging.warning("NOT found in MongoDB")
+            return
 
         simulate_track = SimulateTrackImpl(bellver_graph, 4, track_statistics_repository)
         # Graph information load
@@ -39,6 +47,34 @@ class MyTestCase(unittest.TestCase):
                                          edge_alpha=1,
                                          node_zorder=3)
         plt.show()
+
+    @mock.patch('track_analyzer.repository.track_statistics_repository', spec=TrackStatisticsRepository)
+    def test_mocked_path_creation(self, track_statistics_mock):
+        mongo_resource = MongoResourceImpl()
+        track_statistics_mock.read_distance_point_to_next.return_value = [0]
+        graph_information = GraphInformationRepositoryImpl(mongo_resource)
+        bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023)
+
+        id_track = "Graph_Analysis_04-13-2020"
+        data = graph_information.read_graph_information_dataframe(id_track)
+
+        simulate_track = SimulateTrackImpl(bellver_graph, 4, track_statistics_mock)
+        # Graph information load
+        bellver_graph.load_graph_analysis_statistics(data)
+        simulator = TrackSimulatorPipeline(simulate_track)
+
+        path = simulator.run(1248507104, 7000)
+        a = [x[0] for x in path]
+        print(path)
+        # ec = ['b' if (u == 2503944129 and v == 1357504260) else 'r' for u, v, k in bellver_graph.graph.edges(keys=True)]
+        fig, ax = osmnx.plot_graph_route(bellver_graph.graph, a,
+                                         bgcolor='k',
+                                         node_color='black',
+                                         edge_linewidth=1.5,
+                                         edge_alpha=1,
+                                         node_zorder=3)
+        plt.show()
+
     @unittest.skip
     def test_path_creation_with_heat_map(self):
         mongo_resource = MongoResourceImpl()

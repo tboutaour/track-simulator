@@ -1,0 +1,31 @@
+version: "2"
+services:
+  db:
+    image: mongo:latest
+    container_name: "mongodb"
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+    ports:
+    - "27019:27017"
+    networks:
+      - app-tier
+    volumes:
+      - /Users/tonibous/Documents/test/datadir:/data/db
+
+  app:
+    build: .
+    volumes:
+    - ./src:/app
+    depends_on:
+      - db
+    networks:
+      - app-tier
+    tty: true
+    stdin_open: true
+    expose:
+      - "27017"
+
+networks:
+  app-tier:
+    driver: bridge

@@ -5,10 +5,12 @@ from track_analyzer.repository.graph_information_repository_impl import GraphInf
 from track_analyzer.entities.graph_impl import Graph
 import networkx
 import matplotlib.pyplot as plt
+import os
 
 
 class MyTestCase(unittest.TestCase):
     def test_heat_map(self):
+        print(os.path.abspath(os.curdir))
         bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023)
         get_heat_map = GetHeatMapImpl()
         mongo_resource = MongoResourceImpl()

@@ -1,7 +1,9 @@
 from track_analyzer.repository.resource.gpx_resource import GPXResource
+import utils
 import gpxpy
 import gpxpy.gpx
 from track_analyzer.entities.track_point import TrackPoint as Point
+from track_analyzer.conf.config import EXPORT_SIMULATIONS_GPX_FOLDER
 
 
 def create_gpx_track(data):
@@ -17,7 +19,7 @@ def create_gpx_track(data):
     gpx_track.segments.append(gpx_segment)
 
     # Create points:
-    [gpx_segment.points.append(point[0], point[1]) for point in data]
+    [gpx_segment.points.append(gpxpy.gpx.GPXTrackPoint(point[1], point[0])) for point in data]
 
     # print('Created GPX:', gpx.to_xml())
     return gpx.to_xml()
@@ -41,7 +43,8 @@ class GPXResourceImpl(GPXResource):
             points = load_file_points(data)
         return list(list(zip(*points))[2])
 
-    def write(self, output, data):
-        with open(output, "w") as f:
-            f.write(data)
+    def write(self, uid, data):
+        path = utils.create_folder(EXPORT_SIMULATIONS_GPX_FOLDER)
+        with open(path + "/" + 'simulated_track_' + uid + '.gpx', 'w') as f:
+            f.write(create_gpx_track(data))
 

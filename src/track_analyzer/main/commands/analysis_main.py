@@ -10,12 +10,9 @@ from track_analyzer.interactor.get_trackanalysis_statistics_impl import GetTrack
 from track_analyzer.interactor.get_trackanalysis_graph_impl import GetTrackAnalysisGraphImpl
 from track_analyzer.pipelines.track_analysis_pipeline import TrackAnalysisPipeline
 from track_analyzer.entities.hidden_markov_model_impl import HMM
-from track_analyzer.main.analysis.arguments import Arguments
 
 
-
-def analysis_main():
-    args = Arguments()
+def analysis_main(file_directory):
     # Resources
     gpx_resource = GPXResourceImpl()
     mongo_resource = MongoResourceImpl()
@@ -47,7 +44,7 @@ def analysis_main():
 
     # Execution
 
-    track_analyzer_pipeline.run(args.get_file_directory())
+    track_analyzer_pipeline.run(file_directory)
 
 
 if __name__ == '__main__':
