@@ -15,7 +15,7 @@ from track_analyzer.repository.resource.gpx_resource import GPXResource
 import logging
 import sys
 
-MAX_RANGE_REPETEITION = 7
+MAX_RANGE_REPETEITION = 2
 
 
 class TrackAnalysisPipeline:
@@ -43,7 +43,7 @@ class TrackAnalysisPipeline:
         logging.basicConfig(stream=sys.stdout, level=logging.INFO)
         if file_path is None:
             file_path = FILE_DIRECTORY
-        files = [gpx_file for gpx_file in os.listdir(file_path) if gpx_file.endswith(".gpx")]
+        files = [file_path + '/' + gpx_file for gpx_file in os.listdir(file_path) if gpx_file.endswith(".gpx")]
         p = Pool(processes=multiprocessing.cpu_count())
         data = p.map(self.analyze, files)
         p.close()
@@ -69,12 +69,11 @@ class TrackAnalysisPipeline:
         #################################################
         # Get points from file
         #################################################
-        points = self.gpx_resource.read(FILE_DIRECTORY + '/' + gpx_file)
+        points = self.gpx_resource.read(gpx_file)
 
         #################################################
         # Map-matching of track
         #################################################
         matched_points = self.get_map_matching.match(points)
         logging.info("Analysis of " + gpx_file + " finished.")
-
         return self.get_track_analysis_dataframe.apply(gpx_file, points, matched_points)

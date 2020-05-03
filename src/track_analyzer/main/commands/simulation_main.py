@@ -6,14 +6,14 @@ from track_analyzer.repository.track_statistics_repository_impl import TrackStat
 from track_analyzer.entities.graph_impl import Graph
 from track_analyzer.interactor.simulate_track_impl import SimulateTrackImpl
 from track_analyzer.pipelines.track_simulator_pipeline import TrackSimulatorPipeline
+from track_analyzer.conf.config import LAST_VERSION_GRAPH
 
-LAST_VERSION_GRAPH = "Graph_Analysis_04-13-2020"
+
 
 
 def simulation_main(origin_node, distance):
     origin_node = 1248507104  # Bellver Castle entrance
     distance = 10000  # In meters
-
     # Resource
     mongo_resource = MongoResourceImpl()
     pyplot_resource = PyplotResourceImpl()

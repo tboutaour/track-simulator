@@ -28,7 +28,7 @@ class Arguments(object):
         # now that we're inside a subcommand, ignore the first
         # TWO argvs, ie the command (git) and the subcommand (commit)
         args = parser.parse_args(sys.argv[2:])
-        print('Running git commit, amend=%s' % args.amend)
+        print("Running git commit, analysis. Route: '{0}'".format(args.file_directory))
         analysis_main(args.file_directory)
 
     def simulate(self):

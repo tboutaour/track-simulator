@@ -8,7 +8,8 @@ from track_analyzer.interactor.get_heat_map_impl import GetHeatMapImpl
 
 k = mock.patch.dict(os.environ, {"MONGO_HOST": "localhost",
                                  "MONGO_PORT": "27019",
-                                 "MONGO_DATABASE": "tracksimulatordb2"})
+                                 "MONGO_DATABASE": "tracksimulatordbbatchsimulate",
+                                 "LAST_VERSION_GRAPH":  "Graph_Analysis_05-02-2020"})
 k.start()
 from track_analyzer.repository.resource.mongo_resource_impl import MongoResourceImpl
 from track_analyzer.repository.graph_information_repository_impl import GraphInformationRepositoryImpl
@@ -23,8 +24,9 @@ class MyTestCase(unittest.TestCase):
         get_heat_map = GetHeatMapImpl()
         mongo_resource = MongoResourceImpl()
         graph_information = GraphInformationRepositoryImpl(mongo_resource)
-        id_graph = "Graph_Analysis_04-13-2020"
-        data = graph_information.read_graph_information_dataframe(id_graph)
+        k.start()
+        data = graph_information.read_graph_information_dataframe(os.environ.get('LAST_VERSION_GRAPH'))
+        k.stop()
         # data['num of detections'] = data['num of detections'].apply(lambda x: 0 if x == 1 else x)
         bellver_graph.load_graph_analysis_statistics(data)
         get_heat_map.apply(bellver_graph, data)
