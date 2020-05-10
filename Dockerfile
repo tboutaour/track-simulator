@@ -13,7 +13,7 @@ ENV LAST_VERSION_GRAPH "Graph_Analysis_05-02-2020"
 # Files directories
 ENV ROOT_DIRECTORY "/app"
 ENV FILE_DIRECTORY ""
-ENV EXPORT_ANALYSIS_IMAGES_FOLDER "/data/simulation/gpx/gpx_to_analyze"
+ENV EXPORT_ANALYSIS_IMAGES_FOLDER "/data/analysis/statistics"
 ENV EXPORT_SIMULATIONS_GPX_FOLDER "/data/simulation/gpx"
 ENV EXPORT_SIMULATIONS_IMAGES_FOLDER "/data/simulation/images"
 

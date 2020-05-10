@@ -3,8 +3,6 @@ import sys
 import unittest
 import importlib
 from unittest import mock
-import track_analyzer
-
 
 j = mock.patch.dict(os.environ, {"MONGO_HOST": "localhost",
                                  "MONGO_PORT": "27019",
@@ -23,92 +21,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-
 class MyTestCase(unittest.TestCase):
-    def test_read_point_projection(self):
-        with k:
-            from track_analyzer.repository.resource import mongo_resource_impl
-            from track_analyzer.repository import track_statistics_repository_impl
-            mongodb_connection = mongo_resource_impl.MongoResourceImpl()
-            track_information_repository = track_statistics_repository_impl.TrackStatisticsRepositoryImpl(mongodb_connection)
-            data = track_information_repository.read_distance_point_projection()
-            print(data)
-            dx2 = data
-            # Generación distribucion acumulada
-            dx2.sort()
-            out_threshold = 40.0
-            net_dx2 = [i for i in dx2 if i < out_threshold]
-            net_dx2 = np.array(net_dx2)
-            net_dx2 = np.sort(net_dx2)
-            cd_dx = np.linspace(0., 1., len(net_dx2))
-            ser_dx = pd.Series(cd_dx, index=net_dx2)
-            print(ser_dx)
-            # plot
-            plt.figure(figsize=(7, 8))
-            plt.subplot(211)
-            ser_dx.plot(drawstyle='default', legend="True", color='green')
-            plt.xlabel("Meters")
-            plt.ylabel("Frequency")
-            plt.title("Cumulative distribution of distance point to projection")
-            plt.legend().set_visible(False)
-            plt.grid(True)
-            plt.subplot(212)
-            plt.hist(net_dx2, bins=300, alpha=0.5, color='green')
-            plt.xlabel('Distance point to point')
-            plt.ylabel('Frequency')
-            plt.title('Histogram of distance point to projection')
-            plt.subplots_adjust(top=0.92, bottom=0.08, left=0.10, right=0.95, hspace=0.25,
-                                wspace=0.35)
-            plt.show()
-            # plt.savefig('distDist.eps', format='eps', dpi=600)
-            self.assertEqual(True, True)
-
-    def test_read_point_to_next(self):
-        def test_read_point_projection(self):
-            with k:
-                from track_analyzer.repository.resource import mongo_resource_impl
-                from track_analyzer.repository import track_statistics_repository_impl
-                mongodb_connection = mongo_resource_impl.MongoResourceImpl()
-                track_information_repository = track_statistics_repository_impl.TrackStatisticsRepositoryImpl(
-                    mongodb_connection)
-            data = track_information_repository.read_distance_point_to_next()
-            print(data)
-            dx2 = data
-            # Generación distribucion acumulada
-            dx2.sort()
-            out_threshold = 40.0
-            net_dx2 = [i for i in dx2 if i < out_threshold]
-            net_dx2 = np.array(net_dx2)
-            net_dx2 = np.sort(net_dx2)
-            cd_dx = np.linspace(0., 1., len(net_dx2))
-            ser_dx = pd.Series(cd_dx, index=net_dx2)
-            print(ser_dx)
-            # plot
-            plt.figure(figsize=(7, 8))
-            plt.subplot(211)
-            ser_dx.plot(drawstyle='default', legend="True")
-            plt.xlabel("Meters")
-            plt.ylabel("Frequency")
-            plt.title("Cumulative distribution of distance point to point")
-            plt.legend().set_visible(False)
-            plt.grid(True)
-            plt.subplot(212)
-            plt.hist(net_dx2, bins=300, alpha=0.5)
-            plt.xlabel('Distance point to point')
-            plt.ylabel('Frequency')
-            plt.title('Histogram of distance point to point')
-            plt.subplots_adjust(top=0.92, bottom=0.08, left=0.10, right=0.95, hspace=0.25,
-                                wspace=0.35)
-            plt.show()
-            # plt.savefig('distDist.eps', format='eps', dpi=600)
-            self.assertEqual(True, True)
-
     def test_read_point_to_next_superposed(self):
         with k:
             from track_analyzer.repository.resource import mongo_resource_impl
             from track_analyzer.repository import track_statistics_repository_impl
             mongodb_connection = mongo_resource_impl.MongoResourceImpl()
-            track_information_repository = track_statistics_repository_impl.TrackStatisticsRepositoryImpl(mongodb_connection)
+            track_information_repository = track_statistics_repository_impl.TrackStatisticsRepositoryImpl(
+                mongodb_connection)
             data = track_information_repository.read_distance_point_to_next()
             print(data)
             dx2 = data

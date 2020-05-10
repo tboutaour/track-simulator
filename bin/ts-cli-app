@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# A wrapper script for execute TrackSimulator cli app with docker.
+# Put this file in $PATH as ts-cli-app
+
+# First check dependencies
+docker -v
+if [ $? -eq 0 ]
+then
+  exec docker-compose run \
+   --rm \
+  app main-wrapper "$@"
+else
+  echo "Docker is not installed. Please, check your installation."
+fi
+
