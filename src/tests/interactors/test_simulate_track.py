@@ -13,21 +13,25 @@ from track_analyzer.pipelines.track_simulator_pipeline import TrackSimulatorPipe
 
 k = mock.patch.dict(os.environ, {"MONGO_HOST": "localhost",
                                  "MONGO_PORT": "27019",
-                                 "MONGO_DATABASE": "tracksimulatordb2",
+                                 "MONGO_DATABASE": "tracksimulatorempty",
                                  "ROOT_DIRECTORY": "/Users/tonibous/Documents/1-UIB/TrabajoFinal/TrackAnalyzer",
                                  "FILE_DIRECTORY": "/Users/tonibous/Documents/1-UIB/TrabajoFinal/TrackAnalyzer/src"
                                                    "/data/tracks_to_analysis",
                                  "EXPORT_ANALYSIS_IMAGES_FOLDER": "/Users/tonibous/Documents/1-UIB/TrabajoFinal"
                                                                   "/TrackAnalyzer/src/data/analysis",
                                  "EXPORT_SIMULATIONS_IMAGES_FOLDER": "/Users/tonibous/Documents/1-UIB/TrabajoFinal"
-                                                                  "/TrackAnalyzer/src/data/simulation/images",
+                                                                     "/TrackAnalyzer/src/data/simulation/images",
                                  "EXPORT_SIMULATIONS_GPX_FOLDER": "/Users/tonibous/Documents/1-UIB/TrabajoFinal"
                                                                   "/TrackAnalyzer/src/data/simulation/gpx",
                                  "PYTHONPATH": "/Users/tonibous/Documents/1-UIB/TrabajoFinal/TrackAnalyzer/src/",
                                  "RUNPATH": "/Users/tonibous/Documents/1-UIB/TrabajoFinal/TrackAnalyzer/src"
-                                            "/track_analyzer/main "
+                                            "/track_analyzer/main ",
+                                 "LAST_VERSION_GRAPH": "Graph_Analysis_05-10-2020"
+                                 ""
                                  })
 k.start()
+
+
 from track_analyzer.repository.resource.gpx_resource_impl import GPXResourceImpl
 from track_analyzer.repository.resource.pyplot_resource_impl import PyplotResourceImpl
 from track_analyzer.repository.graph_information_repository_impl import \
@@ -46,13 +50,17 @@ class MyTestCase(unittest.TestCase):
     def test_path_creation(self):
         mongo_resource = MongoResourceImpl()
         graph_information = GraphInformationRepositoryImpl(mongo_resource)
+
+
         track_statistics_repository = TrackStatisticsRepositoryImpl(mongo_resource)
         bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023)
         gpx_resource = GPXResourceImpl()
         pyplot_resource = PyplotResourceImpl()
-        id_track = "Graph_Analysis_04-13-2020"
+        id_track = "Graph_Analysis_05-03-2020"
         try:
-            data = graph_information.read_graph_information_dataframe(id_track)
+            k.start()
+            data = graph_information.read_graph_information_dataframe(os.environ.get('LAST_VERSION_GRAPH'))
+            k.stop()
         except IndexError:
             logging.warning("NOT found in MongoDB")
             return
@@ -62,34 +70,38 @@ class MyTestCase(unittest.TestCase):
         bellver_graph.load_graph_analysis_statistics(data)
         simulator = TrackSimulatorPipeline(simulate_track)
 
-        path = simulator.run(1248507104, 7000)
+        path = simulator.run(1248507104, 10000)
         a = [x[0] for x in path]
         print(path)
         # ec = ['b' if (u == 2503944129 and v == 1357504260) else 'r' for u, v, k in bellver_graph.graph.edges(keys=True)]
-        fig, ax = osmnx.plot_graph_route(bellver_graph.graph, a,
-                                         bgcolor='k',
-                                         node_color='black',
-                                         edge_linewidth=1.5,
-                                         edge_alpha=1,
-                                         node_zorder=3)
-        plt.show()
+        # fig, ax = osmnx.plot_graph_route(bellver_graph.graph, a,
+        #                                  bgcolor='k',
+        #                                  node_color='black',
+        #                                  edge_linewidth=1.5,
+        #                                  edge_alpha=1,
+        #                                  node_zorder=3)
+        #plt.show()
 
-    @mock.patch('track_analyzer.repository.track_statistics_repository', spec=TrackStatisticsRepository)
-    def test_mocked_path_creation(self, track_statistics_mock):
+    def test_mocked_path_creation(self):
         mongo_resource = MongoResourceImpl()
-        track_statistics_mock.read_distance_point_to_next.return_value = [0]
+        track_statistics_repository = TrackStatisticsRepositoryImpl(mongo_resource)
         graph_information = GraphInformationRepositoryImpl(mongo_resource)
         bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023)
-
-        id_track = "Graph_Analysis_04-13-2020"
-        data = graph_information.read_graph_information_dataframe(id_track)
-
-        simulate_track = SimulateTrackImpl(bellver_graph, 4, track_statistics_mock)
+        gpx_resource = GPXResourceImpl()
+        pyplot_resource = PyplotResourceImpl()
+        try:
+            k.start()
+            data = graph_information.read_graph_information_dataframe(os.environ.get('LAST_VERSION_GRAPH'))
+            k.stop()
+        except IndexError:
+            logging.warning("NOT found in MongoDB")
+            return
+        simulate_track = SimulateTrackImpl(bellver_graph, 4, gpx_resource, pyplot_resource, track_statistics_repository)
         # Graph information load
-        bellver_graph.load_graph_analysis_statistics(data)
+        # bellver_graph.load_graph_analysis_statistics(data)
         simulator = TrackSimulatorPipeline(simulate_track)
 
-        path = simulator.run(1248507104, 7000)
+        path = simulator.run(1248507104, 10000)
         a = [x[0] for x in path]
         print(path)
         # ec = ['b' if (u == 2503944129 and v == 1357504260) else 'r' for u, v, k in bellver_graph.graph.edges(keys=True)]

@@ -13,7 +13,7 @@ from track_analyzer.conf.config import LAST_VERSION_GRAPH
 
 def simulation_main(origin_node, distance):
     origin_node = 1248507104  # Bellver Castle entrance
-    distance = 10000  # In meters
+    distance = 20000  # In meters
     # Resource
     mongo_resource = MongoResourceImpl()
     pyplot_resource = PyplotResourceImpl()

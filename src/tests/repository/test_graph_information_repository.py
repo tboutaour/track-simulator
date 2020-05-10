@@ -1,8 +1,15 @@
+import os
 import unittest
+from unittest import mock
 import pandas as pd
+k = mock.patch.dict(os.environ, {"MONGO_HOST": "localhost",
+                                 "MONGO_PORT": "27019",
+                                 "MONGO_DATABASE": "tracksimulatorempty"})
+k.start()
+from track_analyzer.entities.graph_impl import Graph
 from track_analyzer.repository.graph_information_repository_impl import GraphInformationRepositoryImpl
 from track_analyzer.repository.resource.mongo_resource_impl import MongoResourceImpl
-
+k.stop()
 
 class MyTestCase(unittest.TestCase):
     def test_writting(self):
@@ -22,6 +29,15 @@ class MyTestCase(unittest.TestCase):
         print(data)
         self.assertEqual(True, True)
 
+    def test_writting_empty_graph(self):
+        mongodb_connection = MongoResourceImpl()
+        graph = Graph(39.5713, 39.5573, 2.6257, 2.6023)
+        data = graph.get_edgelist_dataframe()
+
+        graph_information_repository = GraphInformationRepositoryImpl(mongodb_connection)
+        data = graph_information_repository.write_graph_information_dataframe(data)
+        print(data)
+        self.assertEqual(True, True)
 
 if __name__ == '__main__':
     unittest.main()

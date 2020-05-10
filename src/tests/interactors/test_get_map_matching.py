@@ -9,17 +9,17 @@ from track_analyzer.entities.graph_impl import Graph
 from track_analyzer.entities.hidden_markov_model_impl import HMM
 from track_analyzer.entities.track_point import TrackPoint as Point
 from track_analyzer.interactor.get_map_matching_impl import GetMapMatchingImpl
-from track_analyzer.repository.resource.gpx_resource_impl import GPXResourceImpl
-from track_analyzer.repository.resource.gpx_resource_impl import GPXResourceImpl as LoaderSaver
-
 sns.set()
 
 k = mock.patch.dict(os.environ, {"MONGO_HOST": "localhost",
                                  "MONGO_PORT": "27019",
-                                 "MONGO_DATABASE": "tracksimulatordb2"})
+                                 "MONGO_DATABASE": "tracksimulatordbbatchsimulate"})
 k.start()
 from track_analyzer.repository.resource.mongo_resource_impl import MongoResourceImpl
 from track_analyzer.repository.track_information_repository_impl import TrackInformationRepositoryImpl
+
+from track_analyzer.repository.resource.gpx_resource_impl import GPXResourceImpl
+from track_analyzer.repository.resource.gpx_resource_impl import GPXResourceImpl as LoaderSaver
 
 k.stop()
 
@@ -65,7 +65,7 @@ class MyTestCase(unittest.TestCase):
         bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023)
         mongo_resource = MongoResourceImpl()
         track_information = TrackInformationRepositoryImpl(mongo_resource)
-        track = track_information.get_trackinformation_dataframe("activity_3783539967.gpx")
+        track = track_information.get_trackinformation_dataframe("/app/data/simulation/gpx/gpx_to_analyze/simulated_track_01ed4cc8-c233-4234-9c2e-9cde5056b148.gpx")
         _, _ = bellver_graph.plot_graph()
         for index, row in track.iterrows():
             try:

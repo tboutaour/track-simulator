@@ -17,6 +17,7 @@ from track_analyzer.conf.config import EXPORT_SIMULATIONS_IMAGES_FOLDER
 COLORS = ["green", "red", "blue", "purple", "pink", "orange", "yellow", "black"]
 DISTANCE_TO_FINAL_NODE = 24
 
+
 class SimulateTrackImpl(SimulateTrack):
     def __init__(self, graph: Graph,
                  number_simulations,
@@ -29,7 +30,6 @@ class SimulateTrackImpl(SimulateTrack):
         self.pyplot_resource = pyplot_resource
         self.accumulative_point_distance_distribution = self.__get_accumulative_distribution(
             track_statistics_repository.read_distance_point_to_next(), 40)
-
 
     def simulate(self, origin_node, distance):
         simulated_track = []
@@ -155,6 +155,11 @@ class SimulateTrackImpl(SimulateTrack):
 
     def get_most_frequent_node(self, node, path):
         target_list = [[i[1], i[2]['frequency']] for i in list(self.graph.get_edge_by_node(node))]
+        try:
+            if len(path) > 1:
+                target_list = [[i[0], i[1] * 0.002] if i[0] == path[-1] else i for i in target_list]
+        except Exception:
+            target_list = target_list
         target_list.sort(key=lambda x: x[1])
         target_node_list = np.array([item[0] for item in target_list])
         target_prob_list = np.array([item[1] for item in target_list])
@@ -206,4 +211,3 @@ class SimulateTrackImpl(SimulateTrack):
         cd_dx = np.linspace(0., 1., len(dx2))
         ser_dx = pd.Series(cd_dx, index=dx2)
         return ser_dx
-

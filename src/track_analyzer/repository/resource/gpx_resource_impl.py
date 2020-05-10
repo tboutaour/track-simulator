@@ -7,21 +7,12 @@ from track_analyzer.conf.config import EXPORT_SIMULATIONS_GPX_FOLDER
 
 
 def create_gpx_track(data):
-    # Creating a new file:
     gpx = gpxpy.gpx.GPX()
-
-    # Create first track in our GPX:
     gpx_track = gpxpy.gpx.GPXTrack()
     gpx.tracks.append(gpx_track)
-
-    # Create first segment in our GPX track:
     gpx_segment = gpxpy.gpx.GPXTrackSegment()
     gpx_track.segments.append(gpx_segment)
-
-    # Create points:
     [gpx_segment.points.append(gpxpy.gpx.GPXTrackPoint(point[1], point[0])) for point in data]
-
-    # print('Created GPX:', gpx.to_xml())
     return gpx.to_xml()
 
 
