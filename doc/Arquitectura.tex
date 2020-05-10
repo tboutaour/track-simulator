@@ -1,30 +1,35 @@
 %!TeX root=MemoriaTFG.tex
 
 \chapter{Arquitectura de la aplicación}
+
 En esta sección se presenta la arquitectura de la aplicación. Se realiza una 
 descripción de las funcionalidades que lo componen, se definenen los requerimientos necesarios 
 para su construcción y por último una explicación de la implementación, mostrando las herramientas 
-usadas.
+usadas. El objetivo de este capítulo es mostrar al lector como está estructurada la aplicación tanto a nivel
+de código desgranando las librerías externas de las que se ha hecho uso como de la solución de la 
+infraestructura, apostando por una solución que facilite al individuo su uso dentro del sistema.
 
 \section{\textit{TrackSimulator}}
-\textit{TrackSimulator} es un generador pseudo-aleatorio de trayectorias geoposicionales. Entendemos como 
+\textit{TrackSimulator} es un generador pseudo-aleatorio de trayectorias geoposicionales. Se entiende como 
 simulación al proceso de recrear el comportamiento, en este caso el camino de usuarios dentro de un espacio 
-geográfico. Como muestra esencial y discreta del comportamiento de la población se usan registros que han sido 
-obtenidos mediante localización \ac{GPS}. En la figura X se muestra un ejemplo de una detección del recorrido de 
-un individuo.
-
-\begin{figure}[htb]
+geográfico. Como muestra esencial y discreta del comportamiento de la población se usan registros que han 
+sido obtenidos mediante localización \ac{GPS}. En la figura \ref{figure:TrackExample1} se muestra un ejemplo 
+de una detección del recorrido de un individuo.
+\begin{figure}[!htb]
 \begin{center}
-\includegraphics[width=0.6\textwidth]{./Imagenes/RealTrackDetection.png}
+\includegraphics[width=0.5\textwidth]{./Imagenes/RealTrackDetection.png}
 \caption{Ejemplo de detección real de la trayectoria de un individuo por la Serra de Tramuntana, Illes 
 Balears, Mallorca, Spain}
-\label{TrackExample1}
+\label{figure:TrackExample1}
 \end{center}
 \end{figure}
+\newpage
+
 Para realizar un algoritmo que genere trayectorias y tengan un grado de similitud con la realidad se debe 
 realizar un ejercicio previo de análisis y tratamiento de información. Distancias entre las detecciones, 
-desviación entre la detección del dispositivo \ac{GPS} y un camino definido son ejemplos de datos que se 
-tienen que tener en cuenta para la obtención de resultados óptimos en cuanto a fidelidad a la realidad.
+desviación entre la posición de una detección del dispositivo \ac{GPS} y un camino definido son ejemplos de 
+datos que se tienen que tener en cuenta para la obtención de resultados óptimos en cuanto a representación 
+de la realidad.
 
 Tanto la información muestral como la generada, así como todo el conjunto de información geoespacial debe 
 ser almacenada en un tipo de estructura lógica que permita el acceso y manipulación de estos de la forma 
@@ -34,68 +39,58 @@ Teniendo una estructura lógica que permita almacenar la información, el proble
 forma en la que los datos geoposicionales, en este caso puntos \ac{GPS} pasan a formar parte de esté 
 modelo. Recordemos que un punto \ac{GPS} contiene únicamente información de la posición dentro de la
 superficie terrestre, no obstante no aporta información de la asignación de este punto a un segmento de
-un camino, calle, o paraje concreto. Este problema tiene el nombre de \textit{Map matching} y la propuesta
-de este documento a su resolución se realizará en detalle en el apartado \ref{section: MapMatching}.
+un camino, calle, o paraje concreto. La asociación de un punto \ac{GPS} a un tipo vía es un problema conocido 
+con el nombre de \textit{Map matching} y la propuesta de este documento a su resolución se realizará en 
+detalle en el apartado \ref{section: MapMatching}.
 
 Con la estructura lógica y la información integrada en ella, el análisis de la información permitirá tomar 
 el conjunto de decisiones que permitan maximizar el grado de exactitud de la simulación para, 
-posteriormente, realizar el algoritmo que permita realizar dicha recreación.
-
-\begin{figure}[H]
+posteriormente, realizar el algoritmo que permita realizar dicha recreación. La transformación del dato desde una trayectoria real hasta la generación final de trayectorias simuladas queda ilustrada en la figura \ref{figure:TrackSimulatorDiagram}.
+\begin{figure}[!htb]
 \begin{center}
 \includegraphics[width=0.5\textwidth]{./Imagenes/TrackSimulatorStructure.png}
 \caption{Diagrama de funcionamiento de TrackSimulator}
-\label{TrackSimulatorDiagram}
+\label{figure:TrackSimulatorDiagram}
 \end{center}
 \end{figure}
+\newpage
  
 La aplicación crea una sucesión de puntos que equivalen a un recorrido dentro de un plano geográfico. 
-Se ha determinado que la aplicación realiza la generación de forma pseudo-aleatoria debido a que 
-la producción de los diferentes puntos no sigue ningún patrón o regularidad.
-
-La sucesión de puntos estará relacionada directamente con un camino, sendero o recorrido asignado al 
-modelo lógico. La simulación tendrá en cuenta la frecuencia de paso relativa por el segmento como parte
-del proceso, así como la distancia entre los puntos.
-
+Se ha determinado la generación de puntos dentro del aplicativo se realiza de forma pseudo-aleatoria, quiere decir que la producción de los diferentes puntos no sigue ningún patrón o regularidad en sí misma sino que parte del análisis realizado con un aporte de aleatoriedad. La sucesión de puntos estará relacionada directamente con un camino, sendero o recorrido asignado al modelo lógico. La simulación tendrá en cuenta la frecuencia de paso relativa por el segmento como parte del proceso, así como la distancia entre los puntos uno a uno. Con este procedimiento se pretende obtener de una forma rigurosa un análisis cuantitativo de los datos aportados por las trayectorias reales para poder crear un modelo de simulación lo más real posible.
 
 \section{Funcionalidades de \textit{TrackSimulator}}
 \textit{TrackSimulator} es una aplicación. El término \textit{aplicación} se entiende como la suma de 
-conjunto de implementaciones  de código, ejecutable y del que se espera un resultado. La aplicación 
-permite:
-\begin{description}
-\item [Importación y análisis de archivos \ac{GPX}] La aplicación soportará la importación de un archivo GPX concreto, 
-o bien la ruta de una carpeta con diversos archivos GPX. Estos archivos GPX deben contener trayectorias realizadas en 
-el espacio delimitado.
+conjunto de implementaciones  de código ejecutable y del que se espera un resultado. El flujo del aplicativo consta de un único tipo de entrada, en este caso trayectorias sobre un terreno en ficheros \ac{GPX}. Los dos grandes módulos representan el análisis y la simulación de los datos, donde en el primero realizará una alimentación de una base de datos con la información de las trayectorias y el resultado del análisis, por otra parte almacenará en la máquina una imagen del resultado del análisis. El módulo de simulación realizará el proceso de generación de trayectorias a partir de la lectura de los datos almacenados en la base de datos, del que también se obtienen imágenes de las trayectorias.
 
-La aplicación, con los datos importados por los archivos, permitirá un análisis de trayectorias aplicando técnicas de 
-\textit{map-matching}. Del análisis se obtendrá información:
-\begin{description} 
-\item[Distancia entre puntos] Como la distancia entre las capturas de posición \ac{GPS} en el fichero.
-\item[Distancia relativa entre punto de ruta y punto de trayectoria] Como la distancia del punto \ac{GPS} detectado 
-de la trayectoria a la punto proyección dentro de la ruta.
-\item[Frecuencia de paso por segmento de ruta] Como la frecuencia de paso por el segmento $x_{a}, x_{b}$ relativo 
-a todos los segmentos desde $x_{a}$.
-\end{description}
-
-
-Toda esta información quedará almacenada en una base de datos de forma que la información sea accesible para realizar la simulación de la ruta.
-
-\item [Muestra de resultados del análisis] La aplicación permite la impresión por pantalla de información gráfica de los resultados del análisis.
-\item [Creación de una trayectoria a partir de parámetros] Con los resultados de la información analizada se puede realizar una simulación de trayectorias dentro del espacio geográfico.
-\item [Exportación de trayectorias a fichero \ac{GPX}] La aplicación permite realizar una exportación de las trayectorias simuladas en formato GPX.
-\item [Visualización de la trayectoria] La aplicación mostrará una representación gráfica de la trayectoria tanto analizada como simulada dentro del territorio geográfico.
-
-\end{description}
-\begin{figure}[htb]
+\begin{figure}[!htb]
 \begin{center}
-\includegraphics[width=0.9\textwidth]{./Imagenes/TrackSimulatorDiagram.png}
+\includegraphics[width=0.7\textwidth]{./Imagenes/TrackSimulatorDiagram.png}
 \caption{Diagrama de funcionamiento de TrackSimulator}
-\label{TrackSimulatorDiagram}
+\label{figure:TrackSimulatorDiagram}
 \end{center}
 \end{figure}
 
-\section{Requerimientos de \textit{TrackSimulator}}
-\label{section: RequerimientosTrackSimulator}
+La aplicación recopila la siguiente serie de funcionalidades:
+\begin{description}
+\item [Importación y análisis de archivos \ac{GPX}] La aplicación soportará la importación de un archivo GPX concreto, o bien de un conjunto de archivos GPX. Estos archivos GPX deben contener trayectorias realizadas en el espacio delimitado. La funcionalidad del aplicativo se basa en un territorio acotado, por lo que el conjunto de rutas a analizar deben corresponder con el territorio especifico para que el proceso de análisis 
+se complete. 
+
+La aplicación, con los datos importados por los archivos, permitirá un análisis de trayectorias aplicando técnicas de \textit{map matching}. Del análisis se obtendrá información:
+\begin{description} 
+\item[Distancia entre puntos]  Distancia entre las capturas de posición \ac{GPS} en el fichero punto a punto.
+\item[Distancia relativa entre punto de ruta y punto de trayectoria] Distancia del punto \ac{GPS} detectado 
+de la trayectoria la punto proyección dentro de la ruta, camino o vía seleccionada como más probable en el proceso de\textit{map-matching}.
+\item[Frecuencia de paso por segmento de ruta] Frecuencia de paso por el segmento $x_{a}, x_{b}$ relativo 
+a todos los segmentos desde $x_{a}$.
+\end{description}
+El detalle de esta información se describe en detalle en el capítulo \ref{section:ExplotacionDato}. Toda esta información quedará almacenada en una base de datos de forma que la información sea accesible para realizar la simulación de la ruta.
+\item [Muestra de resultados del análisis] La aplicación permite la representación gráfica de información gráfica de los resultados del análisis. Las  imágenes serán almacenadas en formato \ac{PNG}.
+\item [Creación de una trayectoria a partir de parámetros y exportación \ac{GPX}] Con los resultados de la información analizada se puede realizar una simulación de trayectorias dentro del espacio geográfico delimitado. Los parámetros a introducir quedan detallados en el capítulo \ref{chapter:GuiaUso}. Estas trayectorias quedarán representadas en formato \ac{GPX}. 
+\item [Visualización de la trayectoria] La aplicación mostrará una representación gráfica de la trayectoria tanto   dentro del territorio geográfico a partir del almacenamiento de imágenes en formato  \ac{PNG}.
+\end{description}
+
+
+\section{Requerimientos de \textit{TrackSimulator}} \label{section: RequerimientosTrackSimulator}
 Explicadas las funcionalidades de la aplicación de Track Analyzer los requerimientos identificados son los siguientes:
 \begin{description}
 \item[Importación de datos] La aplicación debe realizar una importación de los datos desde un fichero .\ac{GPX} al modelo lógico elegido para la el posterior tratamiento.
@@ -150,7 +145,7 @@ El módulo de \textit{TrackSimulator} tiene la responsabilidad de generar la sim
 a partir de unos parámetros de entrada. Una vez generada la simulación, un fichero \ac{GPX} con las 
 coordenadas será el producto final del proceso.
  
-\subsection{Herramientas externas utilizadas}
+\subsection{Herramientas externas utilizadas} 
 Como herramientas externas utilizadas para la realizar la propuesta de este documento se destacan 
 el tipo de almacenamiento de datos que se utilizarán, así como las librerías externas que se han usado 
 para la implementación de la aplicación. A continuación se detallan ambas.
@@ -182,8 +177,8 @@ de forma eficiente y mucho más precisa.
 Actualmente para el desarrollo de la propuesta no se ha contado con una gran cantidad de datos.
 No obstante el problema ha sido planteado con el objetivo de poder analizar grandes cantidades de datos y que puedan
 ser almacenados y accesible mediante el uso de esta base de datos.
-\subsubsection{Librerías utilizadas}
-Para la realización de las funcionalidades comentadas en la parte anterior se ha hecho uso de las siguientes librerías externas:
+\subsubsection{Librerías utilizadas} \label{subsection: LibreriasExternas}
+Para la implementación de la propuesta de este documento se ha hecho uso de librerías externas. Se trata de un conjunto de código que agrupado que aporta funcionalidad diversa. Las librerías externas empleadas en este proyecto son las siguientes :
 \begin{description}
 %gpxpy
 \item[gpxpy] Librería para la manipulación de ficheros \ac{GPX}. Mediante esta librería se puede realizar una importación del fichero para su posterior manipulación. De esta forma se obtiene la secuencia de puntos \ac{GPS} que describe una trayectoria determinada.
@@ -206,3 +201,50 @@ Para la realización de las funcionalidades comentadas en la parte anterior se h
 %pickle
 \item[pickle] Librería para la codificación-decodificación de ficheros. Mediante el uso de esta librería se realiza la exportación de la información estadística y de la estructura de grafo generada y almacenada en los ficheros .txt/edgelist sucesivamente.
 \end{description}
+
+\subsection{Docker}
+Para poder entender completamente este apartado tenemos que hacer una mención a la forma clásica de arquitectura de 
+proyectos software a nivel de infraestructura. Esta forma tenía como particularidad el uso de máquinas virtuales para la 
+ejecución de las diferentes aplicaciones, así como un Supervisor de las máquinas virtuales.  Cada máquina virtual desplega
+su propio sistema operativo con sus dependencias. Por otro lado encontramos la forma mediante el uso de Dockers.
+
+Docker es una plataforma para el desarrollo, despliegue y ejecución de aplicaciones basado en contenedores \cite{Docker01}.  Una imagen es 
+una plantilla de lectura donde está almacenado todo el código (normalmente compilado) junto con todas las dependencias 
+necesarias para que pueda ser ejecutado completamente.Un contenedor es una instancia de una imagen, esta puede creada, 
+desplazable y parada a partir de la interfaz de Docker.
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=0.9\textwidth]{./Imagenes/DockerComparision.png}
+\caption{Comparación entre implementación Docker y máquinas virtuales. \cite{Docker02}}
+\label{DockerComparision}
+\end{center}
+\end{figure}
+
+
+Con esta nueva forma, todas las aplicaciones comparten el mismo sistema operativo, no es necesario ningún supervisor 
+y la responsabilidad de las dependencias queda localizada en los contenedores, que contienen únicamente lo necesario 
+para poder ejecutar la aplicación.
+
+La ejecución del aplicativo tiene como requerimientos una serie de dependencias, que la máquina física puede tener o no 
+en su sistema. Para añadir una capa de abstracción a la arquitectura y hacerlo replicable y desplegable en cualquier máquina
+se ha utilizado Docker. La ventaja de usar Docker en esta propuesta reside en la capacidad de la plataforma de usar los 
+recursos del sistema de forma eficiente, así como la portabilidad que ofrece.
+
+La infraestructura que consta la propuesta de este documento es la siguiente:
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{./Imagenes/DockerStructure.png}
+\caption{Infraestructura de la propuesta de TrackSimulator}
+\label{DockerComparision}
+\end{center}
+\end{figure}
+\newpage
+
+Como vemos la aplicación constará de un \ac{CLI} que se encargará de centralizar todo el aplicativo. Mediante comandos
+se podrá realizar cada una de las acciones de la aplicación. Será este 	\ac{CLI} el encargado de desplegar los contenedores 
+tanto de la base de datos como de la aplicación. Añadirá una serie de directorios que serán el puente de comunicación entre
+la aplicación y la máquina que lo ejecuta. En una carpeta se deberán añadir los ficheros \ac{GPX} a analizar, y como salida 
+de la simulación tendremos ficheros \ac{GPX} e imágenes de la ruta en formato .PNG.
+
+

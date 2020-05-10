@@ -1,0 +1,94 @@
+This is BibTeX, Version 0.99d (TeX Live 2019)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: MemoriaTFG.aux
+A level-1 auxiliary file: Acronimos.aux
+A level-1 auxiliary file: Abstract.aux
+A level-1 auxiliary file: Introduccion.aux
+A level-1 auxiliary file: ConceptosPrincipales.aux
+A level-1 auxiliary file: Arquitectura.aux
+A level-1 auxiliary file: AnalisisDatos.aux
+A level-1 auxiliary file: Simulacion.aux
+A level-1 auxiliary file: Experimentacion.aux
+A level-1 auxiliary file: GuiaUso.aux
+A level-1 auxiliary file: Conclusiones.aux
+The style file: IEEEtran.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Database file #1: Bibliografia.bib
+Warning--string name "https://www.docker.com/blog/containers-replacing-virtual-machines" is undefined
+--line 54 of file Bibliografia.bib
+Repeated entry---line 178 of file Bibliografia.bib
+ : @article{HMM01
+ :               ,
+I'm skipping whatever remains of this entry
+Repeated entry---line 231 of file Bibliografia.bib
+ : @article{Malvar08
+ :                  ,
+I'm skipping whatever remains of this entry
+-- IEEEtran.bst version 1.14 (2015/08/26) by Michael Shell.
+-- http://www.michaelshell.org/tex/ieeetran/bibtex/
+-- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
+Warning--empty journal in ArgGis01
+Warning--empty year in ArgGis01
+Warning--empty journal in Docker02
+Warning--empty journal in Gpsvisualizer01
+Warning--empty year in Gpsvisualizer01
+Warning--empty journal in Garrido-Villen01
+Warning--empty journal in Langley01
+Warning--missing publisher in EPA01
+Warning--empty journal in Morales01
+Warning--empty journal in OGC01
+Warning--empty journal in Topografix01
+Warning--empty author in Mongo01
+Warning--empty journal in Mongo01
+Warning--empty year in Mongo01
+Warning--empty journal in Docker01
+Warning--empty journal in Gis01
+Warning--empty journal in Sigman01
+
+Done.
+You've used 19 entries,
+            4087 wiz_defined-function locations,
+            941 strings with 9708 characters,
+and the built_in function-call counts, 8454 in all, are:
+= -- 683
+> -- 103
+< -- 38
++ -- 59
+- -- 18
+* -- 379
+:= -- 1525
+add.period$ -- 37
+call.type$ -- 19
+change.case$ -- 17
+chr.to.int$ -- 90
+cite$ -- 36
+duplicate$ -- 683
+empty$ -- 741
+format.name$ -- 18
+if$ -- 1876
+int.to.chr$ -- 0
+int.to.str$ -- 19
+missing$ -- 102
+newline$ -- 100
+num.names$ -- 18
+pop$ -- 267
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 2
+skip$ -- 666
+stack$ -- 0
+substring$ -- 241
+swap$ -- 421
+text.length$ -- 8
+text.prefix$ -- 0
+top$ -- 5
+type$ -- 19
+warning$ -- 17
+while$ -- 31
+width$ -- 21
+write$ -- 194
+(There were 2 error messages)
