@@ -1,16 +1,29 @@
 #!/bin/bash
-
+TRACKSIMULATORPATH=${HOME}/track-simulator/
+DBPATH=${TRACKSIMULATORPATH}/db
+ANALYSISPATH=${TRACKSIMULATORPATH}/analysis
+SIMULATIONPATH=${TRACKSIMULATORPATH}/simulation
+export TRACKSIMULATORPATH
 # A wrapper script for execute TrackSimulator cli app with docker.
 # Put this file in $PATH as ts-cli-app
+
+# Make directories if do not exist.
+mkdir -p ${DBPATH}
+mkdir -p ${ANALYSISPATH}
+mkdir -p ${DBPATH}/gpx
+mkdir -p ${DBPATH}/images
+mkdir -p ${ANALYSISPATH}
 
 # First check dependencies
 docker -v
 if [ $? -eq 0 ]
 then
-  exec docker-compose run \
+  docker-compose run \
    --rm \
-  app main-wrapper "$@"
+   --w /app/track_analyzer/main \
+  app python blvr-sim.py "$@"
+  rc=$?
+  docker-compose down
 else
   echo "Docker is not installed. Please, check your installation."
 fi
-

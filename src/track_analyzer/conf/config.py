@@ -1,6 +1,6 @@
-# MongoDB
 import os
 
+# MongoDB
 MONGO_HOST = os.environ.get('MONGO_HOST')
 MONGO_PORT = int(os.environ.get('MONGO_PORT'))
 MONGO_DATABASE = os.environ.get('MONGO_DATABASE')

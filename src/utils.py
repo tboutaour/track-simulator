@@ -155,7 +155,7 @@ def create_folder(path):
     str_day = today.strftime('%Y%m%d_%H%M') + "00"
     folder_path = path + "/" + str_day
     try:
-        os.mkdir(folder_path)
+        os.makedirs(folder_path)
     except FileExistsError:
         print("Directory already exists, adding information.")
     return folder_path

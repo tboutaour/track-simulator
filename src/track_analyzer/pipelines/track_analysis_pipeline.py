@@ -1,19 +1,20 @@
-import os
+import logging
 import multiprocessing
+import os
+import sys
 from multiprocessing import Pool
-import matplotlib.pyplot as plt
+
 from track_analyzer.conf.config import FILE_DIRECTORY
 from track_analyzer.entities.graph import Graph
-from track_analyzer.repository.graph_information_repository import GraphInformationRepository
-from track_analyzer.repository.track_information_repository import TrackInformationRepository
-from track_analyzer.repository.track_statistics_repository import TrackStatisticsRepository
 from track_analyzer.interactor.get_map_matching import GetMapMatching
 from track_analyzer.interactor.get_trackanalysis_dataframe import GetTrackAnalysisDataframe
-from track_analyzer.interactor.get_trackanalysis_statistics import GetTrackAnalysisStatistics
 from track_analyzer.interactor.get_trackanalysis_graph import GetTrackAnalysisGraph
+from track_analyzer.interactor.get_trackanalysis_statistics import GetTrackAnalysisStatistics
+from track_analyzer.interactor.get_analysis_figure import GetAnalysisFigure
+from track_analyzer.repository.graph_information_repository import GraphInformationRepository
 from track_analyzer.repository.resource.gpx_resource import GPXResource
-import logging
-import sys
+from track_analyzer.repository.track_information_repository import TrackInformationRepository
+from track_analyzer.repository.track_statistics_repository import TrackStatisticsRepository
 
 MAX_RANGE_REPETEITION = 2
 
@@ -27,6 +28,7 @@ class TrackAnalysisPipeline:
                  get_map_matching: GetMapMatching,
                  get_track_analysis_dataframe: GetTrackAnalysisDataframe,
                  get_track_statitstics: GetTrackAnalysisStatistics,
+                 get_analysis_figure: GetAnalysisFigure,
                  get_track_graph: GetTrackAnalysisGraph,
                  graph: Graph):
         self.gpx_resource = gpx_resource
@@ -36,6 +38,7 @@ class TrackAnalysisPipeline:
         self.get_map_matching = get_map_matching
         self.get_track_analysis_dataframe = get_track_analysis_dataframe
         self.get_track_statistics = get_track_statitstics
+        self.get_analysis_figure = get_analysis_figure
         self.get_track_graph = get_track_graph
         self.graph = graph
 
@@ -59,6 +62,10 @@ class TrackAnalysisPipeline:
         #################################################
         self.track_information_repository.write_trackinformation_dataframes(data=data)
         self.track_statistics_repository.write_many_track_statistics(data=statistics)
+        self.get_analysis_figure.apply_distance_point_projection(sum([item['DistancePointProjection'].tolist()
+                                                                      for item in statistics], []))
+        self.get_analysis_figure.apply_distance_point_point(sum([item['DistanceToNext'].tolist()
+                                                                 for item in statistics], []))
         logging.info("Saved information in MongoDB")
 
         self.graph_information_repository.write_graph_information_dataframe(graphs[-1].get_edgelist_dataframe())

@@ -1,2 +1,0 @@
-#!/bin/bash
-PYTHONPATH=$PYTHONPATH python $RUNPATH/blvr-sim.py "$@"

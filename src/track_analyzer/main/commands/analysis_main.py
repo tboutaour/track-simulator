@@ -7,6 +7,7 @@ from track_analyzer.entities.graph_impl import Graph
 from track_analyzer.interactor.get_map_matching_impl import GetMapMatchingImpl
 from track_analyzer.interactor.get_trackanalysis_dataframe_impl import GetTrackAnalysisDataframeImpl
 from track_analyzer.interactor.get_trackanalysis_statistics_impl import GetTrackAnalysisStatisticsImpl
+from track_analyzer.interactor.get_analysis_figure_impl import GetAnalysisFigureImpl
 from track_analyzer.interactor.get_trackanalysis_graph_impl import GetTrackAnalysisGraphImpl
 from track_analyzer.pipelines.track_analysis_pipeline import TrackAnalysisPipeline
 from track_analyzer.entities.hidden_markov_model_impl import HMM
@@ -29,6 +30,7 @@ def analysis_main(file_directory):
     get_map_matching = GetMapMatchingImpl(HMM(bellver_graph))
     get_track_analysis = GetTrackAnalysisDataframeImpl()
     get_track_statistics = GetTrackAnalysisStatisticsImpl()
+    get_analysis_figure = GetAnalysisFigureImpl()
     get_track_graph = GetTrackAnalysisGraphImpl()
 
     # Pipeline
@@ -39,6 +41,7 @@ def analysis_main(file_directory):
                                                     get_map_matching=get_map_matching,
                                                     get_track_analysis_dataframe=get_track_analysis,
                                                     get_track_statitstics=get_track_statistics,
+                                                    get_analysis_figure=get_analysis_figure,
                                                     get_track_graph=get_track_graph,
                                                     graph=bellver_graph)
 

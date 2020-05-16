@@ -11,6 +11,7 @@ class GraphInformationRepositoryImpl(GraphInformationRepository):
 
     def read_graph_information_dataframe(self, id_graph):
         query = {'graph_id': id_graph}
+        print(id_graph, MONGO_GRAPH_INFORMATION_COLLECTION)
         data_from_db = self.mongo_resource.read(collection=MONGO_GRAPH_INFORMATION_COLLECTION,
                                                 query=query)
         df = pd.DataFrame(data_from_db[0]["data"])
