@@ -9,8 +9,6 @@ from track_simulator.pipelines.track_simulator_pipeline import TrackSimulatorPip
 from track_simulator.conf.config import LAST_VERSION_GRAPH
 
 
-
-
 def simulation_main(origin_node, distance, data):
     origin_node = 1248507104  # Bellver Castle entrance
     distance = 20000  # In meters
@@ -36,7 +34,3 @@ def simulation_main(origin_node, distance, data):
 
     # Run
     track_simulator_pipeline.run(origin_node, distance)
-
-
-if __name__ == '__main__':
-    simulation_main()

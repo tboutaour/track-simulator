@@ -48,7 +48,3 @@ def analysis_main(file_directory):
     # Execution
 
     track_analyzer_pipeline.run(file_directory)
-
-
-if __name__ == '__main__':
-    analysis_main()

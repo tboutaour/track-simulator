@@ -1,4 +1,3 @@
-
 from track_simulator.interactor.get_map_matching import GetMapMatching
 from track_simulator.entities.hidden_markov_model import HiddenMarkovModel
 

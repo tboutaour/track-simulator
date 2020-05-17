@@ -1,9 +1,9 @@
 from track_simulator.interactor.get_heat_map import GetHeatMap
 from track_simulator.entities.graph_impl import Graph
-import numpy as np
 import matplotlib.cm as cm
 import osmnx
 import matplotlib.colors as colors
+
 
 class GetHeatMapImpl(GetHeatMap):
     def apply(self, graph: Graph, data):
