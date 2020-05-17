@@ -19,14 +19,15 @@ Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Database file #1: Bibliografia.bib
 Warning--string name "https://www.docker.com/blog/containers-replacing-virtual-machines" is undefined
---line 54 of file Bibliografia.bib
-Repeated entry---line 178 of file Bibliografia.bib
+--line 86 of file Bibliografia.bib
+I was expecting an "="---line 142 of file Bibliografia.bib
+ : 
+ : author={Ramesh, R.},
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+Repeated entry---line 211 of file Bibliografia.bib
  : @article{HMM01
  :               ,
-I'm skipping whatever remains of this entry
-Repeated entry---line 231 of file Bibliografia.bib
- : @article{Malvar08
- :                  ,
 I'm skipping whatever remains of this entry
 -- IEEEtran.bst version 1.14 (2015/08/26) by Michael Shell.
 -- http://www.michaelshell.org/tex/ieeetran/bibtex/
@@ -36,6 +37,13 @@ Warning--empty year in ArgGis01
 Warning--empty journal in Docker02
 Warning--empty journal in Gpsvisualizer01
 Warning--empty year in Gpsvisualizer01
+Too many commas in name 1 of "Borkovich, D. , Noah, P." for entry Borkovich01
+while executing---line 2403 of file IEEEtran.bst
+Warning--empty journal in Borkovich01
+Warning--empty journal in GPS01
+Warning--empty journal in Viskic01
+Warning--empty journal in Pandas01
+Warning--empty journal in Gpxpy01
 Warning--empty journal in Garrido-Villen01
 Warning--empty journal in Langley01
 Warning--missing publisher in EPA01
@@ -50,45 +58,45 @@ Warning--empty journal in Gis01
 Warning--empty journal in Sigman01
 
 Done.
-You've used 19 entries,
+You've used 24 entries,
             4087 wiz_defined-function locations,
-            941 strings with 9708 characters,
-and the built_in function-call counts, 8454 in all, are:
-= -- 683
-> -- 103
+            967 strings with 10265 characters,
+and the built_in function-call counts, 10199 in all, are:
+= -- 828
+> -- 123
 < -- 38
-+ -- 59
-- -- 18
-* -- 379
-:= -- 1525
-add.period$ -- 37
-call.type$ -- 19
-change.case$ -- 17
++ -- 69
+- -- 23
+* -- 459
+:= -- 1895
+add.period$ -- 47
+call.type$ -- 24
+change.case$ -- 22
 chr.to.int$ -- 90
-cite$ -- 36
-duplicate$ -- 683
-empty$ -- 741
-format.name$ -- 18
-if$ -- 1876
+cite$ -- 46
+duplicate$ -- 833
+empty$ -- 896
+format.name$ -- 23
+if$ -- 2241
 int.to.chr$ -- 0
-int.to.str$ -- 19
-missing$ -- 102
-newline$ -- 100
-num.names$ -- 18
-pop$ -- 267
+int.to.str$ -- 24
+missing$ -- 127
+newline$ -- 125
+num.names$ -- 23
+pop$ -- 337
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 666
+skip$ -- 801
 stack$ -- 0
-substring$ -- 241
-swap$ -- 421
+substring$ -- 246
+swap$ -- 491
 text.length$ -- 8
 text.prefix$ -- 0
 top$ -- 5
-type$ -- 19
-warning$ -- 17
-while$ -- 31
-width$ -- 21
-write$ -- 194
-(There were 2 error messages)
+type$ -- 24
+warning$ -- 22
+while$ -- 36
+width$ -- 26
+write$ -- 244
+(There were 3 error messages)

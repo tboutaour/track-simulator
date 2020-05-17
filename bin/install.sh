@@ -11,4 +11,5 @@ mkdir -p ${ANALYSISPATH}
 mkdir -p ${ANALYSISPATH}/statistics
 mkdir -p ${}
 
+# Download docker-compose file from github.
 wget https://raw.githubusercontent.com/tboutaour/TFG/DES/docker-compose.yaml?token=AHX2HX7OBPBEUMHG4NDPKXC6YEJIW -P ${CONFIGPATH}

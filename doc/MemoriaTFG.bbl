@@ -36,6 +36,43 @@ Gpsvisualizer, ``Generating a map from a gpx file, dynamically.'' [Online].
   Available: \url{https://www.gpsvisualizer.com/examples/google_gpx.html}
 \BIBentrySTDinterwordspacing
 
+\bibitem{Borkovich01}
+\BIBentryALTinterwordspacing
+N.~P. Borkovich, D., ``Big data in the information age: Exploring the
+  intellectual foundation of communication theory,'' 2014. [Online]. Available:
+  \url{https://files.eric.ed.gov/fulltext/EJ1140800.pdf}
+\BIBentrySTDinterwordspacing
+
+\bibitem{GPS01}
+\BIBentryALTinterwordspacing
+GPS.gov, ``Gps applications,'' 2014. [Online]. Available:
+  \url{https://www.gps.gov/applications}
+\BIBentrySTDinterwordspacing
+
+\bibitem{Viskic01}
+\BIBentryALTinterwordspacing
+I.~Viskic, ``Enhancing the quality of uber’s maps with metrics computation,''
+  2018. [Online]. Available:
+  \url{https://eng.uber.com/maps-metrics-computation}
+\BIBentrySTDinterwordspacing
+
+\bibitem{Boeing01}
+G.~Boeing, ``Osmnx: New methods for acquiring, constructing, analyzing, and
+  visualizing complex street networks,'' \emph{Computers Environment and Urban
+  Systems}, pp. 126 --139, 2017.
+
+\bibitem{Pandas01}
+\BIBentryALTinterwordspacing
+P.~development team, ``Pandas documentation,'' 2008-2014. [Online]. Available:
+  \url{https://pandas.pydata.org/docs}
+\BIBentrySTDinterwordspacing
+
+\bibitem{Gpxpy01}
+\BIBentryALTinterwordspacing
+T.~Krajina, ``Gpxpy. project description,'' 2012. [Online]. Available:
+  \url{https://pypi.org/project/gpxpy/}
+\BIBentrySTDinterwordspacing
+
 \bibitem{Garrido-Villen01}
 \BIBentryALTinterwordspacing
 N.~Garrido-Villén, ``Sistemas gnss. introducción a los sistemas de
@@ -75,7 +112,7 @@ O.~G. Consortium, ``Ogc® geography markup language (gml) — extended schemas
 
 \bibitem{Topografix01}
 \BIBentryALTinterwordspacing
-topografix, ``Gpx: the gps exchange format,'' 2010. [Online]. Available:
+Topografix, ``Gpx: the gps exchange format,'' 2010. [Online]. Available:
   \url{https://www.topografix.com/gpx.asp}
 \BIBentrySTDinterwordspacing
 
@@ -90,11 +127,6 @@ topografix, ``Gpx: the gps exchange format,'' 2010. [Online]. Available:
 D.~Inc., ``Docker docs,'' 2013-2020. [Online]. Available:
   \url{https://docs.docker.com}
 \BIBentrySTDinterwordspacing
-
-\bibitem{Boeing01}
-G.~Boeing, ``Osmnx: New methods for acquiring, constructing, analyzing, and
-  visualizing complex street networks,'' \emph{Computers Environment and Urban
-  Systems}, pp. 126 --139, 2017.
 
 \bibitem{Malvar08}
 H.~S. Malvar, ``Effective communication: Tips on technical writing,''

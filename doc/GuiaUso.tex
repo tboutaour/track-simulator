@@ -1,7 +1,9 @@
 %!TeX root=MemoriaTFG.tex
 
 \chapter{Guía de instalación y uso} \label{chapter:GuiaUso}
-La propuesta de este documento tiene como aplicación resultante un \ac{CLI} con un conjunto de acciones que pueden ser realizadas. Este aplicativo despliega un conjunto de contenedores de Docker para su funcionamiento independiente en cualquier máquina. El despliegue se realiza en capas interiores de la aplicación por lo que el usuario no tiene que tener conocimientos previos de Docker para poder utilizar la herramienta. Se ha intentado facilitar el uso y comprensión de la aplicación mediante descripciones detalladas de cada uno de los parámetros en la propia herramienta, no obstante, en las siguientes secciones se detallarán cada una, como punto de inicio para que el lector pueda utilizar el aplicativo.
+La propuesta de este documento tiene como aplicación resultante un \ac{CLI} con un conjunto de acciones que pueden ser realizadas. Este aplicativo despliega un conjunto de contenedores de Docker para su funcionamiento independiente en cualquier máquina. 
+
+El despliegue se realiza en capas interiores de la aplicación por lo que el usuario no tiene que tener conocimientos previos de Docker para poder utilizar la herramienta. Se ha intentado facilitar el uso y comprensión de la aplicación mediante descripciones detalladas de cada uno de los parámetros en la propia herramienta, no obstante, en las siguientes secciones se detallarán cada una, como punto de inicio para que el lector pueda utilizar el aplicativo.
 
 \subsection{Instalación}
 La instalación se realiza a partir de un ejecutable. Este \textit{script} realiza una serie de configuraciones del sistema, añadiendo un directorio al \slash Home de la máquina donde se instala.Se añade un directorio llamada \textit{track-simulator} que será el lugar de entrada y la salida del aplicativo. 
@@ -24,9 +26,7 @@ El directorio  \textit{track-simulator} contiene los siguientes subdirectorios:
 \newpage
 
 \subsection{Guía de uso}
-La interfaz se despliega mediante el uso del comando \textit{ts-cli}. Si no se le introduce ningún parámetro se desplegará la ayuda de forma que aparecen las  acciones disponibles con una pequeña explicación.
-
-Las acciones disponibles en la primera versión de la herramienta son las siguientes
+La interfaz se despliega mediante el uso del comando \textit{ts-cli}. Si no se le introduce ningún parámetro se desplegará la ayuda de forma que aparecen las  acciones disponibles con una pequeña explicación. Las acciones disponibles en la primera versión de la herramienta son las siguientes:
 
 \begin{enumerate}[label={A.\arabic*.}]
 \item \textbf{simulate}. La acción simulate realiza una simulación de una trayectoria. Tiene una serie de parámetros de entrada que permiten la personalización de su comportamiento.
@@ -34,7 +34,12 @@ Las acciones disponibles en la primera versión de la herramienta son las siguie
 \begin{enumerate}[label*={P.\arabic*.}]
 \item \textbf{--distance} Distancia que se quiere simular (en metros).
 
-\item \textbf{--origin\_node} Nodo origen desde el que se desea simular.
+\item \textbf{--origin\_node} Nodo origen desde el que se desea simular. Los nodos a destacar para el inicio de la trayectoria pueden ser los nodos de entrada al recinto del castillo de Bellver, en este caso los siguientes nodos:
+\begin{enumerate}
+\item 293027796: Entrada noreste.
+\item 560055784: Entrada sureste.
+\item 317813584: Entrada norte.
+\end{enumerate}
 
 \item \textbf{--data}. Conjunto de datos origen que se usarán para la simulación. (Por defecto se usará los datos con fecha más reciente.)
 \end{enumerate}
@@ -48,9 +53,15 @@ Las acciones disponibles en la primera versión de la herramienta son las siguie
 \end{enumerate}
 \end{enumerate}
 
-En el comando \ref{comando:Analyze} se tiene un ejemplo de utilización de la herramienta para analizar una conjuntos de trayectorias situadas en la carpeta \textit{01-bellver}.
+Se puede utilizar el comando \ref{comand:Help} para observar la lista de para observar la lista de parámetros de una acción en concreto.
 
-\begin{lstlisting}[caption={Ejecución análisis}, language=bash, label={comando:Analyze}] 
+\begin{lstlisting}[caption={Ejecución ayuda de comando}, language=bash, label={comand:Help}] 
+	ts-cli analyze [COMMAND] --help
+\end{lstlisting}
+
+En el comando \ref{comand:Analyze} se tiene un ejemplo de utilización de la herramienta para analizar una conjuntos de trayectorias situadas en la carpeta \textit{01-bellver}.
+
+\begin{lstlisting}[caption={Ejecución análisis}, language=bash, label={comand:Analyze}] 
 	ts-cli analyze --file_directory 01-bellver
 \end{lstlisting}
 
@@ -63,11 +74,11 @@ Cabe destacar que la carpeta \textit{01-bellver} tiene que estar situada en el d
 \label{figure:StatisticsFolder}
 \end{center}
 \end{figure}
+\newpage
 
+Por otro lado,  el comando \ref{comand:Simulate} representa un ejemplo de utilización de la herramienta para simular una trayectoria de 10 Km a partir del análisis realizado día 16 de Mayo de 2020.
 
-Por otro lado,  el comando \ref{comando:Simulate} representa un ejemplo de utilización de la herramienta para simular una trayectoria de 10 Km a partir del análisis realizado día 16 de Mayo de 2020.
-
-\begin{lstlisting}[caption={Ejecución simulación}, language=bash, label={comando:Simulate}]  
+\begin{lstlisting}[caption={Ejecución simulación}, language=bash, label={comand:Simulate}]  
 	ts-cli simulate --distance 10000 --data Graph_Analysis_05-16-2020
 \end{lstlisting}
 
@@ -79,5 +90,6 @@ Se tiene como resultados de la ejecución un conjunto de trayetorias, tanto fich
 \label{figure:SimulationFolder}
 \end{center}
 \end{figure}
+\newpage
 
-
+Se entiende que esta aplicación puede ser utilizada por un público que no tiene experiencia en gestion de contenedores Docker, por este motivo, para eliminar los recursos utilizados para el procedimiento, por cada uso de la herramienta se despliegan y apagan los componentes. Esto supone un tiempo mayor de ejecución, no obstante se cree necesario para evitar que los recursos no sean cerrados una vez las necesidades del usuario de la aplicación se vean completas.

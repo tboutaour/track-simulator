@@ -13,6 +13,7 @@ mkdir -p ${DBPATH}
 mkdir -p ${ANALYSISPATH}
 mkdir -p ${ANALYSISPATH}/statistics
 
+
 # Check if docker-compose exists
 if [ ! -e ${CONFIGPATH}/docker-compose.yaml ]; then
     echo "You have to install track-simulator first!"

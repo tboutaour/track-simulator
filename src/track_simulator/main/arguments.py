@@ -35,11 +35,10 @@ class Arguments(object):
         parser = argparse.ArgumentParser(
             description='analyze results')
         # prefixing the argument with -- means it's optional
-        parser.add_argument('--origin_node', help="Node to start simulation")
+        parser.add_argument('--origin_node', help='Node to start simulation')
         parser.add_argument('--distance', help="Distance to start simulation.")
         parser.add_argument('--data', help="Data to import from database. (Graph_Analysis_mm-dd-YYYY) ")
         # now that we're inside a subcommand, ignore the first
         # TWO argvs, ie the command (git) and the subcommand (commit)
         args = parser.parse_args(sys.argv[2:])
-        print('Running trackas command: simulate' + args.data)
         simulation_main(args.origin_node, args.distance, args.data)
