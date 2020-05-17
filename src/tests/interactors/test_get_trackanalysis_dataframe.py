@@ -1,7 +1,7 @@
 import unittest
 import pandas as pd
-from track_analyzer.entities.track_point import TrackPoint as Point
-from track_analyzer.interactor.get_trackanalysis_dataframe_impl import GetTrackAnalysisDataframeImpl
+from track_simulator.entities.track_point import TrackPoint as Point
+from track_simulator.interactor.get_trackanalysis_dataframe_impl import GetTrackAnalysisDataframeImpl
 
 
 class MyTestCase(unittest.TestCase):

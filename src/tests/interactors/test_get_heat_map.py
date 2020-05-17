@@ -3,16 +3,16 @@ import unittest
 from unittest import mock
 
 import matplotlib.pyplot as plt
-from track_analyzer.entities.graph_impl import Graph
-from track_analyzer.interactor.get_heat_map_impl import GetHeatMapImpl
+from track_simulator.entities.graph_impl import Graph
+from track_simulator.interactor.get_heat_map_impl import GetHeatMapImpl
 
 k = mock.patch.dict(os.environ, {"MONGO_HOST": "localhost",
                                  "MONGO_PORT": "27019",
                                  "MONGO_DATABASE": "tracksimulatordbempty",
                                  "LAST_VERSION_GRAPH":  "Graph_Analysis_05-10-2020"})
 k.start()
-from track_analyzer.repository.resource.mongo_resource_impl import MongoResourceImpl
-from track_analyzer.repository.graph_information_repository_impl import GraphInformationRepositoryImpl
+from track_simulator.repository.resource.mongo_resource_impl import MongoResourceImpl
+from track_simulator.repository.graph_information_repository_impl import GraphInformationRepositoryImpl
 k.stop()
 
 

@@ -6,9 +6,9 @@ k = mock.patch.dict(os.environ, {"MONGO_HOST": "localhost",
                                  "MONGO_PORT": "27019",
                                  "MONGO_DATABASE": "tracksimulatorempty"})
 k.start()
-from track_analyzer.entities.graph_impl import Graph
-from track_analyzer.repository.graph_information_repository_impl import GraphInformationRepositoryImpl
-from track_analyzer.repository.resource.mongo_resource_impl import MongoResourceImpl
+from track_simulator.entities.graph_impl import Graph
+from track_simulator.repository.graph_information_repository_impl import GraphInformationRepositoryImpl
+from track_simulator.repository.resource.mongo_resource_impl import MongoResourceImpl
 k.stop()
 
 class MyTestCase(unittest.TestCase):

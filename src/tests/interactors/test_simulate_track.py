@@ -7,39 +7,39 @@ from unittest import mock
 import matplotlib.pyplot as plt
 import osmnx
 import utils
-from track_analyzer.entities.graph_impl import Graph
+from track_simulator.entities.graph_impl import Graph
 
-from track_analyzer.pipelines.track_simulator_pipeline import TrackSimulatorPipeline
+from track_simulator.pipelines.track_simulator_pipeline import TrackSimulatorPipeline
 
 k = mock.patch.dict(os.environ, {"MONGO_HOST": "localhost",
                                  "MONGO_PORT": "27019",
                                  "MONGO_DATABASE": "tracksimulatorempty",
-                                 "ROOT_DIRECTORY": "/Users/tonibous/Documents/1-UIB/TrabajoFinal/TrackAnalyzer",
-                                 "FILE_DIRECTORY": "/Users/tonibous/Documents/1-UIB/TrabajoFinal/TrackAnalyzer/src"
+                                 "ROOT_DIRECTORY": "/Users/tonibous/Documents/1-UIB/TrabajoFinal/TrackSimulator",
+                                 "FILE_DIRECTORY": "/Users/tonibous/Documents/1-UIB/TrabajoFinal/TrackSimulator/src"
                                                    "/data/tracks_to_analysis",
                                  "EXPORT_ANALYSIS_IMAGES_FOLDER": "/Users/tonibous/Documents/1-UIB/TrabajoFinal"
-                                                                  "/TrackAnalyzer/src/data/analysis",
+                                                                  "/TrackSimulator/src/data/analysis",
                                  "EXPORT_SIMULATIONS_IMAGES_FOLDER": "/Users/tonibous/Documents/1-UIB/TrabajoFinal"
-                                                                     "/TrackAnalyzer/src/data/simulation/images",
+                                                                     "/TrackSimulator/src/data/simulation/images",
                                  "EXPORT_SIMULATIONS_GPX_FOLDER": "/Users/tonibous/Documents/1-UIB/TrabajoFinal"
-                                                                  "/TrackAnalyzer/src/data/simulation/gpx",
-                                 "PYTHONPATH": "/Users/tonibous/Documents/1-UIB/TrabajoFinal/TrackAnalyzer/src/",
-                                 "RUNPATH": "/Users/tonibous/Documents/1-UIB/TrabajoFinal/TrackAnalyzer/src"
-                                            "/track_analyzer/main ",
+                                                                  "/TrackSimulator/src/data/simulation/gpx",
+                                 "PYTHONPATH": "/Users/tonibous/Documents/1-UIB/TrabajoFinal/TrackSimulator/src/",
+                                 "RUNPATH": "/Users/tonibous/Documents/1-UIB/TrabajoFinal/TrackSimulator/src"
+                                            "/track_simulator/main ",
                                  "LAST_VERSION_GRAPH": "Graph_Analysis_05-10-2020"
                                  ""
                                  })
 k.start()
 
 
-from track_analyzer.repository.resource.gpx_resource_impl import GPXResourceImpl
-from track_analyzer.repository.resource.pyplot_resource_impl import PyplotResourceImpl
-from track_analyzer.repository.graph_information_repository_impl import \
+from track_simulator.repository.resource.gpx_resource_impl import GPXResourceImpl
+from track_simulator.repository.resource.pyplot_resource_impl import PyplotResourceImpl
+from track_simulator.repository.graph_information_repository_impl import \
     GraphInformationRepositoryImpl
-from track_analyzer.repository.resource.mongo_resource_impl import MongoResourceImpl
-from track_analyzer.repository.track_statistics_repository import TrackStatisticsRepository
-from track_analyzer.repository.track_statistics_repository_impl import TrackStatisticsRepositoryImpl
-from track_analyzer.interactor.simulate_track_impl import SimulateTrackImpl
+from track_simulator.repository.resource.mongo_resource_impl import MongoResourceImpl
+from track_simulator.repository.track_statistics_repository import TrackStatisticsRepository
+from track_simulator.repository.track_statistics_repository_impl import TrackStatisticsRepositoryImpl
+from track_simulator.interactor.simulate_track_impl import SimulateTrackImpl
 
 k.stop()
 
@@ -98,7 +98,7 @@ class MyTestCase(unittest.TestCase):
             return
         simulate_track = SimulateTrackImpl(bellver_graph, 4, gpx_resource, pyplot_resource, track_statistics_repository)
         # Graph information load
-        # bellver_graph.load_graph_analysis_statistics(data)
+        bellver_graph.load_graph_analysis_statistics(data)
         simulator = TrackSimulatorPipeline(simulate_track)
 
         path = simulator.run(1248507104, 10000)

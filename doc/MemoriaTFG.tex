@@ -68,7 +68,7 @@
 % paquets disponibles. Triau el que vos sigui 
 % més convenient, per exemple listings. 
 \usepackage{listings} 
-
+\usepackage{enumitem}
 
 \lstset{language=Python}
 \definecolor{codegreen}{rgb}{0,0.6,0}
@@ -94,6 +94,17 @@
     tabsize=2
 }
 \lstset{style=mystyle}
+
+\lstdefinelanguage{XML}
+{
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  morecomment=[s]{<?}{?>},
+  stringstyle=\color{black},
+  identifierstyle=\color{codepurple},
+  keywordstyle=\color{cyan},
+  morekeywords={xmlns,version,type}% list your attributes here
+}
 
 
 \renewcommand{\lstlistingname}{Algoritmo}

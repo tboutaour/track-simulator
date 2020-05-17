@@ -8,7 +8,7 @@ sns.set()
 from datetime import datetime
 import os
 import math
-import track_analyzer.entities.track_point as Point
+import track_simulator.entities.track_point as Point
 
 
 def get_random_value(data):

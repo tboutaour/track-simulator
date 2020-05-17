@@ -2,21 +2,21 @@
 
 \chapter{Simulación de trayectorias}
 Se define como simulación de una trayectoria al proceso por el cual, mediante los valores 
-medibles y cuantificables extraídos del proceso de análisis, se recrea una trayectoria que cumpla 
-los mismos criterios. El proceso de simulación de esta propuesta tiene dos procesos principales.
-Primero (figura  \ref{figure:TrackGenerationSegments}) generar el camino dada las probabilidades 
-analizadas desde el nodo inicio seleccionado. Posteriormente se realiza la simulación de la trayectoria 
-por el camino seleccionado (figura \ref{figure:TrackGenerationPoints}).
+medibles y cuantificables extraídos del proceso de análisis, se recrea una trayectoria aleatoria que 
+cumpla los mismos criterios. El proceso de simulación de esta propuesta tiene dos procesos 
+principales.Primero (figura  \ref{figure:TrackGenerationSegments}) generar el camino dada las 
+probabilidades analizadas desde el nodo inicio seleccionado. Posteriormente se realiza la simulación 
+de la trayectoria por el camino seleccionado (figura \ref{figure:TrackGenerationPoints}).
 \begin{figure}[!htb]
 \begin{minipage}{0.48\textwidth}
 \centering
-\includegraphics[width=0.9\textwidth]{./Imagenes/TrackGenerationSegments.png}
+\includegraphics[width=1\textwidth]{./Imagenes/TrackGenerationSegments.png}
 \caption{Generación de camino.}
 \label{figure:TrackGenerationSegments}
 \end{minipage}\hfill
 \begin{minipage}{0.48\textwidth}
 \centering
-\includegraphics[width=0.9\textwidth]{./Imagenes/TrackGenerationPoints.png}
+\includegraphics[width=1\textwidth]{./Imagenes/TrackGenerationPoints.png}
 \caption{Generación de puntos.}
 \label{figure:TrackGenerationPoints}
 \end{minipage}
@@ -135,7 +135,7 @@ esta interfaz la que utiliza la librería gpxpy.
 El método \textit{write} de la interfaz se encarga la creación de un directorio con el formato fecha y hora 
 YYYYmmdd\_HHMM00 (Por ejemplo 20200503\_150300). La hora está configurada en formato 
 \ac{UTC}. Posteriormente se genera una sola \textit{track} y segmento, y cada punto es convertido en 
-un \textit{trackpoint} de este formato. Finalmente se genera esta trayectoria y se crea un fichero con 
+un \textit{trackpoint} de este formato. Finalmente, se genera esta trayectoria y se crea un fichero con 
 identificador único \ac{UUID} (simulated\_track\_d9cac860\-775d\-4454\-b8c4\-4b97f8530bfe.gpx) y 
 se vuelca la representación \ac{XML}. Este proceso se implementa en método \textit{create\_gpx\_track} que vemos en el algoritmo \ref{algoritmo:create_gpx_track}.
 

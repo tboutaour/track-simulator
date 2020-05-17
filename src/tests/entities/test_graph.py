@@ -2,7 +2,7 @@ import unittest
 
 import osmnx
 
-from track_analyzer.entities.graph_impl import Graph
+from track_simulator.entities.graph_impl import Graph
 
 
 class MyTestCase(unittest.TestCase):

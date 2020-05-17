@@ -15,25 +15,10 @@ services:
 
   app:
     build: .
-    environment:
-      - PATH:"$PATH:/opt/bin"
-      - PYTHONPATH:"/app"
-      - RUNPATH:/app/track_analyzer/main"
-      - MONGO_HOST:"db"
-      - MONGO_PORT:27017
-      - MONGO_DATABASE:"tracksimulatordbempty"
-      - MONGO_GRAPH_INFORMATION_COLLECTION:"graphDataframe"
-      - MONGO_TRACK_INFORMATION_COLLECTION:"trackDataframe"
-      - MONGO_TRACK_STATISTICS_COLLECTION:"trackStatistics"
-      - LAST_VERSION_GRAPH:"Graph_Analysis_05-10-2020"
-      - ROOT_DIRECTORY:"/app"
-      - FILE_DIRECTORY:"/data/db"
-      - EXPORT_ANALYSIS_IMAGES_FOLDER:"/data/analysis/statistics"
-      - EXPORT_SIMULATIONS_GPX_FOLDER:"/data/simulation/gpx"
-      - EXPORT_SIMULATIONS_IMAGES_FOLDER:"/data/simulation/images"
     volumes:
     - ./src:/app
     - ${TRACKSIMULATOREXPORT}:/data
+    - ${TRACKSIMULATORPATH}/analysis:/analysis
     depends_on:
       - db
     networks:

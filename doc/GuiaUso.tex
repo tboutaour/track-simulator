@@ -1,6 +1,83 @@
 %!TeX root=MemoriaTFG.tex
 
 \chapter{Guía de instalación y uso} \label{chapter:GuiaUso}
-En esta sección se explicará como poder ejecutar la aplicación dentro de nuestro equipo, así como 
-los comandos básicos para la ejecución de la aplicación.
+La propuesta de este documento tiene como aplicación resultante un \ac{CLI} con un conjunto de acciones que pueden ser realizadas. Este aplicativo despliega un conjunto de contenedores de Docker para su funcionamiento independiente en cualquier máquina. El despliegue se realiza en capas interiores de la aplicación por lo que el usuario no tiene que tener conocimientos previos de Docker para poder utilizar la herramienta. Se ha intentado facilitar el uso y comprensión de la aplicación mediante descripciones detalladas de cada uno de los parámetros en la propia herramienta, no obstante, en las siguientes secciones se detallarán cada una, como punto de inicio para que el lector pueda utilizar el aplicativo.
+
+\subsection{Instalación}
+La instalación se realiza a partir de un ejecutable. Este \textit{script} realiza una serie de configuraciones del sistema, añadiendo un directorio al \slash Home de la máquina donde se instala.Se añade un directorio llamada \textit{track-simulator} que será el lugar de entrada y la salida del aplicativo. 
+
+El directorio  \textit{track-simulator} contiene los siguientes subdirectorios:
+\begin{enumerate}[label={D.\arabic*.}]
+\item \textbf{config}. Directorio donde se sitúan los ficheros necesarios para la ejecución del aplicativo.\item \textbf{data}. Directorio para la salida de los procesos de análisis.
+\item \textbf{db}. Este directorio contiene la configuración de MongoDB dentro de nuestro sistema.
+\item \textbf{analysis}. Directorio de entrada para los ficheros a analizar, estos ficheros pueden estar organizados en subdirectorios. La ruta a estos subdirectorios será definida cuando realicemos una simulación mediante el comando \textit{ts-cli analyze 	--file\_directory \lbrack SUBDIRECTORY\rbrack}
+\item \textbf{data}. Directorio para la salida de los procesos de análisis. Este directorio tiene, por lo tanto una estructura de subdirectorios como se muestra en la figura \ref{figure:dataFolderHierarchy}.
+
+\end{enumerate}
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=0.95\textwidth]{./Imagenes/dataFolderHierarchy.png}
+\caption{Jerarquía en el directorio \textit{\slash track-simulator\slash data}.}
+\end{center}
+\label{figure:dataFolderHierarchy}
+\end{figure}
+\newpage
+
+\subsection{Guía de uso}
+La interfaz se despliega mediante el uso del comando \textit{ts-cli}. Si no se le introduce ningún parámetro se desplegará la ayuda de forma que aparecen las  acciones disponibles con una pequeña explicación.
+
+Las acciones disponibles en la primera versión de la herramienta son las siguientes
+
+\begin{enumerate}[label={A.\arabic*.}]
+\item \textbf{simulate}. La acción simulate realiza una simulación de una trayectoria. Tiene una serie de parámetros de entrada que permiten la personalización de su comportamiento.
+
+\begin{enumerate}[label*={P.\arabic*.}]
+\item \textbf{--distance} Distancia que se quiere simular (en metros).
+
+\item \textbf{--origin\_node} Nodo origen desde el que se desea simular.
+
+\item \textbf{--data}. Conjunto de datos origen que se usarán para la simulación. (Por defecto se usará los datos con fecha más reciente.)
+\end{enumerate}
+
+\item \textbf{analyze}. La acción simulate realiza una simulación de una trayectoria. Tiene una serie de parámetros de entrada que permiten la personalización de su comportamiento.
+
+\begin{enumerate}[label*={P.\arabic*.}]
+\item \textbf{\-\-file\_directory} Directorio de donde se realizará la lectura de los ficheros \ac{GPX} para su análisis. Parte de una ruta inicial \slash data\slash analysis.
+
+\item \textbf{\-\-data}. Conjunto de datos origen que se usarán para la simulación. (Por defecto se usará los datos con fecha más reciente). Los datos de MongoDB se guardan con formato Graph\_Analysis\_mm-dd-YYYY.
+\end{enumerate}
+\end{enumerate}
+
+En el comando \ref{comando:Analyze} se tiene un ejemplo de utilización de la herramienta para analizar una conjuntos de trayectorias situadas en la carpeta \textit{01-bellver}.
+
+\begin{lstlisting}[caption={Ejecución análisis}, language=bash, label={comando:Analyze}] 
+	ts-cli analyze --file_directory 01-bellver
+\end{lstlisting}
+
+Cabe destacar que la carpeta \textit{01-bellver} tiene que estar situada en el directorio \textit{\$HOME}/track-simulator/analysis. Como resultado de esta ejecución se tendría un conjunto de datos almacenados dentro de colecciones de la base datos. Junto a esto, se podría observar resultados en la carpeta \textit{/data/analysis/statistics} como muestra la figura \ref{figure:StatisticsFolder}.
+
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=0.95\textwidth]{./Imagenes/statisticsFolderResults.png}
+\caption{Directorio \textit{statistics} tras el análisis de un conjunto de trayectorias.}
+\label{figure:StatisticsFolder}
+\end{center}
+\end{figure}
+
+
+Por otro lado,  el comando \ref{comando:Simulate} representa un ejemplo de utilización de la herramienta para simular una trayectoria de 10 Km a partir del análisis realizado día 16 de Mayo de 2020.
+
+\begin{lstlisting}[caption={Ejecución simulación}, language=bash, label={comando:Simulate}]  
+	ts-cli simulate --distance 10000 --data Graph_Analysis_05-16-2020
+\end{lstlisting}
+
+Se tiene como resultados de la ejecución un conjunto de trayetorias, tanto ficheros \ac{GPX} como una imagenes representativa en formato \ac{PNG} serán almacenadas en la ruta \textit{data\slash simulation} como muestra la figura \ref{figure:SimulationFolder}.
+\begin{figure}[!htb]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{./Imagenes/SimulationFolderResults.png}
+\caption{Directorio \textit{simulation} tras la simulación de un conjunto de trayectorias.}
+\label{figure:SimulationFolder}
+\end{center}
+\end{figure}
+
 

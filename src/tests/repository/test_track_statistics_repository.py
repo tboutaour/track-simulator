@@ -12,7 +12,7 @@ j = mock.patch.dict(os.environ, {"MONGO_HOST": "localhost",
 
 k = mock.patch.dict(os.environ, {"MONGO_HOST": "localhost",
                                  "MONGO_PORT": "27019",
-                                 "MONGO_DATABASE": "tracksimulatordbbatchsimulate",
+                                 "MONGO_DATABASE": "tracksimulatordbempty",
                                  "LAST_VERSION_GRAPH": "Graph_Analysis_05-10-2020",
                                  'MONGO_TRACK_STATISTICS_COLLECTION': 'trackStatistics'}, clear=True)
 
@@ -24,8 +24,8 @@ import matplotlib.pyplot as plt
 class MyTestCase(unittest.TestCase):
     def test_read_point_to_next_superposed(self):
         with k:
-            from track_analyzer.repository.resource import mongo_resource_impl
-            from track_analyzer.repository import track_statistics_repository_impl
+            from track_simulator.repository.resource import mongo_resource_impl
+            from track_simulator.repository import track_statistics_repository_impl
             mongodb_connection = mongo_resource_impl.MongoResourceImpl()
             track_information_repository = track_statistics_repository_impl.TrackStatisticsRepositoryImpl(
                 mongodb_connection)
@@ -44,15 +44,15 @@ class MyTestCase(unittest.TestCase):
 
         with j:
             for i, v in sys.modules.items():
-                if i.startswith('track_analyzer.conf'):
+                if i.startswith('track_simulator.conf'):
                     print(i)
                     importlib.reload(v)
             for i, v in sys.modules.items():
-                if i.startswith('track_analyzer'):
+                if i.startswith('track_simulator'):
                     print(i)
                     importlib.reload(v)
-            from track_analyzer.repository.resource import mongo_resource_impl
-            from track_analyzer.repository import track_statistics_repository_impl
+            from track_simulator.repository.resource import mongo_resource_impl
+            from track_simulator.repository import track_statistics_repository_impl
             mongodb_connection = mongo_resource_impl.MongoResourceImpl()
             track_information_repository = track_statistics_repository_impl.TrackStatisticsRepositoryImpl(
                 mongodb_connection)
@@ -80,8 +80,8 @@ class MyTestCase(unittest.TestCase):
         plt.legend(loc="lower right", frameon=False)
         plt.grid(True)
         plt.subplot(212)
-        plt.hist(net_dx2, bins=300, alpha=0.5, color='blue', label='Simulation')
-        plt.hist(net_dx22, bins=300, alpha=0.5, color='red', label='Real')
+        plt.hist(net_dx22, bins=300, alpha=0.5, color='red', label='Real', normed=True)
+        plt.hist(net_dx2, bins=300, alpha=0.5, color='blue', label='Simulation', normed=True)
         plt.xlabel('Distance point to point')
         plt.ylabel('Frequency')
         plt.title('Histogram of distance point to point')
@@ -95,8 +95,8 @@ class MyTestCase(unittest.TestCase):
     def test_writting(self):
         def test_read_point_projection(self):
             with k:
-                from track_analyzer.repository.resource import mongo_resource_impl
-                from track_analyzer.repository import track_statistics_repository_impl
+                from track_simulator.repository.resource import mongo_resource_impl
+                from track_simulator.repository import track_statistics_repository_impl
                 mongodb_connection = mongo_resource_impl.MongoResourceImpl()
                 track_information_repository = track_statistics_repository_impl.TrackStatisticsRepositoryImpl(
                     mongodb_connection)

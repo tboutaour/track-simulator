@@ -56,17 +56,17 @@ posteriormente, realizar el algoritmo que permita realizar dicha recreación. La
 \newpage
  
 La aplicación crea una sucesión de puntos que equivalen a un recorrido dentro de un plano geográfico. 
-Se ha determinado la generación de puntos dentro del aplicativo se realiza de forma pseudo-aleatoria, quiere decir que la producción de los diferentes puntos no sigue ningún patrón o regularidad en sí misma sino que parte del análisis realizado con un aporte de aleatoriedad. La sucesión de puntos estará relacionada directamente con un camino, sendero o recorrido asignado al modelo lógico. La simulación tendrá en cuenta la frecuencia de paso relativa por el segmento como parte del proceso, así como la distancia entre los puntos uno a uno. Con este procedimiento se pretende obtener de una forma rigurosa un análisis cuantitativo de los datos aportados por las trayectorias reales para poder crear un modelo de simulación lo más real posible.
+Se ha determinado que la generación de puntos dentro del aplicativo se realiza de forma pseudo-aleatoria, quiere decir que la producción de los diferentes puntos no sigue ningún patrón o regularidad en sí misma sino que parte del análisis realizado, al que se le añaden componentes aleatorios. La sucesión de puntos estará relacionada directamente con un camino, sendero o recorrido asignado al modelo lógico. La simulación tendrá en cuenta la frecuencia de paso relativa por el segmento como parte del proceso, así como la distancia entre los puntos uno a uno. Con este procedimiento se pretende obtener de una forma rigurosa un análisis cuantitativo de los datos aportados por las trayectorias reales para poder crear una simulación lo más real posible.
 
 \section{Funcionalidades de \textit{TrackSimulator}}
 \textit{TrackSimulator} es una aplicación. El término \textit{aplicación} se entiende como la suma de 
-conjunto de implementaciones  de código ejecutable y del que se espera un resultado. El flujo del aplicativo consta de un único tipo de entrada, en este caso trayectorias sobre un terreno en ficheros \ac{GPX}. Los dos grandes módulos representan el análisis y la simulación de los datos, donde en el primero realizará una alimentación de una base de datos con la información de las trayectorias y el resultado del análisis, por otra parte almacenará en la máquina una imagen del resultado del análisis. El módulo de simulación realizará el proceso de generación de trayectorias a partir de la lectura de los datos almacenados en la base de datos, del que también se obtienen imágenes de las trayectorias.
+conjunto de implementaciones  de código ejecutable y del que se espera un resultado. El flujo del aplicativo se puede ver en la figura red \ref{figure:TrackSimulatorDiagramFlow}. Consta de un único tipo de entrada, en este caso trayectorias sobre un terreno en ficheros \ac{GPX}. Los dos grandes módulos representan el análisis y la simulación de los datos, donde en el primero realizará una alimentación de una base de datos con la información de las trayectorias y el resultado del análisis, por otra parte almacenará en la máquina una imagen del resultado del análisis. El módulo de simulación realizará el proceso de generación de trayectorias a partir de la lectura de los datos almacenados en la base de datos, del que también se obtienen imágenes de las trayectorias.
 
 \begin{figure}[!htb]
 \begin{center}
-\includegraphics[width=0.7\textwidth]{./Imagenes/TrackSimulatorDiagram.png}
+\includegraphics[width=0.99\textwidth]{./Imagenes/TrackSimulatorDiagram.png}
 \caption{Diagrama de funcionamiento de TrackSimulator}
-\label{figure:TrackSimulatorDiagram}
+\label{figure:TrackSimulatorDiagramFlow}
 \end{center}
 \end{figure}
 
@@ -92,22 +92,31 @@ El detalle de esta información se describe en detalle en el capítulo \ref{sect
 
 \section{Requerimientos de \textit{TrackSimulator}} \label{section: RequerimientosTrackSimulator}
 Explicadas las funcionalidades de la aplicación de Track Analyzer los requerimientos identificados son los siguientes:
-\begin{description}
-\item[Importación de datos] La aplicación debe realizar una importación de los datos desde un fichero .\ac{GPX} al modelo lógico elegido para la el posterior tratamiento.
-\item[Análisis de ruta] La aplicación debe realizar un análisis de la ruta que proporcione por una parte indicadores y por otro valores medibles, cuantificables y utilizables para realizar una simulación 
+\begin{enumerate}[label={R.\arabic*.}]
+
+\item Importación de datos La aplicación debe realizar una importación de los datos desde un fichero .\ac{GPX} al modelo lógico elegido para la el posterior tratamiento.
+
+\item \textbf{Análisis de ruta} La aplicación debe realizar un análisis de la ruta que proporcione por una parte indicadores y por otro valores medibles, cuantificables y utilizables para realizar una simulación 
 lo más precisa posible.
-\item[Almacenamiento de las rutas reales en base de datos] La aplicación debe realizar un almacenamiento de los datos analizados en una base de datos, con el objetivo de poder ser repetible
+
+\item \textbf{Almacenamiento de las rutas reales en base de datos} La aplicación debe realizar un almacenamiento de los datos analizados en una base de datos, con el objetivo de poder ser repetible
 sin necesidad de importar nuevamente los datos.
-\item[Almacenamiento del análisis en base de datos] La aplicación debe realizar un almacenamiento de los resultados del análisis en una base de datos, con el objetivo de poder ser accesibles para la
+
+\item \textbf{Almacenamiento del análisis en base de datos} La aplicación debe realizar un almacenamiento de los resultados del análisis en una base de datos, con el objetivo de poder ser accesibles para la
 etapa de simulación.
-\item[Muestra de gráficas del análisis de los datos] La aplicación debe poder realizar una muestra de la información resultante para su visualización por parte del usuario.
-\item[Lectura de la base de datos para el acceso a la información] La aplicación debe poder realizar una lectura de la base de datos para acceder a la información necesaria para la muestra de resultados o 
+
+\item \textbf{Generación de fichero de gráficas resultantes del análisis}  La aplicación debe poder realizar una muestra de la información resultante para su visualización por parte del usuario.
+
+\item \textbf{Lectura de la base de datos para el acceso a la información} La aplicación debe poder realizar una lectura de la base de datos para acceder a la información necesaria para la muestra de resultados o 
 simulación de trayectorias.
-\item[Obtención del camino más probable a partir de parámetros de entrada] La aplicación debe poder generar el camino más probable dada un análisis previo y unos parámetros de entrada.
-\item[Simulación de puntos \ac{GPS} a partir de resultado de análisis] La aplicación debe generar los puntos de cada uno de los segmentos necesarios dado un camino.
-\item[Generación del fichero GPX correspondiente a la simulación de la trayectoria] La aplicación realizar una exportación de los datos a formato .\ac{GPX}.
-\item[Visualicación de trayectoria] La aplicación debe poder mostrar al usuario una visualización de la trayectoria dado un fichero .\ac{GPX}.
-\end{description}
+
+\item \textbf{Simulación de puntos \ac{GPS} a partir de resultado de análisis} La aplicación debe poder generar el camino más probable dada un análisis previo y unos parámetros de entrada. La aplicación debe generar los puntos de cada uno de los segmentos necesarios dado un camino.
+
+\item \textbf{Generación del fichero GPX correspondiente a la simulación de la trayectoria}  La aplicación realizar una exportación de los datos a formato .\ac{GPX}.
+
+\item \textbf{Generación de fichero visualización de trayectoria}  La aplicación debe poder mostrar al usuario una visualización de la trayectoria dado un fichero .\ac{GPX}.
+
+\end{enumerate}
 
 \section{Implementación de TrackSimulation}
 \subsection{Flujo de datos}
@@ -153,17 +162,15 @@ para la implementación de la aplicación. A continuación se detallan ambas.
 \subsubsection{Almacenamiento del dato}
 Tanto de trayectorias reales como de los datos generados por el análisis deben ser almacenados 
 de forma que sean accessibles de forma rápida.
-Para el almacenamiento de datos, existen dos grandes posibilidades: El uso de Bases de datos relacionales, 
+Para el almacenamiento de datos, existen dos grandes posibilidades: el uso de Bases de datos relacionales, 
 a partir de ahora descritas como \ac{SQLDB},
 o el opuesto, las bases de datos no relacionales, \ac{NOSQLDB}.
-Las ventajas de las \ac{NOSQLDB} han hecho que con el paso del tiempo, los desarrollos se vean orientados 
-al tipo de almacenamiento no relacional.
 Para la realización de la propuesta descrita en este documento se ha decidido realizar el almacenamiento de 
 toda la información en \textit{MongoDB}, una de las \ac{NOSQLDB}
 más usadas y que detallamos a continuación.
 
 \textit{MongoDB} se trata de una \ac{NOSQLDB} de código abierto y su funcionamiento es documental. 
-Se almacenan colecciones de documentos, que son series de elementos JSON clave-valor.
+Se almacenan colecciones de documentos, que son series de elementos clave-valor en formato JSON.
 
 MongoDB elimina las limitaciones de las bases de datos relacionales \cite{Mongo01}. 
 Permite almacenar de forma eficiente grandes cantidades de información, siendo
@@ -171,52 +178,52 @@ a su vez flexible a modificaciones debido a que los documentos que se almacenan 
 una taxonomía definida. Por lo que el desarrollo incremental de la aplicación y la aparición de nuevos 
 campos dentro del modelo de datos no es un problema.
 Otro gran motivo para la elección de MongoDB como base de datos de este proyecto es la escalabilidad 
-que ofrece, de forma que a grandes cantidades de trayectorias por almacenar, la aplicación respondería 
-de forma eficiente y mucho más precisa.
+que ofrece, de forma que a grandes cantidades de trayectorias por almacenar, podría distribuirse utilizando servicios en la nube.
 
 Actualmente para el desarrollo de la propuesta no se ha contado con una gran cantidad de datos.
 No obstante el problema ha sido planteado con el objetivo de poder analizar grandes cantidades de datos y que puedan
 ser almacenados y accesible mediante el uso de esta base de datos.
+
 \subsubsection{Librerías utilizadas} \label{subsection: LibreriasExternas}
-Para la implementación de la propuesta de este documento se ha hecho uso de librerías externas. Se trata de un conjunto de código que agrupado que aporta funcionalidad diversa. Las librerías externas empleadas en este proyecto son las siguientes :
-\begin{description}
+El lenguaje seleccionado para el desarrollo del aplicativo ha sido Python debido al ser recomendable para el tratamiento de datos. Su flexibilidad y la gran utilidad aportada por librerías externas hacen que sea idóneo para el desarrollo de la propuesta. Entendemos como librería un conjunto de código agrupado que aporta funcionalidad diversa. Las librerías externas empleadas en este proyecto son las siguientes :
+\begin{enumerate}[label={L.\arabic*.}]
 %gpxpy
-\item[gpxpy] Librería para la manipulación de ficheros \ac{GPX}. Mediante esta librería se puede realizar una importación del fichero para su posterior manipulación. De esta forma se obtiene la secuencia de puntos \ac{GPS} que describe una trayectoria determinada.
+\item \textbf{gpxpy} Librería para la manipulación de ficheros \ac{GPX}. Mediante esta librería se puede realizar una importación del fichero para su posterior manipulación. De esta forma se obtiene la secuencia de puntos \ac{GPS} que describe una trayectoria determinada.
 %pandas
-\item[pandas] Librería para el análisis de los datos. Toda la información correspondiente a las diferentes trayectorias queda reflejada en un Dataframe para su posterior tratamiento y acceso.
+\item \textbf{pandas} Librería para el análisis de los datos. Toda la información correspondiente a las diferentes trayectorias queda reflejada en un Dataframe para su posterior tratamiento y acceso.
 %osmnx
-\item[osmnx] Librería para la extracción, visualización y análisis de redes de calles. Mediante esta librería se puede obtener toda la información referente a nuestro espacio determinado del Castillo de Bellver e importar toda la información de sus caminos y carreteras transitables. De esta forma tenemos toda una estructura de datos con información geográfica precisa del entorno. Por otra parte mediante esta librería se puede visualizar las trayectorias escogidas, así como la capacidad de almacenar imágenes de las trayectorias analizadas o simuladas.
+\item \textbf{osmnx} Librería para la extracción, visualización y análisis de redes de calles. Mediante esta librería se puede obtener toda la información referente a nuestro espacio determinado del Castillo de Bellver e importar toda la información de sus caminos y carreteras transitables. De esta forma tenemos toda una estructura de datos con información geográfica precisa del entorno. Por otra parte mediante esta librería se puede visualizar las trayectorias escogidas, así como la capacidad de almacenar imágenes de las trayectorias analizadas o simuladas.
 %matplotlib
-\item[matplotlib] Librería por excelencia para la representación de información de forma visual. Mediante el uso de esta librería podemos mostrar diversas gráficas de la información obtenida y analizada por los diferentes algoritmos.
+\item \textbf{matplotlib} Librería por excelencia para la representación de información de forma visual. Mediante el uso de esta librería podemos mostrar diversas gráficas de la información obtenida y analizada por los diferentes algoritmos.
 %numpy
-\item[numpy] Librería para el cálculo científico. Esta librería nos aporta diferentes estructuras de datos para el acceso y cálculo de forma eficiente a la información. Una de las principales ventajas de esta librería es la implementación de matrices de forma que el acceso a los datos incrementa su eficiencia de forma considerable.
+\item \textbf{numpy} Librería para el cálculo científico. Esta librería nos aporta diferentes estructuras de datos para el acceso y cálculo de forma eficiente a la información. Una de las principales ventajas de esta librería es la implementación de matrices de forma que el acceso a los datos incrementa su eficiencia de forma considerable.
 %geopy
-\item[geopy] Librería para el tratamiento de coordenadas. Mediante esta librería se obtienen las herramientas necesarias para tratar al par de datos \textit{(Lat,Long)} como un punto de coordenada  \ac{GPS}. Por otra parte se obtiene implementación del cálculo de la distancia entre dos coordenadas.
+\item \textbf{geopy} Librería para el tratamiento de coordenadas. Mediante esta librería se obtienen las herramientas necesarias para tratar al par de datos \textit{(Lat,Long)} como un punto de coordenada  \ac{GPS}. Por otra parte se obtiene implementación del cálculo de la distancia entre dos coordenadas.
 %itertools
-\item[itertools] Esta librería implementa diversos bloques de iteradores. El uso dentro de nuestro proyecto queda exclusivamente para la agrupación de elementos dentro de un set de datos.
+\item \textbf{itertools} Esta librería implementa diversos bloques de iteradores. El uso dentro de nuestro proyecto queda exclusivamente para la agrupación de elementos dentro de un set de datos.
 %sklearn
-\item[sklearn] Librería para el análisis de de datos. Esta librería nos aporta todas las herramientas necesarias para el análisis de los datos \ac{GPS}. Con ella realizamos los cálculos de puntos próximos a partir de una búsqueda basada en \ac{BSP} como veremos en la siguiente sección.
+\item \textbf{sklearn} Librería para el análisis de de datos. Esta librería nos aporta todas las herramientas necesarias para el análisis de los datos \ac{GPS}. Con ella realizamos los cálculos de puntos próximos a partir de una búsqueda basada en \ac{BSP} como veremos en la siguiente sección.
 %shapely
-\item[shapely] Librería para el tratamiento de figuras geométricas. De esta forma podemos tratar elementos comos puntos \ac{GPS} de forma abstracta. Por otra parte nos permite tratar las rutas del espacio a analizar como una linea de sucesivos puntos \ac{GPS}.
+\item \textbf{shapely} Librería para el tratamiento de figuras geométricas. De esta forma podemos tratar elementos comos puntos \ac{GPS} de forma abstracta. Por otra parte nos permite tratar las rutas del espacio a analizar como una linea de sucesivos puntos \ac{GPS}.
 %pickle
-\item[pickle] Librería para la codificación-decodificación de ficheros. Mediante el uso de esta librería se realiza la exportación de la información estadística y de la estructura de grafo generada y almacenada en los ficheros .txt/edgelist sucesivamente.
-\end{description}
+\item \textbf{pickle} Librería para la codificación-decodificación de ficheros. Mediante el uso de esta librería se realiza la exportación de la información estadística y de la estructura de grafo generada y almacenada en los ficheros .txt/edgelist sucesivamente.
+\end{enumerate}
 
 \subsection{Docker}
 Para poder entender completamente este apartado tenemos que hacer una mención a la forma clásica de arquitectura de 
 proyectos software a nivel de infraestructura. Esta forma tenía como particularidad el uso de máquinas virtuales para la 
-ejecución de las diferentes aplicaciones, así como un Supervisor de las máquinas virtuales.  Cada máquina virtual desplega
-su propio sistema operativo con sus dependencias. Por otro lado encontramos la forma mediante el uso de Dockers.
+ejecución de las diferentes aplicaciones, así como un supervisor de las máquinas virtuales.  Cada máquina virtual desplega
+su propio sistema operativo con sus dependencias. Por otro lado, encontramos la forma mediante el uso de contenedores.
 
-Docker es una plataforma para el desarrollo, despliegue y ejecución de aplicaciones basado en contenedores \cite{Docker01}.  Una imagen es 
+Una de las implementación más usada de contenedores es Docker. Docker es una plataforma para el desarrollo, despliegue y ejecución de aplicaciones basado en contenedores \cite{Docker01}.  Una imagen es 
 una plantilla de lectura donde está almacenado todo el código (normalmente compilado) junto con todas las dependencias 
-necesarias para que pueda ser ejecutado completamente.Un contenedor es una instancia de una imagen, esta puede creada, 
-desplazable y parada a partir de la interfaz de Docker.
+necesarias para que pueda ser ejecutado completamente. Un contenedor es una instancia de una imagen, esta puede creada, 
+desplazable y parada a partir de la \ac{API} de Docker.
 
 \begin{figure}[!htb]
 \begin{center}
 \includegraphics[width=0.9\textwidth]{./Imagenes/DockerComparision.png}
-\caption{Comparación entre implementación Docker y máquinas virtuales. \cite{Docker02}}
+\caption{Comparación entre arquitectura Docker y mediante máquinas virtuales. \cite{Docker02}}
 \label{DockerComparision}
 \end{center}
 \end{figure}
@@ -231,20 +238,21 @@ en su sistema. Para añadir una capa de abstracción a la arquitectura y hacerlo
 se ha utilizado Docker. La ventaja de usar Docker en esta propuesta reside en la capacidad de la plataforma de usar los 
 recursos del sistema de forma eficiente, así como la portabilidad que ofrece.
 
-La infraestructura que consta la propuesta de este documento es la siguiente:
+La infraestructura la propuesta es la siguiente:
 \begin{figure}[htb]
 \begin{center}
-\includegraphics[width=0.5\textwidth]{./Imagenes/DockerStructure.png}
+\includegraphics[width=0.8\textwidth]{./Imagenes/DockerStructure.png}
 \caption{Infraestructura de la propuesta de TrackSimulator}
 \label{DockerComparision}
 \end{center}
 \end{figure}
 \newpage
 
-Como vemos la aplicación constará de un \ac{CLI} que se encargará de centralizar todo el aplicativo. Mediante comandos
-se podrá realizar cada una de las acciones de la aplicación. Será este 	\ac{CLI} el encargado de desplegar los contenedores 
-tanto de la base de datos como de la aplicación. Añadirá una serie de directorios que serán el puente de comunicación entre
-la aplicación y la máquina que lo ejecuta. En una carpeta se deberán añadir los ficheros \ac{GPX} a analizar, y como salida 
-de la simulación tendremos ficheros \ac{GPX} e imágenes de la ruta en formato .PNG.
+Como vemos la aplicación constará de un \ac{CLI} que se encargará de centralizar todo el aplicativo. 
+Mediante comandos se podrá realizar cada una de las acciones de la aplicación. Es este \ac{CLI} el 
+encargado de desplegar los contenedores tanto de la base de datos como de la aplicación. Añade 
+una serie de directorios que serán el puente de comunicación entre la aplicación y la máquina que lo 
+ejecuta. En una carpeta se añadirán los ficheros \ac{GPX} a analizar, y como salida de la simulación 
+tendremos ficheros \ac{GPX} e imágenes de la ruta en formato PNG.
 
 

@@ -1,5 +1,5 @@
 import unittest
-from track_analyzer.repository.resource.gpx_resource_impl import GPXResourceImpl as GPXTrackRepository
+from track_simulator.repository.resource.gpx_resource_impl import GPXResourceImpl as GPXTrackRepository
 import matplotlib.pyplot as plt
 
 class MyTestCase(unittest.TestCase):

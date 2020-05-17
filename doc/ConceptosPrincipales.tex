@@ -70,7 +70,7 @@ Entre los formatos ráster más populares están Esri Grid, GeoTIFF, JPEG2000 \c
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width=0.6\textwidth]{./Imagenes/RasterImage.png}
-\caption{Ejemplo de territorio en formato ráster. \cite{ArgGis01}}
+\caption{Ejemplo de territorio en formato ráster. Fuente: \cite{ArgGis01}.}
 \label{fig:PointGeneration02}
 \end{center}
 \end{figure}
@@ -90,7 +90,7 @@ es la capacidad de intercambio de datos entre diferentes  programas en diferente
 (Windows, MacOS, Linux, Palm, PocketPC). Es este el formato seleccionado como entrada de datos 
 \ac{GPS} del desarrollo de este proyecto \cite{Topografix01}.
 \end{description}
-Es la flexibilidad de este formato y la representación independiente al tamaño del espacio geográfico 
+La flexibilidad del formato \ac{GPX} y la representación independiente al tamaño del espacio geográfico 
 delimitado las ventajas que determinan su uso en la continuación de la propuesta por delante del formato 
 ráster.
 
@@ -99,19 +99,11 @@ Tramuntana (Mallorca, Illes Balears, España) en formato vectorial.
 \begin{figure}[!htb]
 \begin{center}
 \includegraphics[width=0.5\textwidth]{./Imagenes/RutaOfre.png}
-\caption{Ejemplo de Ruta del Puig de l'Ofre, Mallorca, Illes Balears, España.}
+\caption{Ejemplo de Ruta alrededor del Puig de l'Ofre, Mallorca.}
 \label{figure:PointGeneration02}
 \end{center}
 \end{figure}
 \newpage
-
-\section{Open Street Map}
-\ac{OSM} es un mapa interactivo open-source que permite visualizar información geográfica. Las gran ventaja 
-de \ac{OSM} es la cantidad de herramientas aportadas por la comunidad que permiten importar, analizar, 
-visualizar y editar la información. El formato de fichero \ac{GPX} es el más utilizado dentro de esta 
-herramienta. La librería Osmx, que se describe posteriormente hace uso de la información de \ac{OSM} para
-importar el modelo de caminos y carreteras necesario para el análisis de trayectorias. Es por lo tanto, la 
-plataforma que proporciona el modelo geoespacial lógico en el que se basa la propuesta de este documento.
 
 \section{Estructura de los ficheros \ac{GPX}}
 El formato \ac{GPX} al ser basado en \ac{XML} establece sus propias etiquetas y tipos con la información 
@@ -142,7 +134,7 @@ en cada uno de los elementos es diversa. La latitud y la longitud de los element
 requerida obligatoria para la generación de un fichero \ac{GPX} válido. 
 En el algoritmo \ref{algoritmo: fichero GPX} se observa un ejemplo de un fichero \ac{GPX}:
 
-\begin{lstlisting}[caption={Ejemplo fichero GPX \cite{Gpsvisualizer01}} \label{algoritmo: fichero GPX},language=XML] 
+\begin{lstlisting}[caption={Ejemplo fichero GPX. Fuente: \cite{Gpsvisualizer01}.} , language=XML, label={algoritmo: fichero GPX}]
 <gpx creator="GPS Visualizer https://www.gpsvisualizer.com/" version="1.0">
   <wpt lat="45.44283" lon="-121.72904"><ele>1374</ele><name>Vista Ridge Trailhead</name><sym>Trail 
   Head</sym></wpt>
@@ -177,3 +169,11 @@ En el algoritmo \ref{algoritmo: fichero GPX} se observa un ejemplo de un fichero
   </trk>
 
 \end{lstlisting}
+
+\section{Open Street Map}
+\ac{OSM} es un mapa interactivo open-source que permite visualizar información geográfica. Las gran ventaja 
+de \ac{OSM} es la cantidad de herramientas aportadas por la comunidad que permiten importar, analizar, 
+visualizar y editar la información. El formato de fichero \ac{GPX} es el más utilizado dentro de esta 
+herramienta. La librería Osmx, que se describe posteriormente hace uso de la información de \ac{OSM} para
+importar el modelo de caminos y carreteras necesario para el análisis de trayectorias. Es por lo tanto, la 
+plataforma que proporciona el modelo geoespacial lógico en el que se basa la propuesta de este documento.

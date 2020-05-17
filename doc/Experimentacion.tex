@@ -1,14 +1,7 @@
 %!TeX root=MemoriaTFG.tex
 \chapter{Experimentacion}
-En este capítulo se documentan las pruebas realizadas al aplicativo propuesto con el objetivo de analizar 
-los resultados obtenidos del análisis y la simulación.
-
-Esta experimentación parte de unas condiciones generales. Contamos con un total de 25 rutas reales 
-realizadas en el territorio delimitado del Castell de Bellver (Illes Balears, España). Debido a que el 
-número de muestras no es suficiente para representar un comportamiento se ha realizado un análisis y 
-almacenando los resultados 7 veces por cada ruta real, de esta forma alimentamos el modelo con una 
-cantidad de información suficiente para apreciar resultados. Estas condiciones de entrada parten de la
-necesidad de alimentar el modelo con una información que pueda llegar a ser representativa.
+En este capítulo se documentan las pruebas realizadas al aplicativo propuesto con el objetivo de analizar los resultados obtenidos del análisis y la simulación.
+Esta experimentación parte de unas condiciones generales. Contamos con un total de 25 rutas reales realizadas en el territorio delimitado del Castell de Bellver (Mallorca). Para la realización de la experimentación contamos con un número reducido de muestras. Para que el resultado del análisis pueda representar un comportamiento destacable se han replicado las mismas rutas un total de 7 veces, contando entonces con un total de más de 200 trayectorias, de una muestra inicial de 30. De esta forma alimentamos el modelo con una cantidad de información suficiente para apreciar resultados. Estas condiciones de entrada parten de la necesidad de alimentar el modelo con una información que pueda llegar a ser representativa.
 
 En la figura \ref{figure:RealHeatMap} se muestra el mapa de calor resultado del proceso de análisis:
 \begin{figure}[!htb]
@@ -40,10 +33,7 @@ defecto, todos los caminos tienen la misma probabilidad de tránsito a falta de 
 modelo. Por otra parte la distancia punto a punto será una constante definida en 20 metros, por lo 
 que no aparecerá variabilidad en la muestra. Esta constante está parametrizada y puede ser 
 modificable por el usuario.
-
-Se han realizado una simulación de 10 rutas. El resultado son 10 ficheros \ac{GPX} que están situados en la carpeta X adjuntada con este documento.
-
-\ref{figure:SimulatedTrack1}.
+Se han realizado una simulación de 10 rutas. Una muestra de estas simulaciones las podemos encontrar en el apartado \ref{subseciton:SimulationSample}. Las figuras \ref{figure:SimulatedTrack1}, \ref{figure:SimulatedTrack2} y \ref{figure:SimulatedTrack3} son son ejemplos de estas simulaciones.
 \begin{figure}[!htb]
 \centering
 \begin{minipage}{0.70\textwidth}
@@ -65,8 +55,10 @@ Se han realizado una simulación de 10 rutas. El resultado son 10 ficheros \ac{G
 \end{figure}
 \newpage
 
-Por una parte, en el mapa de calor resultante no se observan patrones observables, esto es debido a 
-la elección pseudo-aleatoria de cada uno de los segmentos seleccionados.
+Por una parte, en el mapa de calor resultante (figura \ref{figure:SimulatedHeatMapEmpty}) no se 
+observan patrones observables, esto es debido a la elección pseudo-aleatoria de cada uno de los 
+segmentos seleccionados.
+
 \begin{figure}[!htb]
 \begin{center}
 \includegraphics[width=0.7\textwidth]{./Imagenes/HeatMapEmpty.png}
@@ -82,13 +74,13 @@ corresponde a ningún comportamiento parametrizado (figura \ref{figure:Simulated
 \begin{figure}[!htb]
 \begin{minipage}{0.48\textwidth}
 \centering
-\includegraphics[width=0.9\textwidth]{./Imagenes/SimulateCumulativePointProjectionEmpty.png}
+\includegraphics[width=1.2\textwidth]{./Imagenes/SimulateCumulativePointProjectionEmpty.png}
 \caption{Muestra de análisis de simulación: Distancia punto a proyección en experimentación sin datos.}
 \label{figure:SimulatedPointToProjectionEmpty}
 \end{minipage}\hfill
 \begin{minipage}{0.48\textwidth}
 \centering
-\includegraphics[width=0.9\textwidth]{./Imagenes/SimulateCumulativePointPointEmpty.png}
+\includegraphics[width=1.2\textwidth]{./Imagenes/SimulateCumulativePointPointEmpty.png}
 \caption{Muestra de análisis de simulación: Distancia punto a punto en experimentación sin datos.}
 \label{figure:SimulatedPointToPointEmpty}
 \end{minipage}
@@ -139,17 +131,18 @@ distancia punto proyección encontramos una distribución normal mucho más acen
 \begin{figure}[!htb]
 \begin{minipage}{0.48\textwidth}
 \centering
-\includegraphics[width=0.9\textwidth]{./Imagenes/SimulateCumulativePointProjection.png}
+\includegraphics[width=1.2\textwidth]{./Imagenes/SimulateCumulativePointProjection.png}
 \caption{Muestra de análisis de simulación: Distancia punto a proyección en experimentación con datos.}
 \label{figure:SimulatedPointToProjection}
 \end{minipage}\hfill
 \begin{minipage}{0.48\textwidth}
 \centering
-\includegraphics[width=0.9\textwidth]{./Imagenes/SimulateCumulativePointPoint.png}
+\includegraphics[width=1.2\textwidth]{./Imagenes/SimulateCumulativePointPoint.png}
 \caption{Muestra de análisis de simulación: Distancia punto a punto en experimentación con datos.}
 \label{figure:SimulatedPointToPoint}
 \end{minipage}
 \end{figure}
+\newpage
 
 \subsection{Comparativa de resultados}
 En las figuras \ref{figure:ComparativaReal} y \ref{figure:ComparativaEmpty} se observan los resultados de la distancia punto a punto entre y la comparativa con la distribución real. Se observa que con el uso de los datos 
@@ -159,16 +152,84 @@ sin estos datos, aparece una distribución única al valor parametrizado, en est
 \begin{figure}[!htb]
 \begin{minipage}{0.48\textwidth}
 \centering
-\includegraphics[width=0.9\textwidth]{./Imagenes/SimulationComparative.png}
-\caption{Muestra de análisis de simulación: Distancia punto a proyección en experimentación con datos.}
+\includegraphics[width=1.2\textwidth]{./Imagenes/SimulationComparativeNormalized.png}
+\caption{Comparativa análisis de la distancia punto a proyección en simulación con datos.}
 \label{figure:ComparativaReal}
 \end{minipage}\hfill
 \begin{minipage}{0.48\textwidth}
 \centering
-\includegraphics[width=0.9\textwidth]{./Imagenes/SimulationComparativeEmpty.png}
-\caption{Muestra de análisis de simulación: Distancia punto a punto en experimentación con datos.}
+\includegraphics[width=1.2\textwidth]{./Imagenes/SimulationComparativeEmptyNormalized.png}
+\caption{Comparativa análisis de la distancia punto a punto en simulación con datos.}
 \label{figure:ComparativaEmpty}
 \end{minipage}
 \end{figure}
+\newpage
 
 Con esta información se aprecia que las simulaciones para este conjunto bajo de datos funciona con una alta similitud a las rutas reales proporcionadas.
+
+\newpage
+\newpage
+\subsection{Anexo: Muestra de simulaciones con datos introducidos} \label{subseciton:SimulationSample}\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.95\textwidth]{./Imagenes/data-simulation/track1.png}
+\caption{Simulación sin datos iniciales.}
+\end{center}
+\label{figure:Simulation1}
+\end{figure}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.95\textwidth]{./Imagenes/data-simulation/track2.png}
+\caption{Simulación sin datos iniciales.}
+\end{center}
+\label{figure:Simulation2}
+\end{figure}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.95\textwidth]{./Imagenes/data-simulation/track3.png}
+\caption{Simulación sin datos iniciales.}
+\end{center}
+\label{figure:Simulation3}
+\end{figure}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.95\textwidth]{./Imagenes/data-simulation/track4.png}
+\caption{Simulación sin datos iniciales.}
+\end{center}
+\label{figure:Simulation4}
+\end{figure}
+\newpage
+
+\subsection{Anexo: Muestra de simulaciones sin datos} \label{subseciton:SimulationSample}\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.95\textwidth]{./Imagenes/empty-simulation/track1.png}
+\caption{Simulación sin datos iniciales.}
+\end{center}
+\label{figure:Simulation1}
+\end{figure}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.95\textwidth]{./Imagenes/empty-simulation/track2.png}
+\caption{Simulación sin datos iniciales.}
+\end{center}
+\label{figure:Simulation2}
+\end{figure}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.95\textwidth]{./Imagenes/empty-simulation/track3.png}
+\caption{Simulación sin datos iniciales.}
+\end{center}
+\label{figure:Simulation3}
+\end{figure}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.95\textwidth]{./Imagenes/empty-simulation/track4.png}
+\caption{Simulación sin datos iniciales.}
+\end{center}
+\label{figure:Simulation4}
+\end{figure}
