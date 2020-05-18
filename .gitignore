@@ -159,5 +159,6 @@ pip-selfcheck.json
 /_deprecated
 /data
 /tracks
+/db
 # All aux of Latex
 *.aux
