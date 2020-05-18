@@ -27,7 +27,6 @@ class Graph(abc.ABC):
     def load_graph_analysis_statistics(self, data):
         pass
 
-
     def get_shortest_path_length(self, origin_node, target_node):
         pass
 

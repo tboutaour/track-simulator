@@ -7,6 +7,12 @@ class TrackSimulatorPipeline:
         self.simulate_track = simulate_track
 
     def run(self, origin, distance):
+        """
+        Method to run the simulation pipeline.
+        :param origin: start node of simulation.
+        :param distance: distance of the track to simulate (in meters).
+        :return: Simulate track in list of Point format.
+        """
         if origin is None:
             origin = 1248507104
         if distance is None:

@@ -43,6 +43,12 @@ class TrackAnalysisPipeline:
         self.graph = graph
 
     def run(self, file_path):
+        """
+        Method to run track analysis pipeline. It analyzes tracks from a folder path and store information
+        into a database resource. It supports tracks in GPX format.
+        This method stores analysis results images in PNG format.
+        :param file_path: path of the directory where tracks are alocated.
+        """
         logging.basicConfig(stream=sys.stdout, level=logging.INFO)
         if file_path is None:
             file_path = FILE_DIRECTORY
@@ -57,6 +63,7 @@ class TrackAnalysisPipeline:
             graphs = [self.get_track_graph.apply(self.graph, x) for x in data]
             #  Get statistics
             statistics = [self.get_track_statistics.apply(x) for x in data]
+
         #################################################
         # Save statistics in MongoDB
         #################################################
@@ -72,6 +79,12 @@ class TrackAnalysisPipeline:
         logging.info("Saved graph information in MongoDB")
 
     def analyze(self, gpx_file):
+        """
+        Method to analyze one given track file in GPX format. It applies map-matching techniques to get relation
+        between GPS points and complex street network.
+        :param gpx_file:
+        :return: dataframe of point-projection relationship.
+        """
         logging.info("Analyzing: " + gpx_file)
         #################################################
         # Get points from file
