@@ -17,4 +17,4 @@ class PyplotResourceImpl(PyplotResource):
         plt.savefig(path +
                     "/simulated_track_" +
                     uid +
-                    ".png")
+                    ".eps", format='eps')

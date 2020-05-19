@@ -9,10 +9,11 @@ from track_simulator.pipelines.track_simulator_pipeline import TrackSimulatorPip
 from track_simulator.conf.config import LAST_VERSION_GRAPH
 
 
-def simulation_main(origin_node, distance, data):
+def simulation_main(origin_node, distance, data, quantity):
     origin_node = 1248507104  # Bellver Castle entrance
     distance = 20000  # In meters
     data = LAST_VERSION_GRAPH
+    quantity = 1
     # Resource
     mongo_resource = MongoResourceImpl()
     pyplot_resource = PyplotResourceImpl()
@@ -33,4 +34,4 @@ def simulation_main(origin_node, distance, data):
     track_simulator_pipeline = TrackSimulatorPipeline(simulate_track)
 
     # Run
-    track_simulator_pipeline.run(origin_node, distance)
+    track_simulator_pipeline.run(origin_node, distance, quantity)

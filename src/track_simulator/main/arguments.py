@@ -41,5 +41,6 @@ class Arguments(object):
         parser.add_argument('--origin_node', help='Node to start simulation')
         parser.add_argument('--distance', help="Distance to start simulation.")
         parser.add_argument('--data', help="Data to import from database. (Graph_Analysis_mm-dd-YYYY) ")
+        parser.add_argument('--quantity', help="Number of tracks to generate. ")
         args = parser.parse_args(sys.argv[2:])
-        simulation_main(args.origin_node, args.distance, args.data)
+        simulation_main(args.origin_node, args.distance, args.data, args.quantity)

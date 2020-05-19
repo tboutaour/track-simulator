@@ -1,12 +1,11 @@
 from track_simulator.interactor.simulate_track import SimulateTrack
-NUMBER_SIMULATIONS = 4
 
 
 class TrackSimulatorPipeline:
     def __init__(self, simulate_track: SimulateTrack):
         self.simulate_track = simulate_track
 
-    def run(self, origin, distance):
+    def run(self, origin, distance, quantity):
         """
         Method to run the simulation pipeline.
         :param origin: start node of simulation.
@@ -17,5 +16,7 @@ class TrackSimulatorPipeline:
             origin = 1248507104
         if distance is None:
             distance = 10000
+        if quantity is None:
+            quantity = 1
 
-        return self.simulate_track.simulate(origin, distance)
+        return [self.simulate_track.simulate(origin, distance) for _ in range(0, quantity)]
