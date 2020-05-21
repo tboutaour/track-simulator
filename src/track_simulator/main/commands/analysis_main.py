@@ -11,6 +11,7 @@ from track_simulator.interactor.get_analysis_figure_impl import GetAnalysisFigur
 from track_simulator.interactor.get_trackanalysis_graph_impl import GetTrackAnalysisGraphImpl
 from track_simulator.pipelines.track_analysis_pipeline import TrackAnalysisPipeline
 from track_simulator.entities.hidden_markov_model_impl import HMM
+from track_simulator.conf.config import NORTH_COMPONENT, SOUTH_COMPONENT, EAST_COMPONENT, WEST_COMPONENT
 
 
 def analysis_main(file_directory):
@@ -24,7 +25,7 @@ def analysis_main(file_directory):
     track_statistics = TrackStatisticsRepositoryImpl(mongo_resource)
 
     # Entities
-    bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023)
+    bellver_graph = Graph(NORTH_COMPONENT, SOUTH_COMPONENT, EAST_COMPONENT, WEST_COMPONENT)
 
     # Interactors
     get_map_matching = GetMapMatchingImpl(HMM(bellver_graph))
