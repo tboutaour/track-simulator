@@ -35,3 +35,18 @@ class MyTestCase(unittest.TestCase):
             data = track_information_repository.read_distance_point_to_next()
             get_analysis_figure = get_analysis_figure_impl.GetAnalysisFigureImpl()
             get_analysis_figure.apply_distance_point_point(data)
+
+    def test_heat_map(self):
+        with k:
+            from track_simulator.interactor import get_analysis_figure_impl
+            from track_simulator.repository.resource import mongo_resource_impl
+            from track_simulator.entities.graph_impl import Graph
+            from track_simulator.repository.graph_information_repository_impl import GraphInformationRepositoryImpl
+            print(os.path.abspath(os.curdir))
+            bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023)
+            mongodb_connection = mongo_resource_impl.MongoResourceImpl()
+            graph_information = GraphInformationRepositoryImpl(mongodb_connection)
+            data = graph_information.read_graph_information_dataframe(os.environ.get('LAST_VERSION_GRAPH'))
+            bellver_graph.load_graph_analysis_statistics(data)
+            get_analysis_figure = get_analysis_figure_impl.GetAnalysisFigureImpl()
+            get_analysis_figure.apply_heat_map(bellver_graph)

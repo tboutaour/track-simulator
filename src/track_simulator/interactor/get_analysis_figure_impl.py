@@ -3,6 +3,9 @@ from matplotlib import pyplot as plt
 import numpy as np
 import pandas as pd
 from datetime import datetime
+import osmnx
+import matplotlib.colors as colors
+import matplotlib.cm as cm
 from track_simulator.conf.config import EXPORT_ANALYSIS_IMAGES_FOLDER
 
 
@@ -30,7 +33,8 @@ class GetAnalysisFigureImpl(GetAnalysisFigure):
                             wspace=0.35)
         today = datetime.utcnow()
         str_day = today.strftime('%Y%m%d_%H%M') + "00"
-        plt.savefig(EXPORT_ANALYSIS_IMAGES_FOLDER + '/' + 'distance_point_point_' + str_day + '.png', format='png', dpi=600)
+        plt.savefig(EXPORT_ANALYSIS_IMAGES_FOLDER + '/' + 'distance_point_point_' + str_day + '.png', format='png',
+                    dpi=600)
 
     def apply_distance_point_projection(self, data):
         ser_dx, net_dx2 = self.__generate_cumulative_distribution(data, 40)
@@ -55,7 +59,35 @@ class GetAnalysisFigureImpl(GetAnalysisFigure):
                             wspace=0.35)
         today = datetime.utcnow()
         str_day = today.strftime('%Y%m%d_%H%M') + "00"
-        plt.savefig(EXPORT_ANALYSIS_IMAGES_FOLDER + '/' + 'distance_point_projection_' + str_day + '.png', format='png', dpi=600)
+        plt.savefig(EXPORT_ANALYSIS_IMAGES_FOLDER + '/' + 'distance_point_projection_' + str_day + '.eps', format='eps',
+                    dpi=600)
+
+    def apply_heat_map(self, graph):
+        ev = [edge[2]['num of detections'] for edge in graph.get_edges()]
+        norm = colors.Normalize(vmin=min(ev) * 0.8, vmax=max(ev))
+        cmap = cm.ScalarMappable(norm=norm, cmap=cm.inferno)
+        ec = [cmap.to_rgba(cl) for cl in ev]
+        today = datetime.utcnow()
+        str_day = today.strftime('%Y%m%d_%H%M') + "00"
+        osmnx.plot_graph(graph.graph,
+                         save=True,
+                         show=False,
+                         close=False,
+                         file_format='png',
+                         filename=EXPORT_ANALYSIS_IMAGES_FOLDER + '/' + 'heat_map_' + str_day,
+                         bgcolor='k',
+                         node_color='black',
+                         edge_color=ec,
+                         edge_linewidth=1.5,
+                         edge_alpha=1)
+
+    def __get_node_colors_by_stat(self, data, criteria):
+        df = data.sort_values(criteria)
+        df['colors'] = self.__get_color_list(df)
+        return df
+
+    def __get_color_list(self, df):
+        return osmnx.get_colors(n=len(df), cmap='inferno', start=0.2)
 
     def __generate_cumulative_distribution(self, data, threshold):
         data.sort()
