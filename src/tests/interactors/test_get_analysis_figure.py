@@ -5,10 +5,13 @@ from unittest import mock
 k = mock.patch.dict(os.environ, {"MONGO_HOST": "localhost",
                                  "MONGO_PORT": "27019",
                                  "MONGO_DATABASE": "trackdb",
+                                 "MONGO_GRAPH_INFORMATION_COLLECTION": 'graphDataframe',
+                                 "MONGO_TRACK_INFORMATION_COLLECTION": 'trackDataframe',
                                  "LAST_VERSION_GRAPH": "Graph_Analysis_05-16-2020",
                                  'MONGO_TRACK_STATISTICS_COLLECTION': 'statisticsDf',
                                  "EXPORT_ANALYSIS_IMAGES_FOLDER": "/Users/tonibous/Documents/1-UIB/TrabajoFinal"
-                                                                  "/TrackSimulator/src/data/analysis/statistics"}, clear=True)
+                                                                  "/TrackSimulator/src/data/analysis/statistics"},
+                    clear=True)
 
 
 class MyTestCase(unittest.TestCase):

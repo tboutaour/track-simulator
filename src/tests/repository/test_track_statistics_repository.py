@@ -8,12 +8,16 @@ j = mock.patch.dict(os.environ, {"MONGO_HOST": "localhost",
                                  "MONGO_PORT": "27019",
                                  "MONGO_DATABASE": "tracksimulatordbbatch",
                                  "LAST_VERSION_GRAPH": "Graph_Analysis_05-02-2020",
+                                 "MONGO_GRAPH_INFORMATION_COLLECTION": 'graphDataframe',
+                                 "MONGO_TRACK_INFORMATION_COLLECTION": 'trackDataframe',
                                  'MONGO_TRACK_STATISTICS_COLLECTION': 'trackStatistics'}, clear=True)
 
 k = mock.patch.dict(os.environ, {"MONGO_HOST": "localhost",
                                  "MONGO_PORT": "27019",
                                  "MONGO_DATABASE": "tracksimulatordbempty",
                                  "LAST_VERSION_GRAPH": "Graph_Analysis_05-10-2020",
+                                 "MONGO_GRAPH_INFORMATION_COLLECTION": 'graphDataframe',
+                                 "MONGO_TRACK_INFORMATION_COLLECTION": 'trackDataframe',
                                  'MONGO_TRACK_STATISTICS_COLLECTION': 'trackStatistics'}, clear=True)
 
 import pandas as pd

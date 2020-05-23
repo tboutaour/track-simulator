@@ -14,6 +14,8 @@ from track_simulator.pipelines.track_simulator_pipeline import TrackSimulatorPip
 k = mock.patch.dict(os.environ, {"MONGO_HOST": "localhost",
                                  "MONGO_PORT": "27019",
                                  "MONGO_DATABASE": "tracksimulatorempty",
+                                 "MONGO_GRAPH_INFORMATION_COLLECTION": 'graphDataframe',
+                                 "MONGO_TRACK_INFORMATION_COLLECTION": 'trackDataframe',
                                  "ROOT_DIRECTORY": "/Users/tonibous/Documents/1-UIB/TrabajoFinal/TrackSimulator",
                                  "FILE_DIRECTORY": "/Users/tonibous/Documents/1-UIB/TrabajoFinal/TrackSimulator/src"
                                                    "/data/tracks_to_analysis",
@@ -27,10 +29,9 @@ k = mock.patch.dict(os.environ, {"MONGO_HOST": "localhost",
                                  "RUNPATH": "/Users/tonibous/Documents/1-UIB/TrabajoFinal/TrackSimulator/src"
                                             "/track_simulator/main ",
                                  "LAST_VERSION_GRAPH": "Graph_Analysis_05-10-2020"
-                                 ""
+                                                       ""
                                  })
 k.start()
-
 
 from track_simulator.repository.resource.gpx_resource_impl import GPXResourceImpl
 from track_simulator.repository.resource.pyplot_resource_impl import PyplotResourceImpl
@@ -50,7 +51,6 @@ class MyTestCase(unittest.TestCase):
     def test_path_creation(self):
         mongo_resource = MongoResourceImpl()
         graph_information = GraphInformationRepositoryImpl(mongo_resource)
-
 
         track_statistics_repository = TrackStatisticsRepositoryImpl(mongo_resource)
         bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023)
@@ -80,7 +80,7 @@ class MyTestCase(unittest.TestCase):
         #                                  edge_linewidth=1.5,
         #                                  edge_alpha=1,
         #                                  node_zorder=3)
-        #plt.show()
+        # plt.show()
 
     def test_mocked_path_creation(self):
         mongo_resource = MongoResourceImpl()
@@ -104,7 +104,6 @@ class MyTestCase(unittest.TestCase):
         path = simulator.run(1248507104, 10000)
         a = [x[0] for x in path]
         print(path)
-        # ec = ['b' if (u == 2503944129 and v == 1357504260) else 'r' for u, v, k in bellver_graph.graph.edges(keys=True)]
         fig, ax = osmnx.plot_graph_route(bellver_graph.graph, a,
                                          bgcolor='k',
                                          node_color='black',
