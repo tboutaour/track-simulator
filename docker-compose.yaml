@@ -14,7 +14,7 @@ services:
       - ${TRACKSIMULATORPATH}/db:/data/db
 
   app:
-    build: .
+    image: tonibous/track-simulator:latest
     volumes:
     - ./src:/app
     - ${TRACKSIMULATOREXPORT}:/data
