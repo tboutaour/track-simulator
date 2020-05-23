@@ -1,0 +1,329 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Interactor &mdash; TrackSimulator 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Repository" href="repository.html" />
+    <link rel="prev" title="Welcome to TrackSimulator’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> TrackSimulator
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Interactor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="repository.html">Repository</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commands.html">Commands</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">TrackSimulator</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Interactor</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/interactor.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-get_analysis_figure">
+<span id="interactor"></span><h1>Interactor<a class="headerlink" href="#module-get_analysis_figure" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="get_analysis_figure.GetAnalysisFigure">
+<em class="property">class </em><code class="sig-prename descclassname">get_analysis_figure.</code><code class="sig-name descname">GetAnalysisFigure</code><a class="headerlink" href="#get_analysis_figure.GetAnalysisFigure" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="get_analysis_figure.GetAnalysisFigure.apply_distance_point_point">
+<em class="property">abstract </em><code class="sig-name descname">apply_distance_point_point</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#get_analysis_figure.GetAnalysisFigure.apply_distance_point_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Definition of method to get point to point figure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> – List of distances point to point.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="get_analysis_figure.GetAnalysisFigure.apply_distance_point_projection">
+<em class="property">abstract </em><code class="sig-name descname">apply_distance_point_projection</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#get_analysis_figure.GetAnalysisFigure.apply_distance_point_projection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Definition of method to get distance point to projection figure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> – List of distances point to projection.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-get_heat_map"></span><dl class="py class">
+<dt id="get_heat_map.GetHeatMap">
+<em class="property">class </em><code class="sig-prename descclassname">get_heat_map.</code><code class="sig-name descname">GetHeatMap</code><a class="headerlink" href="#get_heat_map.GetHeatMap" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="get_heat_map.GetHeatMap.apply">
+<em class="property">abstract </em><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="p">:</span> <span class="n">track_simulator.entities.graph_impl.Graph</span></em>, <em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em><span class="sig-paren">)</span><a class="headerlink" href="#get_heat_map.GetHeatMap.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to get heatMap given a graph and data of edge frequencies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>graph</strong> – Graph element</p></li>
+<li><p><strong>data</strong> – Dataframe of graph with frequencies.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-get_map_matching"></span><dl class="py class">
+<dt id="get_map_matching.GetMapMatching">
+<em class="property">class </em><code class="sig-prename descclassname">get_map_matching.</code><code class="sig-name descname">GetMapMatching</code><a class="headerlink" href="#get_map_matching.GetMapMatching" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<span class="target" id="module-get_trackanalysis_dataframe"></span><dl class="py class">
+<dt id="get_trackanalysis_dataframe.GetTrackAnalysisDataframe">
+<em class="property">class </em><code class="sig-prename descclassname">get_trackanalysis_dataframe.</code><code class="sig-name descname">GetTrackAnalysisDataframe</code><a class="headerlink" href="#get_trackanalysis_dataframe.GetTrackAnalysisDataframe" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="get_trackanalysis_dataframe.GetTrackAnalysisDataframe.apply">
+<em class="property">abstract </em><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id_track</span></em>, <em class="sig-param"><span class="n">track</span></em>, <em class="sig-param"><span class="n">projection</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#get_trackanalysis_dataframe.GetTrackAnalysisDataframe.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to get DataFrame from track and projection information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id_track</strong> – Id track to add as a row.</p></li>
+<li><p><strong>track</strong> – Array of Point</p></li>
+<li><p><strong>projection</strong> – Array of [Projection, Origin, Target]</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-get_trackanalysis_graph"></span><dl class="py class">
+<dt id="get_trackanalysis_graph.GetTrackAnalysisGraph">
+<em class="property">class </em><code class="sig-prename descclassname">get_trackanalysis_graph.</code><code class="sig-name descname">GetTrackAnalysisGraph</code><a class="headerlink" href="#get_trackanalysis_graph.GetTrackAnalysisGraph" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="get_trackanalysis_graph.GetTrackAnalysisGraph.apply">
+<em class="property">abstract </em><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span></em>, <em class="sig-param"><span class="n">main_df</span></em><span class="sig-paren">)</span><a class="headerlink" href="#get_trackanalysis_graph.GetTrackAnalysisGraph.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to reduced DataFrame of analyze and update frequencies of graph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>graph</strong> – </p></li>
+<li><p><strong>main_df</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-get_trackanalysis_statistics"></span><dl class="py class">
+<dt id="get_trackanalysis_statistics.GetTrackAnalysisStatistics">
+<em class="property">class </em><code class="sig-prename descclassname">get_trackanalysis_statistics.</code><code class="sig-name descname">GetTrackAnalysisStatistics</code><a class="headerlink" href="#get_trackanalysis_statistics.GetTrackAnalysisStatistics" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="get_trackanalysis_statistics.GetTrackAnalysisStatistics.apply">
+<em class="property">abstract </em><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="headerlink" href="#get_trackanalysis_statistics.GetTrackAnalysisStatistics.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to get statistics from DataFrame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> – DataFrame with [Point_lat, Point_long, Projection_lat, Projection_lon, Origin, Target]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-simulate_track"></span><dl class="py class">
+<dt id="simulate_track.SimulateTrack">
+<em class="property">class </em><code class="sig-prename descclassname">simulate_track.</code><code class="sig-name descname">SimulateTrack</code><a class="headerlink" href="#simulate_track.SimulateTrack" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="simulate_track.SimulateTrack.simulate">
+<em class="property">abstract </em><code class="sig-name descname">simulate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">origin_node</span></em>, <em class="sig-param"><span class="n">distance</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulate_track.SimulateTrack.simulate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to simulate track.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>origin_node</strong> – Node to start simulation.</p></li>
+<li><p><strong>distance</strong> – Distance of track to simulate. (in meters)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="repository.html" class="btn btn-neutral float-right" title="Repository" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to TrackSimulator’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Toni Boutaour
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

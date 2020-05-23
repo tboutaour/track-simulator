@@ -8,6 +8,7 @@ class GetHeatMap(abc.ABC):
     def apply(self, graph: Graph, data: DataFrame):
         """
         Method to get heatMap given a graph and data of edge frequencies.
+
         :param graph: Graph element
         :param data: Dataframe of graph with frequencies.
         """

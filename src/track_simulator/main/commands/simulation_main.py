@@ -10,6 +10,14 @@ from track_simulator.conf.config import LAST_VERSION_GRAPH
 
 
 def simulation_main(origin_node, distance, data, quantity):
+    """
+    Main function to deploy pipeline that simulates track based on previous analysis.
+
+    :param origin_node: Node to start simulation.
+    :param distance: Distance to start simulation.
+    :param data: Data to import from database. (Graph_Analysis_mm-dd-YYYY)
+    :param quantity: Number of tracks to generate.
+    """
     origin_node = 1248507104  # Bellver Castle entrance
     distance = 20000  # In meters
     data = LAST_VERSION_GRAPH

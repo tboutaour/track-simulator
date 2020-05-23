@@ -6,6 +6,7 @@ class GraphInformationRepository(abc.ABC):
     def read_graph_information_dataframe(self, id_track):
         """
         Method to get graph information in DataFrame format from conection to resource.
+
         :param id_track: id of the element to retrieve.
         """
         pass
@@ -14,6 +15,8 @@ class GraphInformationRepository(abc.ABC):
     def write_graph_information_dataframe(self, data):
         """
         Method to store graph information in DataFrame format into a resource.
+
+
         :param data: DataFrame to store.
         """
         pass

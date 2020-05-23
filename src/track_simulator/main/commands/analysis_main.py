@@ -14,7 +14,16 @@ from track_simulator.entities.hidden_markov_model_impl import HMM
 from track_simulator.conf.config import NORTH_COMPONENT, SOUTH_COMPONENT, EAST_COMPONENT, WEST_COMPONENT
 
 
-def analysis_main(file_directory):
+def analysis_main(file_directory, north_component, south_component, east_component, west_component):
+    """
+    Main function to deploy pipeline that analyzes GPX tracks in directory
+
+    :param file_directory: directory path where files are stored.
+    :param north_component: North component of limited area.
+    :param south_component: South component of limited area.
+    :param east_component: East component of limited area.
+    :param west_component: West component of limited area.
+    """
     # Resources
     gpx_resource = GPXResourceImpl()
     mongo_resource = MongoResourceImpl()
@@ -25,10 +34,15 @@ def analysis_main(file_directory):
     track_statistics = TrackStatisticsRepositoryImpl(mongo_resource)
 
     # Entities
-    bellver_graph = Graph(NORTH_COMPONENT, SOUTH_COMPONENT, EAST_COMPONENT, WEST_COMPONENT)
+    useDefaultZone = any(elem is None for elem in [north_component, south_component, east_component, west_component])
+
+    if useDefaultZone:
+        zone_graph = Graph(NORTH_COMPONENT, SOUTH_COMPONENT, EAST_COMPONENT, WEST_COMPONENT)
+    else:
+        zone_graph = Graph(north_component, south_component, east_component, west_component)
 
     # Interactors
-    get_map_matching = GetMapMatchingImpl(HMM(bellver_graph))
+    get_map_matching = GetMapMatchingImpl(HMM(zone_graph))
     get_track_analysis = GetTrackAnalysisDataframeImpl()
     get_track_statistics = GetTrackAnalysisStatisticsImpl()
     get_analysis_figure = GetAnalysisFigureImpl()
@@ -44,7 +58,7 @@ def analysis_main(file_directory):
                                                     get_track_statitstics=get_track_statistics,
                                                     get_analysis_figure=get_analysis_figure,
                                                     get_track_graph=get_track_graph,
-                                                    graph=bellver_graph)
+                                                    graph=zone_graph)
 
     # Execution
 
