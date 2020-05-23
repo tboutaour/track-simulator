@@ -1,9 +1,28 @@
 %!TeX root=MemoriaTFG.tex
 
-\chapter{Abstract}
+\chapter*{Abstract}
+El aumento, en la actualidad, de dispositivos capaces de captar la ubicación de un 
+individuo mediante \ac{GIS} ha permitido ampliar el volumen de fuentes de datos sobre la 
+geolocalización de personas. 
 
-El auge de la explotación de los datos para obtener ventajas estratégicas de negocio abarca gran parte de los ámbitos de la sociedad. El aumento de dispositivos capaces de  captar la ubicación de un individuo mediante \ac{GIS} sumado al aumento de dispositivos inteligentes que los usuarios portan durante el día hace que la  información de posicionamiento geográfico sea valiosa en un gran número de sectores. 
+En este trabajo, se presenta el proyecto denominado \textit{\textbf{track-simulator}}. Se 
+trata de un \ac{CLI} desarrollado en Python que permite la generación de trayectorias de 
+forma \textbf{pseudo-aleatoria}. Esta generación se realiza en base a un módulo de 
+análisis previo, que trabaja con trayectorias reales a partir de ficheros \textbf{\ac{GPX}}. 
+Mediante el uso un modelo estadístico basado en cadenas de Markov, \ac{HMM}, se 
+propone una solución al problema de la asignación de puntos geoposicionales a una red 
+de carreteras. Con esto se permite relacionar coordenadas geográficas a una estructura 
+lógica de vías y carreteras, analizable y explotable.
 
-\textit{\textbf{TrackSimulator}} es el \ac{CLI} desarrollado en Python propuesto en el documento que permite la generación de trayectorias de forma pseudo-aleatoria. La aplicación consta de un módulo de análisis de de ficheros en formato \ac{GPX}, de los que se obtiene información medible y cuantitativa que es usada para generar trayectorias. Esta herramienta almacena en una base de datos el análisis del conjunto de trayectorias reales que se desee. Del proceso de análisis se obtiene una representación gráfica del comportamiento de las trayectorias. De la simulación se obtiene un fichero en \ac{GPX} y una representación gráfica por cada una de las trayectorias generadas.
+Esta propuesta sostiene un mecanismo que permite la producción de trayectorias dentro 
+de un territorio geográfico, con un comportamiento aproximado a las trayectorias reales 
+introducidas al aplicativo. La generación de esta información es útil en todo sector que 
+esté interesado en el análisis de comportamiento de individuos dentro de un territorio 
+delimitado. Vías de paso frecuente, caminos poco transitados o zonas inaccesibles a 
+usuarios son, entre otros, los indicadores que pueden ser obtenidos mediante la 
+explotación de esta herramienta.
 
-Este documento explica en detalle la solución propuesta. Se muestra la arquitectura de la herramienta, el flujo de datos, así como las heurísticas de análisis y los algoritmos empleados para el análisis y la simulación de trayectorias, demostrando mediante experimentación los resultados que pueden obtenerse.
+Este documento explica en detalle la solución propuesta. Se muestra la arquitectura de la 
+herramienta, el flujo de datos, así como las heurísticas y los algoritmos empleados para el 
+análisis y la simulación de trayectorias, demostrando mediante experimentación, los 
+resultados que pueden obtenerse con el uso de este aplicativo.

@@ -30,6 +30,12 @@ ArcGis, ``What is raster data?'' [Online]. Available:
 \bibitem{Docker02}
 J.~Fong, ``Are containers replacing virtual machines?'' 2018.
 
+\bibitem{Garmin01}
+\BIBentryALTinterwordspacing
+O.~G. Supply, ``Outdoor garming supply,'' 2020. [Online]. Available:
+  \url{https://www.outdoorgarminsupply.com/}
+\BIBentrySTDinterwordspacing
+
 \bibitem{Gpsvisualizer01}
 \BIBentryALTinterwordspacing
 Gpsvisualizer, ``Generating a map from a gpx file, dynamically.'' [Online].
@@ -56,6 +62,12 @@ I.~Viskic, ``Enhancing the quality of uber’s maps with metrics computation,''
   \url{https://eng.uber.com/maps-metrics-computation}
 \BIBentrySTDinterwordspacing
 
+\bibitem{Uber01}
+\BIBentryALTinterwordspacing
+U.~development team, ``Deck.gl documentation.'' [Online]. Available:
+  \url{https://deck.gl/documentation/overview/introduction}
+\BIBentrySTDinterwordspacing
+
 \bibitem{Boeing01}
 G.~Boeing, ``Osmnx: New methods for acquiring, constructing, analyzing, and
   visualizing complex street networks,'' \emph{Computers Environment and Urban
@@ -71,6 +83,12 @@ P.~development team, ``Pandas documentation,'' 2008-2014. [Online]. Available:
 \BIBentryALTinterwordspacing
 T.~Krajina, ``Gpxpy. project description,'' 2012. [Online]. Available:
   \url{https://pypi.org/project/gpxpy/}
+\BIBentrySTDinterwordspacing
+
+\bibitem{Docker01}
+\BIBentryALTinterwordspacing
+D.~Inc., ``Docker docs,'' 2013-2020. [Online]. Available:
+  \url{https://docs.docker.com}
 \BIBentrySTDinterwordspacing
 
 \bibitem{Garrido-Villen01}
@@ -122,10 +140,10 @@ Topografix, ``Gpx: the gps exchange format,'' 2010. [Online]. Available:
   \url{https://www.mongodb.com/scale/advantages-of-nosql}
 \BIBentrySTDinterwordspacing
 
-\bibitem{Docker01}
+\bibitem{Microsoft01}
 \BIBentryALTinterwordspacing
-D.~Inc., ``Docker docs,'' 2013-2020. [Online]. Available:
-  \url{https://docs.docker.com}
+M.~collabolators, ``Data parser,'' 2017. [Online]. Available:
+  \url{https://docs.microsoft.com/en-us/security-risk-detection/concepts/data-parser}
 \BIBentrySTDinterwordspacing
 
 \bibitem{Malvar08}

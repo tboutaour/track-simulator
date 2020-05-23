@@ -19,13 +19,13 @@ Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Database file #1: Bibliografia.bib
 Warning--string name "https://www.docker.com/blog/containers-replacing-virtual-machines" is undefined
---line 86 of file Bibliografia.bib
-I was expecting an "="---line 142 of file Bibliografia.bib
+--line 105 of file Bibliografia.bib
+I was expecting an "="---line 161 of file Bibliografia.bib
  : 
  : author={Ramesh, R.},
 (Error may have been on previous line)
 I'm skipping whatever remains of this entry
-Repeated entry---line 211 of file Bibliografia.bib
+Repeated entry---line 230 of file Bibliografia.bib
  : @article{HMM01
  :               ,
 I'm skipping whatever remains of this entry
@@ -35,6 +35,7 @@ I'm skipping whatever remains of this entry
 Warning--empty journal in ArgGis01
 Warning--empty year in ArgGis01
 Warning--empty journal in Docker02
+Warning--empty journal in Garmin01
 Warning--empty journal in Gpsvisualizer01
 Warning--empty year in Gpsvisualizer01
 Too many commas in name 1 of "Borkovich, D. , Noah, P." for entry Borkovich01
@@ -42,8 +43,11 @@ while executing---line 2403 of file IEEEtran.bst
 Warning--empty journal in Borkovich01
 Warning--empty journal in GPS01
 Warning--empty journal in Viskic01
+Warning--empty journal in Uber01
+Warning--empty year in Uber01
 Warning--empty journal in Pandas01
 Warning--empty journal in Gpxpy01
+Warning--empty journal in Docker01
 Warning--empty journal in Garrido-Villen01
 Warning--empty journal in Langley01
 Warning--missing publisher in EPA01
@@ -53,50 +57,50 @@ Warning--empty journal in Topografix01
 Warning--empty author in Mongo01
 Warning--empty journal in Mongo01
 Warning--empty year in Mongo01
-Warning--empty journal in Docker01
+Warning--empty journal in Microsoft01
 Warning--empty journal in Gis01
 Warning--empty journal in Sigman01
 
 Done.
-You've used 24 entries,
+You've used 27 entries,
             4087 wiz_defined-function locations,
-            967 strings with 10265 characters,
-and the built_in function-call counts, 10199 in all, are:
-= -- 828
-> -- 123
+            982 strings with 10581 characters,
+and the built_in function-call counts, 11220 in all, are:
+= -- 909
+> -- 135
 < -- 38
-+ -- 69
-- -- 23
-* -- 459
-:= -- 1895
-add.period$ -- 47
-call.type$ -- 24
-change.case$ -- 22
++ -- 75
+- -- 26
+* -- 508
+:= -- 2108
+add.period$ -- 53
+call.type$ -- 27
+change.case$ -- 25
 chr.to.int$ -- 90
-cite$ -- 46
-duplicate$ -- 833
-empty$ -- 896
-format.name$ -- 23
-if$ -- 2241
+cite$ -- 53
+duplicate$ -- 922
+empty$ -- 988
+format.name$ -- 26
+if$ -- 2453
 int.to.chr$ -- 0
-int.to.str$ -- 24
-missing$ -- 127
-newline$ -- 125
-num.names$ -- 23
-pop$ -- 337
+int.to.str$ -- 27
+missing$ -- 142
+newline$ -- 140
+num.names$ -- 26
+pop$ -- 381
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 801
+skip$ -- 878
 stack$ -- 0
-substring$ -- 246
-swap$ -- 491
+substring$ -- 249
+swap$ -- 531
 text.length$ -- 8
 text.prefix$ -- 0
 top$ -- 5
-type$ -- 24
-warning$ -- 22
-while$ -- 36
-width$ -- 26
-write$ -- 244
+type$ -- 27
+warning$ -- 26
+while$ -- 39
+width$ -- 29
+write$ -- 273
 (There were 3 error messages)

@@ -12,4 +12,4 @@ mkdir -p ${ANALYSISPATH}/statistics
 mkdir -p ${}
 
 # Download docker-compose file from github.
-wget https://raw.githubusercontent.com/tboutaour/TFG/DES/docker-compose.yaml?token=AHX2HX7OBPBEUMHG4NDPKXC6YEJIW -P ${CONFIGPATH}
+wget https://raw.githubusercontent.com/tboutaour/track-simulator/master/bin/install.sh -P ${CONFIGPATH}

@@ -1,9 +1,18 @@
 %!TeX root=MemoriaTFG.tex
 \chapter{Experimentacion} \label{chapter:Experimentation}
-En este capítulo se documentan las pruebas realizadas al aplicativo propuesto con el objetivo de analizar los resultados obtenidos del análisis y la simulación.
-Esta experimentación parte de unas condiciones generales. Contamos con un total de 25 rutas reales realizadas en el territorio delimitado del Castell de Bellver (Mallorca). Para la realización de la experimentación contamos con un número reducido de muestras. Para que el resultado del análisis pueda representar un comportamiento destacable se han replicado las mismas rutas un total de 7 veces, contando entonces con un total de más de 200 trayectorias, de una muestra inicial de 30. De esta forma alimentamos el modelo con una cantidad de información suficiente para apreciar resultados. Estas condiciones de entrada parten de la necesidad de alimentar el modelo con una información que pueda llegar a ser representativa.
+En este capítulo se documentan las pruebas realizadas al aplicativo propuesto, con el 
+objetivo de analizar los resultados obtenidos del análisis y la simulación.
+Esta experimentación parte de unas condiciones generales. Contamos con un total de 
+\textbf{25 rutas} reales realizadas en el territorio delimitado del \textbf{Castell de 
+Bellver (Mallorca)}. Para la realización de la experimentación contamos con un número 
+reducido de muestras. Para que el resultado del análisis pueda representar un 
+comportamiento destacable se han replicado las mismas rutas un total de\textbf{ 7 
+veces}, contando entonces con un total de más de 200 trayectorias, de una muestra 
+inicial de 30. Estas condiciones de entrada parten de la necesidad de alimentar el 
+modelo con una información que pueda llegar a ser representativa.
 
-En la figura \ref{figure:RealHeatMap} se muestra el mapa de calor resultado del proceso de análisis:
+En la figura \ref{figure:RealHeatMap} se muestra el mapa de calor resultado del 
+proceso de análisis:
 \begin{figure}[!htb]
 \begin{center}
 \includegraphics[width=0.7\textwidth]{./Imagenes/HeatMap.png}
@@ -12,28 +21,33 @@ En la figura \ref{figure:RealHeatMap} se muestra el mapa de calor resultado del 
 \end{center}
 \end{figure}
 \newpage
-Este mapa representa la frecuencia de paso del individuo por cada uno de los caminos establecidos en 
-el territorio. Colores oscuros representarían frecuencias bajas y el color cobra una tonalidad rojiza a 
-medida que la frecuencia sería mayor.
+Este mapa representa la frecuencia de paso del individuo por cada uno de los caminos 
+establecidos en el territorio. Colores oscuros representan frecuencias bajas y el color 
+cobra una tonalidad rojiza a medida que la frecuencia será mayor.
 
-Se observa que el individuo ha realizado uso mayor del perímetro del bosque del territorio. Esto 
-concuerda con la visualización de las rutas individuales. Con un conjunto mayor de datos, el mapa de 
-calor llegaría a mostrar colores rojizos.
+Se observa que el individuo ha realizado uso mayor del perímetro del bosque del 
+territorio. Esto concuerda con la visualización de las rutas individuales. Con un conjunto 
+mayor de datos, el mapa de calor llegará a mostrar colores rojizos.
 
-Las pruebas que realizaremos se basan en dos vertientes. Por una parte se realiza un análisis de una 
-generación de rutas donde no se han importado datos reales. Por otro parte se realiza un análisis de 
-rutas simuladas con datos reales introducidos en el modelo.
+Las pruebas que realizaremos se basan en dos vertientes. Por una parte se realiza un 
+análisis de una 
+generación de rutas donde no se han importado datos reales. Por otro parte se realiza 
+un análisis de rutas simuladas con datos reales introducidos en el modelo.
 
 
 \section{Experimentación sin importación de datos reales}
-En este apartado realiza la muestra de resultados de la generación de 10 rutas creadas 
-mediante la simulación sin datos de análisis almacenados. Al no tener datos almacenados dentro del 
-sistema la simulación corresponderá a una elección aleatoria del los diferentes caminos ya que, por 
-defecto, todos los caminos tienen la misma probabilidad de tránsito a falta de introducir datos en el 
-modelo. Por otra parte la distancia punto a punto será una constante definida en 20 metros, por lo 
-que no aparecerá variabilidad en la muestra. Esta constante está parametrizada y puede ser 
-modificable por el usuario.
-Se han realizado una simulación de 10 rutas. Una muestra de estas simulaciones las podemos encontrar en el apartado \ref{subseciton:SimulationSample}. Las figuras \ref{figure:SimulatedTrack1}, \ref{figure:SimulatedTrack2} y \ref{figure:SimulatedTrack3} son son ejemplos de estas simulaciones.
+En este apartado se realiza la muestra de resultados de la generación de \textbf{10 
+rutas} creadas mediante la simulación sin datos de análisis almacenados. Al no tener 
+datos almacenados dentro del sistema la simulación corresponderá a una elección 
+aleatoria del los diferentes caminos ya que, por defecto, todos los caminos tienen la 
+misma probabilidad de tránsito a falta de introducir datos en el modelo. Por otra parte la 
+distancia punto a punto será una constante definida en \textit{20 metros}, por lo que no 
+aparecerá variabilidad en la muestra. Esta constante está parametrizada y puede ser 
+modificable por el usuario.Se han realizado una simulación de 10 rutas. Una muestra de 
+estas simulaciones las podemos encontrar en el apartado 
+\ref{subseciton:SimulationSample}. Las figuras \ref{figure:SimulatedTrack1}, 
+\ref{figure:SimulatedTrack2} y \ref{figure:SimulatedTrack3} son ejemplos de estas 
+simulaciones.
 \begin{figure}[!htb]
 \centering
 \begin{minipage}{0.70\textwidth}
@@ -55,9 +69,10 @@ Se han realizado una simulación de 10 rutas. Una muestra de estas simulaciones 
 \end{figure}
 \newpage
 
-Por una parte, en el mapa de calor resultante (figura \ref{figure:SimulatedHeatMapEmpty}) no se 
-observan patrones observables, esto es debido a la elección pseudo-aleatoria de cada uno de los 
-segmentos seleccionados.
+Como se muestra en el mapa de calor resultante (figura 
+\ref{figure:SimulatedHeatMapEmpty}) no se 
+observan patrones observables, esto es debido a la elección pseudo-aleatoria de cada 
+uno de los segmentos seleccionados.
 
 \begin{figure}[!htb]
 \begin{center}
@@ -85,11 +100,15 @@ corresponde a ningún comportamiento parametrizado (figura \ref{figure:Simulated
 \label{figure:SimulatedPointToPointEmpty}
 \end{minipage}
 \end{figure}
-
+\newpage
 
 \section{Experimentación con importación de datos reales}
-Para la simulación, se ha alimentado al modelo con el análisis de las rutas reales de 10 km de distancia sobre 
-el territorio del Castell de Bellver. Todas parten del origen de la entrada nordeste del recinto. Se han generado un total de 253 rutas. Posteriormente estas rutas han sido pasadas por el analizador con el objetivo de valorar si mantienen la misma distribución en las variables respecto el análisis de las rutas reales. Las figuras \ref{figure:SimulatedTrack1}.
+Para la simulación, se ha alimentado al modelo con el análisis de las rutas reales de 10 
+km de distancia sobre el territorio del Castell de Bellver. Todas parten del origen de la 
+entrada nordeste del recinto. Se han generado un total de \textbf{253 rutas}. 
+Posteriormente estas rutas han sido pasadas por el analizador con el objetivo de valorar 
+si mantienen la misma distribución en las variables respecto el análisis de las rutas 
+reales. Las figuras \ref{figure:SimulatedTrack1}.
 \begin{figure}[!htb]
 \centering
 \begin{minipage}{0.70\textwidth}
@@ -111,49 +130,61 @@ el territorio del Castell de Bellver. Todas parten del origen de la entrada nord
 \end{figure}
 \newpage
 
-La figura \ref{figure:SimulatedHeatMap} corresponde al mapa de calor del análisis de las generaciones. Se puede observar una trayectoria más definida, que se corresponde con el mapa de calor mostrado 
-anteriormente en la figura \ref{figure:RealHeatMap}.
+La figura \ref{figure:SimulatedHeatMap} corresponde al mapa de calor del análisis de 
+las generaciones. Se puede observar una trayectoria más definida, que se corresponde 
+con el mapa de calor mostrado anteriormente en la figura \ref{figure:RealHeatMap}.
 \begin{figure}[!htb]
 \begin{center}
 \includegraphics[width=0.7\textwidth]{./Imagenes/SimulatedHeatMap1.png}
-\caption{Mapa de calor del conjunto de rutas simuladas en experimentación con datos.}
+\caption{Mapa de calor del conjunto de rutas simuladas en experimentación con 
+datos.}
 \label{figure:SimulatedHeatMap}
 \end{center}
 \end{figure}
-Existen diversos aspectos que explican las diferencias entre los mapas de calor de las figuras \ref{figure:RealHeatMap} y \ref{figure:SimulatedHeatMap}. Las rutas simuladas tienen una distancia de 
-10 kilometros, por lo que hacen inaccessibles ciertos caminos. Se aprecia que la parte norte y este del 
-perímetro del bosque del Castell de Bellver es la zona más frecuente, que corresponde con las muestras 
-reales. No obstante existen rutas que acceden a la parte sur del camino, con menos frecuencia, por lo 
-que no son distingibles.
-Las distribuciones corresponden. A nivel de distancia punto a punto se respeta completamente, en la 
-distancia punto proyección encontramos una distribución normal mucho más acentuada.
+Existen diversos aspectos que explican las diferencias entre los mapas de calor de las 
+figuras \ref{figure:RealHeatMap} y \ref{figure:SimulatedHeatMap}. Las rutas simuladas 
+tienen una distancia de 10 kilometros, por lo que hacen inaccessibles ciertos caminos. 
+Se aprecia que la parte norte y este del perímetro del bosque del Castell de Bellver es 
+la zona más frecuente, que corresponde con las muestras reales. No obstante existen 
+rutas que acceden a la parte sur del camino, con menos frecuencia, por lo que  los 
+segmentos no son distinguibles. A nivel de distancia punto a punto la distribución se 
+respeta completamente, en la distancia punto proyección encontramos una distribución 
+normal mucho más acentuada.
 
 \begin{figure}[!htb]
 \begin{minipage}{0.48\textwidth}
 \centering
 \includegraphics[width=1.2\textwidth]{./Imagenes/SimulateCumulativePointProjection.png}
-\caption{Muestra de análisis de simulación: Distancia punto a proyección en experimentación con datos.}
+\caption{Muestra de análisis de simulación: Distancia punto a proyección en 
+experimentación con datos.}
 \label{figure:SimulatedPointToProjection}
 \end{minipage}\hfill
 \begin{minipage}{0.48\textwidth}
 \centering
 \includegraphics[width=1.2\textwidth]{./Imagenes/SimulateCumulativePointPoint.png}
-\caption{Muestra de análisis de simulación: Distancia punto a punto en experimentación con datos.}
+\caption{Muestra de análisis de simulación: Distancia punto a punto en experimentación 
+con datos.}
 \label{figure:SimulatedPointToPoint}
 \end{minipage}
 \end{figure}
 \newpage
 
 \subsection{Comparativa de resultados}
-En las figuras \ref{figure:ComparativaReal} y \ref{figure:ComparativaEmpty} se observan los resultados de la distancia punto a punto entre y la comparativa con la distribución real. Se observa que con el uso de los datos 
-procedentes del análisis se obtiene una distribución probabilística similar a la distribución real, mientras que 
-sin estos datos, aparece una distribución única al valor parametrizado, en este caso 20 metros.
+En las figuras \ref{figure:ComparativaReal} y \ref{figure:ComparativaEmpty} se 
+observan los resultados de la distancia punto a punto entre y la comparativa con la 
+distribución real. Se observa que con el uso de los datos 
+procedentes del análisis se obtiene una distribución probabilística similar a la 
+distribución real, mientras que sin estos datos, aparece una distribución única al valor 
+parametrizado, en este caso 20 metros.
 
+Con esta información se aprecia que las simulaciones para este conjunto bajo de datos 
+funciona con una alta similitud a las rutas reales proporcionadas.
 \begin{figure}[!htb]
 \begin{minipage}{0.48\textwidth}
 \centering
 \includegraphics[width=1.2\textwidth]{./Imagenes/SimulationComparativeNormalized.png}
-\caption{Comparativa análisis de la distancia punto a proyección en simulación con datos.}
+\caption{Comparativa análisis de la distancia punto a proyección en simulación con 
+datos.}
 \label{figure:ComparativaReal}
 \end{minipage}\hfill
 \begin{minipage}{0.48\textwidth}
@@ -164,12 +195,8 @@ sin estos datos, aparece una distribución única al valor parametrizado, en est
 \end{minipage}
 \end{figure}
 \newpage
-
-Con esta información se aprecia que las simulaciones para este conjunto bajo de datos funciona con una alta similitud a las rutas reales proporcionadas.
-
-\newpage
-\newpage
-\subsection{Anexo: Muestra de simulaciones con datos introducidos} \label{subseciton:SimulationSample}\begin{figure}[h]
+\subsection{Anexo: Muestra de simulaciones con datos introducidos} 
+\label{subseciton:SimulationSample}\begin{figure}[h]
 \begin{center}
 \includegraphics[width=0.95\textwidth]{./Imagenes/data-simulation/track1.png}
 \caption{Simulación con carga de datos inicial. Ejemplo 1.}
@@ -195,14 +222,15 @@ Con esta información se aprecia que las simulaciones para este conjunto bajo de
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics[width=0.95\textwidth]{./Imagenes/data-simulation/track4.png}
+\includegraphics[width=0.95\textwidth]{./Imagenes/data-simulation/simulated_track_e13e6d56-9096-476d-b7e0-c48ec00bd04a.eps}
 \caption{Simulación con carga de datos inicial. Ejemplo 4.}
 \end{center}
 \label{figure:Simulation4}
 \end{figure}
 \newpage
 
-\subsection{Anexo: Muestra de simulaciones sin datos} \label{subseciton:SimulationSample}\begin{figure}[h]
+\subsection{Anexo: Muestra de simulaciones sin datos} 
+\label{subseciton:SimulationSample}\begin{figure}[h]
 \begin{center}
 \includegraphics[width=0.95\textwidth]{./Imagenes/empty-simulation/track1.png}
 \caption{Simulación sin datos iniciales. Ejemplo 1.}

@@ -1,63 +1,63 @@
 \babel@toc {spanish}{}
 \addvspace {10pt}
 \addvspace {10pt}
+\contentsline {figure}{\numberline {1.1}{\ignorespaces \textit {deck.gl}, proyecto de Uber.}}{4}{figure.1.1}% 
 \addvspace {10pt}
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Ejemplo de la aplicacion ArcGis}}{8}{figure.2.1}% 
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Ejemplo de la aplicacion QGIS}}{8}{figure.2.2}% 
+\contentsline {figure}{\numberline {2.3}{\ignorespaces Ejemplo de territorio en formato r\IeC {\'a}ster. Fuente: \cite {ArgGis01}.}}{9}{figure.2.3}% 
+\contentsline {figure}{\numberline {2.4}{\ignorespaces Ejemplo de Ruta alrededor del Puig de l'Ofre, Mallorca.}}{10}{figure.2.4}% 
 \addvspace {10pt}
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Ejemplo de la aplicacion ArcGis}}{8}{figure.3.1}% 
-\contentsline {figure}{\numberline {3.2}{\ignorespaces Ejemplo de la aplicacion QGIS}}{8}{figure.3.2}% 
-\contentsline {figure}{\numberline {3.3}{\ignorespaces Ejemplo de territorio en formato r\IeC {\'a}ster. Fuente: \cite {ArgGis01}.}}{9}{figure.3.3}% 
-\contentsline {figure}{\numberline {3.4}{\ignorespaces Ejemplo de Ruta alrededor del Puig de l'Ofre, Mallorca.}}{10}{figure.3.4}% 
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Ejemplo de detecci\IeC {\'o}n real de la trayectoria de un individuo por la Serra de Tramuntana, Illes Balears, Mallorca, Spain}}{13}{figure.3.1}% 
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Diagrama de funcionamiento de \textit {track-simulator}}}{15}{figure.3.2}% 
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Diagrama de funcionamiento de \textit {track-simulator}}}{16}{figure.3.3}% 
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Flujo de datos de \textit {track-simulator}}}{18}{figure.3.4}% 
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Comparaci\IeC {\'o}n entre arquitectura Docker y mediante m\IeC {\'a}quinas virtuales. \cite {Docker02}}}{21}{figure.3.5}% 
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Infraestructura de la propuesta de \textit {track-simulator}}}{22}{figure.3.6}% 
 \addvspace {10pt}
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Ejemplo de detecci\IeC {\'o}n real de la trayectoria de un individuo por la Serra de Tramuntana, Illes Balears, Mallorca, Spain}}{13}{figure.4.1}% 
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Diagrama de funcionamiento de TrackSimulator}}{15}{figure.4.2}% 
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Diagrama de funcionamiento de TrackSimulator}}{16}{figure.4.3}% 
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Flujo de datos de TrackSimulator}}{18}{figure.4.4}% 
-\contentsline {figure}{\numberline {4.5}{\ignorespaces Comparaci\IeC {\'o}n entre arquitectura Docker y mediante m\IeC {\'a}quinas virtuales. \cite {Docker02}}}{21}{figure.4.5}% 
-\contentsline {figure}{\numberline {4.6}{\ignorespaces Infraestructura de la propuesta de TrackSimulator}}{22}{figure.4.6}% 
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Estructura de un \textit {track} dentro de un fichero \ac {GPX}}}{24}{figure.4.1}% 
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Ejemplo de estructura LineString}}{27}{figure.4.2}% 
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Ejemplo te\IeC {\'o}rico de detecci\IeC {\'o}n map-matching mediante algoritmo de Viterbi}}{28}{figure.4.3}% 
+\contentsline {figure}{\numberline {4.4}{\ignorespaces An\IeC {\'a}lisis de la funci\IeC {\'o}n de $P_{emission}$ para $\sigma $.}}{29}{figure.4.4}% 
+\contentsline {figure}{\numberline {4.5}{\ignorespaces An\IeC {\'a}lisis de la $P_{transition}$ de transici\IeC {\'o}n para $\beta $.}}{29}{figure.4.5}% 
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Ejemplo de aplicaci\IeC {\'o}n de algortimo de Viterbi para detecci\IeC {\'o}n de trayectorias.}}{30}{figure.4.6}% 
+\contentsline {figure}{\numberline {4.7}{\ignorespaces Ejemplo de aplicaci\IeC {\'o}n de algortimo de Viterbi para detecci\IeC {\'o}n de trayectorias.}}{30}{figure.4.7}% 
+\contentsline {figure}{\numberline {4.8}{\ignorespaces Ejemplo de aplicaci\IeC {\'o}n de algortimo de Viterbi para detecci\IeC {\'o}n de trayectorias.}}{31}{figure.4.8}% 
+\contentsline {figure}{\numberline {4.9}{\ignorespaces An\IeC {\'a}lisis de la distancia punto a proyecci\IeC {\'o}n.}}{34}{figure.4.9}% 
+\contentsline {figure}{\numberline {4.10}{\ignorespaces An\IeC {\'a}lisis de la distancia punto a punto.}}{34}{figure.4.10}% 
 \addvspace {10pt}
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Estructura de un \textit {track} dentro de un fichero .\ac {GPX}}}{24}{figure.5.1}% 
-\contentsline {figure}{\numberline {5.2}{\ignorespaces Ejemplo de estructura LineString}}{27}{figure.5.2}% 
-\contentsline {figure}{\numberline {5.3}{\ignorespaces Ejemplo te\IeC {\'o}rico de detecci\IeC {\'o}n map-matching mediante algoritmo de Viterbi}}{28}{figure.5.3}% 
-\contentsline {figure}{\numberline {5.4}{\ignorespaces An\IeC {\'a}lisis de la funci\IeC {\'o}n de $P_{emission}$ para $\sigma $.}}{29}{figure.5.4}% 
-\contentsline {figure}{\numberline {5.5}{\ignorespaces An\IeC {\'a}lisis de la $P_{transition}$ de transici\IeC {\'o}n para $\beta $.}}{29}{figure.5.5}% 
-\contentsline {figure}{\numberline {5.6}{\ignorespaces Ejemplo de aplicaci\IeC {\'o}n de algortimo de Viterbi para detecci\IeC {\'o}n de trayectorias.}}{30}{figure.5.6}% 
-\contentsline {figure}{\numberline {5.7}{\ignorespaces Ejemplo de aplicaci\IeC {\'o}n de algortimo de Viterbi para detecci\IeC {\'o}n de trayectorias.}}{30}{figure.5.7}% 
-\contentsline {figure}{\numberline {5.8}{\ignorespaces Ejemplo de aplicaci\IeC {\'o}n de algortimo de Viterbi para detecci\IeC {\'o}n de trayectorias.}}{31}{figure.5.8}% 
-\contentsline {figure}{\numberline {5.9}{\ignorespaces An\IeC {\'a}lisis de la distancia punto a proyecci\IeC {\'o}n.}}{34}{figure.5.9}% 
-\contentsline {figure}{\numberline {5.10}{\ignorespaces An\IeC {\'a}lisis de la distancia punto a punto.}}{34}{figure.5.10}% 
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Generaci\IeC {\'o}n de camino.}}{35}{figure.5.1}% 
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Generaci\IeC {\'o}n de puntos.}}{35}{figure.5.2}% 
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Ejemplo de probabilidades dentro de un nodo intermedio entre rutas.}}{36}{figure.5.3}% 
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Ejemplo de generaci\IeC {\'o}n de punto a partir de una distancia $d$ y un \IeC {\'a}ngulo $ \alpha $.}}{38}{figure.5.4}% 
+\contentsline {figure}{\numberline {5.5}{\ignorespaces Ejemplo de detecci\IeC {\'o}n de proyecci\IeC {\'o}n cercana y generaci\IeC {\'o}n de punto.}}{38}{figure.5.5}% 
 \addvspace {10pt}
-\contentsline {figure}{\numberline {6.1}{\ignorespaces Generaci\IeC {\'o}n de camino.}}{35}{figure.6.1}% 
-\contentsline {figure}{\numberline {6.2}{\ignorespaces Generaci\IeC {\'o}n de puntos.}}{35}{figure.6.2}% 
-\contentsline {figure}{\numberline {6.3}{\ignorespaces Ejemplo de probabilidades dentro de un nodo intermedio entre rutas.}}{36}{figure.6.3}% 
-\contentsline {figure}{\numberline {6.4}{\ignorespaces Ejemplo de generaci\IeC {\'o}n de punto a partir de una distancia $d$ y un \IeC {\'a}ngulo $\alpha $.}}{38}{figure.6.4}% 
-\contentsline {figure}{\numberline {6.5}{\ignorespaces Ejemplo de detecci\IeC {\'o}n de proyecci\IeC {\'o}n cercana y generaci\IeC {\'o}n de punto.}}{38}{figure.6.5}% 
+\contentsline {figure}{\numberline {6.1}{\ignorespaces Mapa de calor del conjunto de rutas reales.}}{42}{figure.6.1}% 
+\contentsline {figure}{\numberline {6.2}{\ignorespaces Muestra de simulaci\IeC {\'o}n 1 (Experimentaci\IeC {\'o}n sin datos).}}{43}{figure.6.2}% 
+\contentsline {figure}{\numberline {6.3}{\ignorespaces Muestra de simulaci\IeC {\'o}n 2 (Experimentaci\IeC {\'o}n sin datos).}}{43}{figure.6.3}% 
+\contentsline {figure}{\numberline {6.4}{\ignorespaces Muestra de simulaci\IeC {\'o}n 3 (Experimentaci\IeC {\'o}n sin datos).}}{43}{figure.6.4}% 
+\contentsline {figure}{\numberline {6.5}{\ignorespaces Mapa de calor del conjunto de rutas simuladas en experimentaci\IeC {\'o}n sin datos.}}{44}{figure.6.5}% 
+\contentsline {figure}{\numberline {6.6}{\ignorespaces Muestra de an\IeC {\'a}lisis de simulaci\IeC {\'o}n: Distancia punto a proyecci\IeC {\'o}n en experimentaci\IeC {\'o}n sin datos.}}{45}{figure.6.6}% 
+\contentsline {figure}{\numberline {6.7}{\ignorespaces Muestra de an\IeC {\'a}lisis de simulaci\IeC {\'o}n: Distancia punto a punto en experimentaci\IeC {\'o}n sin datos.}}{45}{figure.6.7}% 
+\contentsline {figure}{\numberline {6.8}{\ignorespaces Muestra de simulaci\IeC {\'o}n 1 Experimentaci\IeC {\'o}n con datos).}}{46}{figure.6.8}% 
+\contentsline {figure}{\numberline {6.9}{\ignorespaces Muestra de simulaci\IeC {\'o}n 2 Experimentaci\IeC {\'o}n con datos).}}{46}{figure.6.9}% 
+\contentsline {figure}{\numberline {6.10}{\ignorespaces Muestra de simulaci\IeC {\'o}n 3 (Experimentaci\IeC {\'o}n con datos).}}{46}{figure.6.10}% 
+\contentsline {figure}{\numberline {6.11}{\ignorespaces Mapa de calor del conjunto de rutas simuladas en experimentaci\IeC {\'o}n con datos.}}{47}{figure.6.11}% 
+\contentsline {figure}{\numberline {6.12}{\ignorespaces Muestra de an\IeC {\'a}lisis de simulaci\IeC {\'o}n: Distancia punto a proyecci\IeC {\'o}n en experimentaci\IeC {\'o}n con datos.}}{47}{figure.6.12}% 
+\contentsline {figure}{\numberline {6.13}{\ignorespaces Muestra de an\IeC {\'a}lisis de simulaci\IeC {\'o}n: Distancia punto a punto en experimentaci\IeC {\'o}n con datos.}}{47}{figure.6.13}% 
+\contentsline {figure}{\numberline {6.14}{\ignorespaces Comparativa an\IeC {\'a}lisis de la distancia punto a proyecci\IeC {\'o}n en simulaci\IeC {\'o}n con datos.}}{48}{figure.6.14}% 
+\contentsline {figure}{\numberline {6.15}{\ignorespaces Comparativa an\IeC {\'a}lisis de la distancia punto a punto en simulaci\IeC {\'o}n con datos.}}{48}{figure.6.15}% 
+\contentsline {figure}{\numberline {6.16}{\ignorespaces Simulaci\IeC {\'o}n con carga de datos inicial. Ejemplo 1.}}{49}{figure.6.16}% 
+\contentsline {figure}{\numberline {6.17}{\ignorespaces Simulaci\IeC {\'o}n con carga de datos inicial. Ejemplo 2.}}{49}{figure.6.17}% 
+\contentsline {figure}{\numberline {6.18}{\ignorespaces Simulaci\IeC {\'o}n con carga de datos inicial. Ejemplo 3.}}{50}{figure.6.18}% 
+\contentsline {figure}{\numberline {6.19}{\ignorespaces Simulaci\IeC {\'o}n con carga de datos inicial. Ejemplo 4.}}{50}{figure.6.19}% 
+\contentsline {figure}{\numberline {6.20}{\ignorespaces Simulaci\IeC {\'o}n sin datos iniciales. Ejemplo 1.}}{51}{figure.6.20}% 
+\contentsline {figure}{\numberline {6.21}{\ignorespaces Simulaci\IeC {\'o}n sin datos iniciales. Ejemplo 2.}}{51}{figure.6.21}% 
+\contentsline {figure}{\numberline {6.22}{\ignorespaces Simulaci\IeC {\'o}n sin datos iniciales. Ejemplo 3.}}{52}{figure.6.22}% 
+\contentsline {figure}{\numberline {6.23}{\ignorespaces Simulaci\IeC {\'o}n sin datos iniciales . Ejemplo 4.}}{52}{figure.6.23}% 
 \addvspace {10pt}
-\contentsline {figure}{\numberline {7.1}{\ignorespaces Mapa de calor del conjunto de rutas reales.}}{42}{figure.7.1}% 
-\contentsline {figure}{\numberline {7.2}{\ignorespaces Muestra de simulaci\IeC {\'o}n 1 (Experimentaci\IeC {\'o}n sin datos).}}{43}{figure.7.2}% 
-\contentsline {figure}{\numberline {7.3}{\ignorespaces Muestra de simulaci\IeC {\'o}n 2 (Experimentaci\IeC {\'o}n sin datos).}}{43}{figure.7.3}% 
-\contentsline {figure}{\numberline {7.4}{\ignorespaces Muestra de simulaci\IeC {\'o}n 3 (Experimentaci\IeC {\'o}n sin datos).}}{43}{figure.7.4}% 
-\contentsline {figure}{\numberline {7.5}{\ignorespaces Mapa de calor del conjunto de rutas simuladas en experimentaci\IeC {\'o}n sin datos.}}{44}{figure.7.5}% 
-\contentsline {figure}{\numberline {7.6}{\ignorespaces Muestra de an\IeC {\'a}lisis de simulaci\IeC {\'o}n: Distancia punto a proyecci\IeC {\'o}n en experimentaci\IeC {\'o}n sin datos.}}{45}{figure.7.6}% 
-\contentsline {figure}{\numberline {7.7}{\ignorespaces Muestra de an\IeC {\'a}lisis de simulaci\IeC {\'o}n: Distancia punto a punto en experimentaci\IeC {\'o}n sin datos.}}{45}{figure.7.7}% 
-\contentsline {figure}{\numberline {7.8}{\ignorespaces Muestra de simulaci\IeC {\'o}n 1 Experimentaci\IeC {\'o}n con datos).}}{46}{figure.7.8}% 
-\contentsline {figure}{\numberline {7.9}{\ignorespaces Muestra de simulaci\IeC {\'o}n 2 Experimentaci\IeC {\'o}n con datos).}}{46}{figure.7.9}% 
-\contentsline {figure}{\numberline {7.10}{\ignorespaces Muestra de simulaci\IeC {\'o}n 3 (Experimentaci\IeC {\'o}n con datos).}}{46}{figure.7.10}% 
-\contentsline {figure}{\numberline {7.11}{\ignorespaces Mapa de calor del conjunto de rutas simuladas en experimentaci\IeC {\'o}n con datos.}}{46}{figure.7.11}% 
-\contentsline {figure}{\numberline {7.12}{\ignorespaces Muestra de an\IeC {\'a}lisis de simulaci\IeC {\'o}n: Distancia punto a proyecci\IeC {\'o}n en experimentaci\IeC {\'o}n con datos.}}{47}{figure.7.12}% 
-\contentsline {figure}{\numberline {7.13}{\ignorespaces Muestra de an\IeC {\'a}lisis de simulaci\IeC {\'o}n: Distancia punto a punto en experimentaci\IeC {\'o}n con datos.}}{47}{figure.7.13}% 
-\contentsline {figure}{\numberline {7.14}{\ignorespaces Comparativa an\IeC {\'a}lisis de la distancia punto a proyecci\IeC {\'o}n en simulaci\IeC {\'o}n con datos.}}{48}{figure.7.14}% 
-\contentsline {figure}{\numberline {7.15}{\ignorespaces Comparativa an\IeC {\'a}lisis de la distancia punto a punto en simulaci\IeC {\'o}n con datos.}}{48}{figure.7.15}% 
-\contentsline {figure}{\numberline {7.16}{\ignorespaces Simulaci\IeC {\'o}n con carga de datos inicial. Ejemplo 1.}}{49}{figure.7.16}% 
-\contentsline {figure}{\numberline {7.17}{\ignorespaces Simulaci\IeC {\'o}n con carga de datos inicial. Ejemplo 2.}}{49}{figure.7.17}% 
-\contentsline {figure}{\numberline {7.18}{\ignorespaces Simulaci\IeC {\'o}n con carga de datos inicial. Ejemplo 3.}}{50}{figure.7.18}% 
-\contentsline {figure}{\numberline {7.19}{\ignorespaces Simulaci\IeC {\'o}n con carga de datos inicial. Ejemplo 4.}}{50}{figure.7.19}% 
-\contentsline {figure}{\numberline {7.20}{\ignorespaces Simulaci\IeC {\'o}n sin datos iniciales. Ejemplo 1.}}{51}{figure.7.20}% 
-\contentsline {figure}{\numberline {7.21}{\ignorespaces Simulaci\IeC {\'o}n sin datos iniciales. Ejemplo 2.}}{51}{figure.7.21}% 
-\contentsline {figure}{\numberline {7.22}{\ignorespaces Simulaci\IeC {\'o}n sin datos iniciales. Ejemplo 3.}}{52}{figure.7.22}% 
-\contentsline {figure}{\numberline {7.23}{\ignorespaces Simulaci\IeC {\'o}n sin datos iniciales . Ejemplo 4.}}{52}{figure.7.23}% 
+\contentsline {figure}{\numberline {7.1}{\ignorespaces Jerarqu\IeC {\'\i }a en el directorio \textit {/\penalty \exhyphenpenalty track-simulator/\penalty \exhyphenpenalty data}.}}{54}{figure.7.1}% 
+\contentsline {figure}{\numberline {7.2}{\ignorespaces Directorio \textit {statistics} tras el an\IeC {\'a}lisis de un conjunto de trayectorias.}}{56}{figure.7.2}% 
+\contentsline {figure}{\numberline {7.3}{\ignorespaces Directorio \textit {simulation} tras la simulaci\IeC {\'o}n de un conjunto de trayectorias.}}{57}{figure.7.3}% 
 \addvspace {10pt}
-\contentsline {figure}{\numberline {8.1}{\ignorespaces Jerarqu\IeC {\'\i }a en el directorio \textit {/\penalty \exhyphenpenalty track-simulator/\penalty \exhyphenpenalty data}.}}{54}{figure.8.1}% 
-\contentsline {figure}{\numberline {8.2}{\ignorespaces Directorio \textit {statistics} tras el an\IeC {\'a}lisis de un conjunto de trayectorias.}}{56}{figure.8.2}% 
-\contentsline {figure}{\numberline {8.3}{\ignorespaces Directorio \textit {simulation} tras la simulaci\IeC {\'o}n de un conjunto de trayectorias.}}{56}{figure.8.3}% 
-\addvspace {10pt}
-\contentsline {figure}{\numberline {9.1}{\ignorespaces Muestra de resultado del proceso de map-matching .}}{60}{figure.9.1}% 
+\contentsline {figure}{\numberline {8.1}{\ignorespaces Dispositivos de localizaci\IeC {\'o}n \ac {GPS} Garmin. Fuente: \cite {Garmin01}}}{59}{figure.8.1}% 
