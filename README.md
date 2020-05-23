@@ -1,5 +1,5 @@
 # TrackSimulator
-TrackSimulator is an application for track analsysis and simulatio in a 
+TrackSimulator is an application for track analysis and simulation in a 
 delimited territory. It uses Viterbi algorithm and Hidden Markov Model
 for map-matching. Information is stored in MongoDB.
 
@@ -26,13 +26,10 @@ Available actions:
 - Track simulation: `ts-cli simulate [--distance, --origin_node, --data, --quantity]`
     - distance in meters
     - origin node from OSM determination points.
-    - data is element of `graphDf` colletion. Format: `Graph_Analysis_mm-dd-YYYY.
+    - data is element of `graphDf` collection. Format: `Graph_Analysis_mm-dd-YYYY.
 
 ### Dependencies
 All dependencies are defined in `Dockerfile` file.
-Theese components delimited Bellver's Castle (Mallorca, Balearic Islands)
-- `NORTH_COMPONENT 39.5713`
-- `SOUTH_COMPONENT 39.5573`
-- `EAST_COMPONENT 2.6257`
-- `WEST_COMPONENT 2.6023`
+
+This repository is connected with docker image: `tonibous/track-simulator`
 
