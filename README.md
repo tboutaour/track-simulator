@@ -33,3 +33,5 @@ All dependencies are defined in `Dockerfile` file.
 
 This repository is connected with docker image: `tonibous/track-simulator`
 
+To see more detail of code modules. See documentation in `doc` folder or check code documentation:
+`open code-doc/_build/html/index.html`
