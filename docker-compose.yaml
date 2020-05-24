@@ -16,7 +16,6 @@ services:
   app:
     image: tonibous/track-simulator:latest
     volumes:
-    - ./src:/app
     - ${TRACKSIMULATOREXPORT}:/data
     - ${ANALYSISPATH}:/analysis
     depends_on:

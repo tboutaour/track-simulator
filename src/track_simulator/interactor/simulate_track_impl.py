@@ -82,7 +82,7 @@ class SimulateTrackImpl(SimulateTrack):
         for d in range(0, len(simulated_path) - 1):
             path.append([simulated_path[d], simulated_path[d + 1]])
 
-        # Indice para crear segmentos de colores distintos
+        #  para crear segmentos de colores distintos
         for segment in path:
             seg = self.simulate_segment(segment)
             for s in seg:
