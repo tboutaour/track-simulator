@@ -147,8 +147,41 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="commands">
-<h1>Commands<a class="headerlink" href="#commands" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-analysis_main">
+<span id="commands"></span><h1>Commands<a class="headerlink" href="#module-analysis_main" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="analysis_main.analysis_main">
+<code class="sig-prename descclassname">analysis_main.</code><code class="sig-name descname">analysis_main</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file_directory</span></em>, <em class="sig-param"><span class="n">north_component</span></em>, <em class="sig-param"><span class="n">south_component</span></em>, <em class="sig-param"><span class="n">east_component</span></em>, <em class="sig-param"><span class="n">west_component</span></em><span class="sig-paren">)</span><a class="headerlink" href="#analysis_main.analysis_main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main function to deploy pipeline that analyzes GPX tracks in directory</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_directory</strong> – directory path where files are stored.</p></li>
+<li><p><strong>north_component</strong> – North component of limited area.</p></li>
+<li><p><strong>south_component</strong> – South component of limited area.</p></li>
+<li><p><strong>east_component</strong> – East component of limited area.</p></li>
+<li><p><strong>west_component</strong> – West component of limited area.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<span class="target" id="module-simulation_main"></span><dl class="py function">
+<dt id="simulation_main.simulation_main">
+<code class="sig-prename descclassname">simulation_main.</code><code class="sig-name descname">simulation_main</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">origin_node</span></em>, <em class="sig-param"><span class="n">distance</span></em>, <em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">quantity</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulation_main.simulation_main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main function to deploy pipeline that simulates track based on previous analysis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>origin_node</strong> – Node to start simulation.</p></li>
+<li><p><strong>distance</strong> – Distance to start simulation.</p></li>
+<li><p><strong>data</strong> – Data to import from database. (Graph_Analysis_mm-dd-YYYY)</p></li>
+<li><p><strong>quantity</strong> – Number of tracks to generate.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 
 

@@ -5,9 +5,6 @@ Interactor
 .. automodule:: get_analysis_figure
     :members:
 
-.. automodule:: get_heat_map
-    :members:
-
 .. automodule:: get_map_matching
     :members:
 
