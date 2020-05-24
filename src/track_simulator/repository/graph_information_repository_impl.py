@@ -14,8 +14,15 @@ class GraphInformationRepositoryImpl(GraphInformationRepository):
         print(id_graph, MONGO_GRAPH_INFORMATION_COLLECTION)
         data_from_db = self.mongo_resource.read(collection=MONGO_GRAPH_INFORMATION_COLLECTION,
                                                 query=query)
-        df = pd.DataFrame(data_from_db[0]["data"])
-        return df
+        if data_from_db.count() < 1:
+            any_data_from_db = self.mongo_resource.read(collection=MONGO_GRAPH_INFORMATION_COLLECTION,
+                                                        query={})
+            if any_data_from_db.count() > 0:
+                return pd.DataFrame(any_data_from_db[0]["data"])
+            else:
+                raise Exception('There is no data in collection.')
+
+        return pd.DataFrame(data_from_db[0]["data"])
 
     def write_graph_information_dataframe(self, data):
         data_to_export = data[['source', 'target', 'num of detections', 'frequency']]
