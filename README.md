@@ -26,7 +26,7 @@ Available actions:
 - Track simulation: `ts-cli simulate [--distance, --origin_node, --data, --quantity]`
     - distance in meters
     - origin node from OSM determination points.
-    - data is element of `graphDf` collection. Format: `Graph_Analysis_mm-dd-YYYY.
+    - data is element of `graphDf` collection. Format: `Graph_Analysis_mm-dd-YYYY`.
 
 ### Dependencies
 All dependencies are defined in `Dockerfile` file.
