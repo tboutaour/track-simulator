@@ -1,0 +1,28 @@
+%!TeX root=MemoriaTFG.tex
+
+\chapter*{Abstract}
+El aumento, en la actualidad, de dispositivos capaces de captar la ubicación de un 
+individuo mediante \ac{GIS} ha permitido ampliar el volumen de fuentes de datos sobre la 
+geolocalización de personas. 
+
+En este trabajo, se presenta el proyecto denominado \textit{\textbf{track-simulator}}. Se 
+trata de un \ac{CLI} desarrollado en Python que permite la generación de trayectorias de 
+forma \textbf{pseudo-aleatoria}. Esta generación se realiza en base a un módulo de 
+análisis previo, que trabaja con trayectorias reales a partir de ficheros \textbf{\ac{GPX}}. 
+Mediante el uso un modelo estadístico basado en cadenas de Markov, \ac{HMM}, se 
+propone una solución al problema de la asignación de puntos geoposicionales a una red 
+de carreteras. Con esto se permite relacionar coordenadas geográficas a una estructura 
+lógica de vías y carreteras, analizable y explotable.
+
+Esta propuesta sostiene un mecanismo que permite la producción de trayectorias dentro 
+de un territorio geográfico, con un comportamiento aproximado a las trayectorias reales 
+introducidas al aplicativo. La generación de esta información es útil en todo sector que 
+esté interesado en el análisis de comportamiento de individuos dentro de un territorio 
+delimitado. Vías de paso frecuente, caminos poco transitados o zonas inaccesibles a 
+usuarios son, entre otros, los indicadores que pueden ser obtenidos mediante la 
+explotación de esta herramienta.
+
+Este documento explica en detalle la solución propuesta. Se muestra la arquitectura de la 
+herramienta, el flujo de datos, así como las heurísticas y los algoritmos empleados para el 
+análisis y la simulación de trayectorias, demostrando mediante experimentación, los 
+resultados que pueden obtenerse con el uso de este aplicativo.

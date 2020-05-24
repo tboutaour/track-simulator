@@ -1,0 +1,50 @@
+\BOOKMARK [0][-]{section*.1}{\315ndice general}{}% 1
+\BOOKMARK [0][-]{section*.4}{\315ndice de figuras}{}% 2
+\BOOKMARK [0][-]{chapter*.7}{Acr\363nimos}{}% 3
+\BOOKMARK [0][-]{chapter.1}{1 Introducci\363n}{}% 4
+\BOOKMARK [0][-]{chapter.2}{2 Conceptos principales}{}% 5
+\BOOKMARK [1][-]{section.2.1}{2.1 Sistemas de navegaci\363n por sat\351lite}{chapter.2}% 6
+\BOOKMARK [2][-]{subsection.2.1.1}{2.1.1 GIS}{section.2.1}% 7
+\BOOKMARK [2][-]{subsection.2.1.2}{2.1.2 Fuentes de datos}{section.2.1}% 8
+\BOOKMARK [1][-]{section.2.2}{2.2 Estructura de los ficheros GPX}{chapter.2}% 9
+\BOOKMARK [1][-]{section.2.3}{2.3 Open Street Map}{chapter.2}% 10
+\BOOKMARK [0][-]{chapter.3}{3 Arquitectura de la aplicaci\363n}{}% 11
+\BOOKMARK [1][-]{section.3.1}{3.1 track-simulator}{chapter.3}% 12
+\BOOKMARK [1][-]{section.3.2}{3.2 Funcionalidades de track-simulator}{chapter.3}% 13
+\BOOKMARK [1][-]{section.3.3}{3.3 Requerimientos de track-simulator}{chapter.3}% 14
+\BOOKMARK [1][-]{section.3.4}{3.4 Implementaci\363n de track-simulator}{chapter.3}% 15
+\BOOKMARK [2][-]{subsection.3.4.1}{3.4.1 Flujo de datos}{section.3.4}% 16
+\BOOKMARK [2][-]{subsection.3.4.2}{3.4.2 Herramientas externas utilizadas}{section.3.4}% 17
+\BOOKMARK [2][-]{subsection.3.4.3}{3.4.3 Docker}{section.3.4}% 18
+\BOOKMARK [0][-]{chapter.4}{4 An\341lisis de los datos GPS}{}% 19
+\BOOKMARK [1][-]{section.4.1}{4.1 Preparaci\363n del entorno de datos}{chapter.4}% 20
+\BOOKMARK [2][-]{subsection.4.1.1}{4.1.1 Importaci\363n de datos GPS a track-simulator}{section.4.1}% 21
+\BOOKMARK [2][-]{subsection.4.1.2}{4.1.2 Entidad TrackPoint}{section.4.1}% 22
+\BOOKMARK [2][-]{subsection.4.1.3}{4.1.3 Importaci\363n de caminos y carreteras al modelo de datos}{section.4.1}% 23
+\BOOKMARK [1][-]{section.4.2}{4.2 Map matching}{chapter.4}% 24
+\BOOKMARK [2][-]{subsection.4.2.1}{4.2.1 Hidden Markov Model \(HMM\)}{section.4.2}% 25
+\BOOKMARK [2][-]{subsection.4.2.2}{4.2.2 Aproximaci\363n de Hidden Markov Model a Map-matching}{section.4.2}% 26
+\BOOKMARK [2][-]{subsection.4.2.3}{4.2.3 Algoritmo de Viterbi}{section.4.2}% 27
+\BOOKMARK [2][-]{subsection.4.2.4}{4.2.4 Ejemplo de aplicaci\363n del algoritmo de Viterbi}{section.4.2}% 28
+\BOOKMARK [2][-]{subsection.4.2.5}{4.2.5 Implementaci\363n de Map-matching}{section.4.2}% 29
+\BOOKMARK [1][-]{section.4.3}{4.3 Explotaci\363n del dato}{chapter.4}% 30
+\BOOKMARK [2][-]{subsection.4.3.1}{4.3.1 An\341lisis de distancias}{section.4.3}% 31
+\BOOKMARK [2][-]{subsection.4.3.2}{4.3.2 Demostraci\363n de an\341lisis}{section.4.3}% 32
+\BOOKMARK [0][-]{chapter.5}{5 Simulaci\363n de trayectorias}{}% 33
+\BOOKMARK [1][-]{section.5.1}{5.1 Generaci\363n de un camino}{chapter.5}% 34
+\BOOKMARK [1][-]{section.5.2}{5.2 Generaci\363n de los segmentos}{chapter.5}% 35
+\BOOKMARK [1][-]{section.5.3}{5.3 Generaci\363n del punto pseudo-aleatorio}{chapter.5}% 36
+\BOOKMARK [1][-]{section.5.4}{5.4 Exportaci\363n de trayectoria a fichero GPX}{chapter.5}% 37
+\BOOKMARK [0][-]{chapter.6}{6 Experimentacion}{}% 38
+\BOOKMARK [1][-]{section.6.1}{6.1 Experimentaci\363n sin importaci\363n de datos reales}{chapter.6}% 39
+\BOOKMARK [1][-]{section.6.2}{6.2 Experimentaci\363n con importaci\363n de datos reales}{chapter.6}% 40
+\BOOKMARK [2][-]{subsection.6.2.1}{6.2.1 Comparativa de resultados}{section.6.2}% 41
+\BOOKMARK [2][-]{subsection.6.2.2}{6.2.2 Anexo: Muestra de simulaciones con datos introducidos}{section.6.2}% 42
+\BOOKMARK [2][-]{subsection.6.2.3}{6.2.3 Anexo: Muestra de simulaciones sin datos}{section.6.2}% 43
+\BOOKMARK [0][-]{chapter.7}{7 Gu\355a de instalaci\363n y uso}{}% 44
+\BOOKMARK [1][-]{subsection.7.0.1}{7.0.1 Instalaci\363n}{chapter.7}% 45
+\BOOKMARK [2][-]{subsection.7.0.2}{7.0.2 Gu\355a de uso}{subsection.7.0.1}% 46
+\BOOKMARK [0][-]{chapter.8}{8 Conclusiones}{}% 47
+\BOOKMARK [1][-]{section.8.1}{8.1 Futuro trabajo}{chapter.8}% 48
+\BOOKMARK [1][-]{section.8.2}{8.2 Opini\363n personal}{chapter.8}% 49
+\BOOKMARK [0][-]{chapter*.27}{Bibliograf\355a}{}% 50

@@ -1,0 +1,56 @@
+\changetocdepth {2}
+\babel@toc {spanish}{}
+\contentsline {chapter}{\'{I}ndice general}{i}{section*.1}% 
+\contentsline {chapter}{\'{I}ndice de figuras}{iii}{section*.4}% 
+\contentsline {chapter}{Acr\IeC {\'o}nimos}{vii}{chapter*.7}% 
+\contentsline {chapter}{\chapternumberline {1}Introducci\IeC {\'o}n}{3}{chapter.1}% 
+\contentsline {chapter}{\chapternumberline {2}Conceptos principales}{7}{chapter.2}% 
+\contentsline {section}{\numberline {2.1}Sistemas de navegaci\IeC {\'o}n por sat\IeC {\'e}lite}{7}{section.2.1}% 
+\contentsline {subsection}{\numberline {2.1.1}GIS}{8}{subsection.2.1.1}% 
+\contentsline {subsection}{\numberline {2.1.2}Fuentes de datos}{8}{subsection.2.1.2}% 
+\contentsline {subsubsection}{Formato r\IeC {\'a}ster}{8}{section*.12}% 
+\contentsline {subsubsection}{Formato vectorial}{9}{section*.13}% 
+\contentsline {section}{\numberline {2.2}Estructura de los ficheros \ac {GPX}}{10}{section.2.2}% 
+\contentsline {section}{\numberline {2.3}Open Street Map}{11}{section.2.3}% 
+\contentsline {chapter}{\chapternumberline {3}Arquitectura de la aplicaci\IeC {\'o}n}{13}{chapter.3}% 
+\contentsline {section}{\numberline {3.1}\textit {track-simulator}}{13}{section.3.1}% 
+\contentsline {section}{\numberline {3.2}Funcionalidades de \textit {track-simulator}}{15}{section.3.2}% 
+\contentsline {section}{\numberline {3.3}Requerimientos de \textit {track-simulator}}{17}{section.3.3}% 
+\contentsline {section}{\numberline {3.4}Implementaci\IeC {\'o}n de track-simulator}{18}{section.3.4}% 
+\contentsline {subsection}{\numberline {3.4.1}Flujo de datos}{18}{subsection.3.4.1}% 
+\contentsline {subsection}{\numberline {3.4.2}Herramientas externas utilizadas}{19}{subsection.3.4.2}% 
+\contentsline {subsubsection}{Almacenamiento del dato}{19}{section*.19}% 
+\contentsline {subsubsection}{Librer\IeC {\'\i }as utilizadas}{19}{section*.22}% 
+\contentsline {subsection}{\numberline {3.4.3}Docker}{20}{subsection.3.4.3}% 
+\contentsline {chapter}{\chapternumberline {4}An\IeC {\'a}lisis de los datos GPS}{23}{chapter.4}% 
+\contentsline {section}{\numberline {4.1}Preparaci\IeC {\'o}n del entorno de datos}{23}{section.4.1}% 
+\contentsline {subsection}{\numberline {4.1.1}Importaci\IeC {\'o}n de datos GPS a \textit {track-simulator}}{23}{subsection.4.1.1}% 
+\contentsline {subsection}{\numberline {4.1.2}Entidad TrackPoint}{25}{subsection.4.1.2}% 
+\contentsline {subsection}{\numberline {4.1.3}Importaci\IeC {\'o}n de caminos y carreteras al modelo de datos}{25}{subsection.4.1.3}% 
+\contentsline {section}{\numberline {4.2}Map matching}{26}{section.4.2}% 
+\contentsline {subsection}{\numberline {4.2.1}Hidden Markov Model (\ac {HMM})}{26}{subsection.4.2.1}% 
+\contentsline {subsection}{\numberline {4.2.2}Aproximaci\IeC {\'o}n de Hidden Markov Model a Map-matching}{27}{subsection.4.2.2}% 
+\contentsline {subsection}{\numberline {4.2.3}Algoritmo de Viterbi}{27}{subsection.4.2.3}% 
+\contentsline {subsection}{\numberline {4.2.4}Ejemplo de aplicaci\IeC {\'o}n del algoritmo de Viterbi}{29}{subsection.4.2.4}% 
+\contentsline {subsection}{\numberline {4.2.5}Implementaci\IeC {\'o}n de Map-matching}{31}{subsection.4.2.5}% 
+\contentsline {section}{\numberline {4.3}Explotaci\IeC {\'o}n del dato}{32}{section.4.3}% 
+\contentsline {subsection}{\numberline {4.3.1}An\IeC {\'a}lisis de distancias}{32}{subsection.4.3.1}% 
+\contentsline {subsection}{\numberline {4.3.2}Demostraci\IeC {\'o}n de an\IeC {\'a}lisis}{33}{subsection.4.3.2}% 
+\contentsline {chapter}{\chapternumberline {5}Simulaci\IeC {\'o}n de trayectorias}{35}{chapter.5}% 
+\contentsline {section}{\numberline {5.1}Generaci\IeC {\'o}n de un camino}{35}{section.5.1}% 
+\contentsline {section}{\numberline {5.2}Generaci\IeC {\'o}n de los segmentos}{36}{section.5.2}% 
+\contentsline {section}{\numberline {5.3}Generaci\IeC {\'o}n del punto pseudo-aleatorio}{38}{section.5.3}% 
+\contentsline {section}{\numberline {5.4}Exportaci\IeC {\'o}n de trayectoria a fichero \ac {GPX}}{38}{section.5.4}% 
+\contentsline {chapter}{\chapternumberline {6}Experimentacion}{41}{chapter.6}% 
+\contentsline {section}{\numberline {6.1}Experimentaci\IeC {\'o}n sin importaci\IeC {\'o}n de datos reales}{42}{section.6.1}% 
+\contentsline {section}{\numberline {6.2}Experimentaci\IeC {\'o}n con importaci\IeC {\'o}n de datos reales}{45}{section.6.2}% 
+\contentsline {subsection}{\numberline {6.2.1}Comparativa de resultados}{48}{subsection.6.2.1}% 
+\contentsline {subsection}{\numberline {6.2.2}Anexo: Muestra de simulaciones con datos introducidos}{49}{subsection.6.2.2}% 
+\contentsline {subsection}{\numberline {6.2.3}Anexo: Muestra de simulaciones sin datos}{50}{subsection.6.2.3}% 
+\contentsline {chapter}{\chapternumberline {7}Gu\IeC {\'\i }a de instalaci\IeC {\'o}n y uso}{53}{chapter.7}% 
+\contentsline {subsection}{\numberline {7.0.1}Instalaci\IeC {\'o}n}{53}{subsection.7.0.1}% 
+\contentsline {subsection}{\numberline {7.0.2}Gu\IeC {\'\i }a de uso}{55}{subsection.7.0.2}% 
+\contentsline {chapter}{\chapternumberline {8}Conclusiones}{59}{chapter.8}% 
+\contentsline {section}{\numberline {8.1}Futuro trabajo}{60}{section.8.1}% 
+\contentsline {section}{\numberline {8.2}Opini\IeC {\'o}n personal}{61}{section.8.2}% 
+\contentsline {chapter}{Bibliograf\'{\i }a}{63}{chapter*.27}% 

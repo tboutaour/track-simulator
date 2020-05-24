@@ -1,0 +1,295 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Repository &mdash; TrackSimulator 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Resource" href="resource.html" />
+    <link rel="prev" title="Interactor" href="interactor.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> TrackSimulator
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="interactor.html">Interactor</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Repository</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="resource.html">Resource</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="commands.html">Commands</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">TrackSimulator</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Repository</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/repository.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="repository">
+<h1>Repository<a class="headerlink" href="#repository" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="resource.html">Resource</a></li>
+</ul>
+</div>
+<span class="target" id="module-graph_information_repository"></span><dl class="py class">
+<dt id="graph_information_repository.GraphInformationRepository">
+<em class="property">class </em><code class="sig-prename descclassname">graph_information_repository.</code><code class="sig-name descname">GraphInformationRepository</code><a class="headerlink" href="#graph_information_repository.GraphInformationRepository" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="graph_information_repository.GraphInformationRepository.read_graph_information_dataframe">
+<em class="property">abstract </em><code class="sig-name descname">read_graph_information_dataframe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id_track</span></em><span class="sig-paren">)</span><a class="headerlink" href="#graph_information_repository.GraphInformationRepository.read_graph_information_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to get graph information in DataFrame format from conection to resource.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>id_track</strong> – id of the element to retrieve.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="graph_information_repository.GraphInformationRepository.write_graph_information_dataframe">
+<em class="property">abstract </em><code class="sig-name descname">write_graph_information_dataframe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#graph_information_repository.GraphInformationRepository.write_graph_information_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to store graph information in DataFrame format into a resource.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> – DataFrame to store.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-track_information_repository"></span><dl class="py class">
+<dt id="track_information_repository.TrackInformationRepository">
+<em class="property">class </em><code class="sig-prename descclassname">track_information_repository.</code><code class="sig-name descname">TrackInformationRepository</code><a class="headerlink" href="#track_information_repository.TrackInformationRepository" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="track_information_repository.TrackInformationRepository.get_trackinformation_dataframe">
+<em class="property">abstract </em><code class="sig-name descname">get_trackinformation_dataframe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id_track</span></em><span class="sig-paren">)</span><a class="headerlink" href="#track_information_repository.TrackInformationRepository.get_trackinformation_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to get track information from a resource.
+:param id_track: id of track to obtain.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="track_information_repository.TrackInformationRepository.write_trackinformation_dataframe">
+<em class="property">abstract </em><code class="sig-name descname">write_trackinformation_dataframe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id_track</span></em>, <em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#track_information_repository.TrackInformationRepository.write_trackinformation_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to store track information in DataFrame format into a resource.
+:param id_track: id to identify the information in the resource.
+:param data:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="track_information_repository.TrackInformationRepository.write_trackinformation_dataframes">
+<em class="property">abstract </em><code class="sig-name descname">write_trackinformation_dataframes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#track_information_repository.TrackInformationRepository.write_trackinformation_dataframes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to store more than one dataframe into the resource.
+:param data: data to store in DataFrame format.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-track_statistics_repository"></span><dl class="py class">
+<dt id="track_statistics_repository.TrackStatisticsRepository">
+<em class="property">class </em><code class="sig-prename descclassname">track_statistics_repository.</code><code class="sig-name descname">TrackStatisticsRepository</code><a class="headerlink" href="#track_statistics_repository.TrackStatisticsRepository" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="track_statistics_repository.TrackStatisticsRepository.read_distance_point_projection">
+<em class="property">abstract </em><code class="sig-name descname">read_distance_point_projection</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#track_statistics_repository.TrackStatisticsRepository.read_distance_point_projection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to read analysis of distance point-projection stored in resource.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="track_statistics_repository.TrackStatisticsRepository.read_distance_point_to_next">
+<em class="property">abstract </em><code class="sig-name descname">read_distance_point_to_next</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#track_statistics_repository.TrackStatisticsRepository.read_distance_point_to_next" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to read analysis of distance point-to-point stored in resource.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="track_statistics_repository.TrackStatisticsRepository.write_many_track_statistics">
+<em class="property">abstract </em><code class="sig-name descname">write_many_track_statistics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#track_statistics_repository.TrackStatisticsRepository.write_many_track_statistics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to store multiple analysis of distance point-to-point and point-projection pair stored in resource.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="track_statistics_repository.TrackStatisticsRepository.write_track_statistics">
+<em class="property">abstract </em><code class="sig-name descname">write_track_statistics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id_track</span></em>, <em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em><span class="sig-paren">)</span><a class="headerlink" href="#track_statistics_repository.TrackStatisticsRepository.write_track_statistics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to store analysis of distance point-to-point and point-projection pair stored in resource.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="resource.html" class="btn btn-neutral float-right" title="Resource" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="interactor.html" class="btn btn-neutral float-left" title="Interactor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Toni Boutaour
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
