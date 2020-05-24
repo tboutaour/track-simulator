@@ -14,11 +14,11 @@ services:
       - ${TRACKSIMULATORPATH}/db:/data/db
 
   app:
-    image: tonibous/track-simulator:latest
+    build: .
     volumes:
     - ./src:/app
     - ${TRACKSIMULATOREXPORT}:/data
-    - ${TRACKSIMULATORPATH}/analysis:/analysis
+    - ${ANALYSISPATH}:/analysis
     depends_on:
       - db
     networks:

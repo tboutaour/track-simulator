@@ -177,25 +177,6 @@
 
 </dd></dl>
 
-<span class="target" id="module-get_heat_map"></span><dl class="py class">
-<dt id="get_heat_map.GetHeatMap">
-<em class="property">class </em><code class="sig-prename descclassname">get_heat_map.</code><code class="sig-name descname">GetHeatMap</code><a class="headerlink" href="#get_heat_map.GetHeatMap" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
-<dt id="get_heat_map.GetHeatMap.apply">
-<em class="property">abstract </em><code class="sig-name descname">apply</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">graph</span><span class="p">:</span> <span class="n">track_simulator.entities.graph_impl.Graph</span></em>, <em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em><span class="sig-paren">)</span><a class="headerlink" href="#get_heat_map.GetHeatMap.apply" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to get heatMap given a graph and data of edge frequencies.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>graph</strong> – Graph element</p></li>
-<li><p><strong>data</strong> – Dataframe of graph with frequencies.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
 <span class="target" id="module-get_map_matching"></span><dl class="py class">
 <dt id="get_map_matching.GetMapMatching">
 <em class="property">class </em><code class="sig-prename descclassname">get_map_matching.</code><code class="sig-name descname">GetMapMatching</code><a class="headerlink" href="#get_map_matching.GetMapMatching" title="Permalink to this definition">¶</a></dt>
@@ -261,13 +242,13 @@
 <em class="property">class </em><code class="sig-prename descclassname">simulate_track.</code><code class="sig-name descname">SimulateTrack</code><a class="headerlink" href="#simulate_track.SimulateTrack" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
 <dt id="simulate_track.SimulateTrack.simulate">
-<em class="property">abstract </em><code class="sig-name descname">simulate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">origin_node</span></em>, <em class="sig-param"><span class="n">distance</span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulate_track.SimulateTrack.simulate" title="Permalink to this definition">¶</a></dt>
+<em class="property">abstract </em><code class="sig-name descname">simulate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">origin_node</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">distance</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span> &#x2192; [[&lt;class ‘int’&gt;, &lt;class ‘int’&gt;]]<a class="headerlink" href="#simulate_track.SimulateTrack.simulate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method to simulate track.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>origin_node</strong> – Node to start simulation.</p></li>
-<li><p><strong>distance</strong> – Distance of track to simulate. (in meters)</p></li>
+<li><p><strong>origin_node</strong> (<em>int</em>) – Node to start simulation.</p></li>
+<li><p><strong>distance</strong> (<em>int</em>) – Distance of track to simulate. (in meters)</p></li>
 </ul>
 </dd>
 </dl>

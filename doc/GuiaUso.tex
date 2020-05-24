@@ -17,12 +17,12 @@ encuentra en el siguiente repositorio de GitHub:
 \faGithub \hspace{1em}  \url{https://github.com/tboutaour/track-simulator}
 
 \subsection{Instalación}
-La instalación se realiza a partir de un ejecutable (algoritmo \ref{comand:installsh}. 
+La instalación se realiza a partir de un ejecutable (algoritmo \ref{comand:installsh}). 
 \begin{lstlisting}[caption={\textit{Script} instalador de \textit{track-simulator}}, 
 language=bash, 
 label={comand:installsh}] 
 #!/bin/bash
-TRACKSIMULATORPATH=${HOME}/track-simulator/
+TRACKSIMULATORPATH=${HOME}/track-simulator
 CONFIGPATH=${TRACKSIMULATORPATH}/config
 DBPATH=${TRACKSIMULATORPATH}/db
 ANALYSISPATH=${TRACKSIMULATORPATH}/analysis
@@ -32,11 +32,10 @@ SIMULATIONPATH=${TRACKSIMULATORPATH}/simulation
 mkdir -p ${DBPATH}
 mkdir -p ${ANALYSISPATH}
 mkdir -p ${ANALYSISPATH}/statistics
-mkdir -p ${}
+mkdir -p ${SIMULATIONPATH}
 
 # Download docker-compose file from github.
-wget https://raw.githubusercontent.com/tboutaour/track-simulator/master/bin/
-install.sh -P ${CONFIGPATH}
+wget https://raw.githubusercontent.com/tboutaour/track-simulator/master/docker-compose.yaml -O ${CONFIGPATH}/docker-compose.yaml
 \end{lstlisting}
 Este \textit{script} realiza una serie de configuraciones del sistema, añadiendo un 
 directorio al \textit{\$HOME} de la máquina donde se instala. Se añade un directorio 
@@ -52,7 +51,7 @@ pueden estar organizados en subdirectorios, este \textit{path} se informa en la 
 a cuando realicemos una ejecución mediante el comando \textit{ts-cli analyze 	--file
 \_directory \lbrack SUBDIRECTORY\rbrack}.
 \item \textbf{data}. Directorio para la salida de los procesos de análisis. Este directorio 
-tiene, por lo tanto una estructura de subdirectorios como se muestra en la figura 
+tiene, por lo tanto, una estructura de subdirectorios como se muestra en la figura 
 \ref{figure:dataFolderHierarchy}.
 
 \end{enumerate}

@@ -59,7 +59,7 @@ class GetAnalysisFigureImpl(GetAnalysisFigure):
                             wspace=0.35)
         today = datetime.utcnow()
         str_day = today.strftime('%Y%m%d_%H%M') + "00"
-        plt.savefig(EXPORT_ANALYSIS_IMAGES_FOLDER + '/' + 'distance_point_projection_' + str_day + '.eps', format='eps',
+        plt.savefig(EXPORT_ANALYSIS_IMAGES_FOLDER + '/' + 'distance_point_projection_' + str_day + '.png', format='png',
                     dpi=600)
 
     def apply_heat_map(self, graph):

@@ -50,9 +50,7 @@ class TrackAnalysisPipeline:
         :param file_path: path of the directory where tracks are alocated.
         """
         logging.basicConfig(stream=sys.stdout, level=logging.INFO)
-        if file_path is None:
-            file_path = FILE_DIRECTORY
-        files = [file_path + '/' + gpx_file for gpx_file in os.listdir(file_path) if gpx_file.endswith(".gpx")]
+        files = [FILE_DIRECTORY + '/' + file_path + '/' + gpx_file for gpx_file in os.listdir(FILE_DIRECTORY + '/' + file_path) if gpx_file.endswith(".gpx")]
         p = Pool(processes=multiprocessing.cpu_count())
         data = p.map(self.analyze, files)
         p.close()
@@ -73,6 +71,7 @@ class TrackAnalysisPipeline:
                                                                       for item in statistics], []))
         self.get_analysis_figure.apply_distance_point_point(sum([item['DistanceToNext'].tolist()
                                                                  for item in statistics], []))
+        self.get_analysis_figure.apply_heat_map(graphs[-1])
         logging.info("Saved information in MongoDB")
 
         self.graph_information_repository.write_graph_information_dataframe(graphs[-1].get_edgelist_dataframe())

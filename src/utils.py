@@ -1,5 +1,6 @@
 import matplotlib.cm as cm
 import numpy as np
+import pandas as pd
 import seaborn as sns;
 
 sns.set()
@@ -23,6 +24,19 @@ def plot_points(ax, t, color):
         lon = a[0]
         ax.scatter(lon, lat, c=color, s=20)
 
+def get_cumulative_distribution(data, out_threshold):
+    """
+    Get cumulative distribution of data.
+    :param data:
+    :param out_threshold:
+    :return:
+    """
+    dx2 = [i for i in data if i < out_threshold]
+    dx2 = np.array(dx2)
+    dx2 = np.sort(dx2)
+    cd_dx = np.linspace(0., 1., len(dx2))
+    ser_dx = pd.Series(cd_dx, index=dx2)
+    return ser_dx
 
 def plot_example_emission_prob():
     """

@@ -20,7 +20,7 @@ def simulation_main(origin_node, distance, data, quantity):
     """
     origin_node = 1248507104  # Bellver Castle entrance
     distance = 20000  # In meters
-    data = LAST_VERSION_GRAPH
+    data = 'Graph_Analysis_05-24-2020'
     quantity = 1
     # Resource
     mongo_resource = MongoResourceImpl()

@@ -19,3 +19,12 @@ class GetAnalysisFigure(abc.ABC):
         :param data: List of distances point to projection.
         """
         pass
+
+    @abc.abstractmethod
+    def apply_heat_map(self, graph):
+        """
+        Definition of method to get heat map figure.
+
+        :param graph: Graph to project.
+        """
+        pass

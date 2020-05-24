@@ -1,0 +1,15 @@
+#!/bin/bash
+export TRACKSIMULATORPATH=${HOME}/track-simulator
+export CONFIGPATH=${TRACKSIMULATORPATH}/config
+export DBPATH=${TRACKSIMULATORPATH}/db
+export ANALYSISPATH=${TRACKSIMULATORPATH}/analysis
+export SIMULATIONPATH=${TRACKSIMULATORPATH}/simulation
+
+# Make directories if do not exist.
+mkdir -p ${DBPATH}
+mkdir -p ${ANALYSISPATH}
+mkdir -p ${ANALYSISPATH}/statistics
+mkdir -p ${SIMULATIONPATH}
+
+# Download docker-compose file from github.
+wget https://raw.githubusercontent.com/tboutaour/track-simulator/master/docker-compose.yaml -O ${CONFIGPATH}/docker-compose.yaml

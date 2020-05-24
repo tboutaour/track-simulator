@@ -12,10 +12,32 @@ import numpy as np
 import utils
 from track_simulator.entities.graph import Graph
 from track_simulator.entities.track_point import TrackPoint
-from track_simulator.conf.config import EXPORT_SIMULATIONS_IMAGES_FOLDER
+from track_simulator.conf.config import GENERATION_DISTANCE
+from track_simulator.conf.config import DESTINATION_NODE_THRESHOLD
 
 COLORS = ["green", "red", "blue", "purple", "pink", "orange", "yellow", "black"]
 DISTANCE_TO_FINAL_NODE = 24
+
+
+def get_closest_segment_point(coord_list, point):
+    """
+    Get closest point of a list of points.
+    :param coord_list: list of points
+    :param point: original point to get the projection
+    :return: closest point's index in list
+    """
+    # Search distance for each point
+    distances = [[x[0], x[1], TrackPoint(x[0], x[1]).haversine_distance(TrackPoint(point))] for x in
+                 coord_list]
+
+    # Get first element given sorted list
+    closest_element = sorted(distances, key=lambda x: x[2])[0]
+    return coord_list.index((closest_element[0], closest_element[1]))
+
+
+def get_random_value(ac_serie):
+    rnd = np.random.random()
+    return np.argmax(ac_serie > rnd)
 
 
 class SimulateTrackImpl(SimulateTrack):
@@ -28,10 +50,12 @@ class SimulateTrackImpl(SimulateTrack):
         self.graph = graph
         self.gpx_resource = gpx_resource
         self.pyplot_resource = pyplot_resource
-        self.accumulative_point_distance_distribution = self.__get_accumulative_distribution(
+        self.accumulative_point_distance_distribution = utils.get_cumulative_distribution(
             track_statistics_repository.read_distance_point_to_next(), 40)
 
-    def simulate(self, origin_node, distance):
+    def simulate(self, origin_node: int, distance: int):
+        print(DESTINATION_NODE_THRESHOLD)
+        print(GENERATION_DISTANCE)
         simulated_track = []
         # Simular creación de trayectoria completa
 
@@ -71,6 +95,14 @@ class SimulateTrackImpl(SimulateTrack):
         return path
 
     def create_path(self, origin, dist):
+        """
+        Path creation given origin and distance.
+        :param origin: Origin node.
+        :type origin: int
+        :param dist: path distance in meters.
+        :param dist: int
+        :return:
+        """
         path = []
         distance_created = 0
         prev_node = origin
@@ -87,6 +119,11 @@ class SimulateTrackImpl(SimulateTrack):
         return path, distance_created
 
     def simulate_segment(self, segment):
+        """
+        Creates a simulation of points related to a segment.
+        :param segment: Element [origin node, dest. node] to simulate
+        :return: List of points related to the segment.
+        """
         aux = 0
         origin_node = segment[0]
         target_node = segment[1]
@@ -96,7 +133,7 @@ class SimulateTrackImpl(SimulateTrack):
         try:
             dest, aux = self.calculate_point(segment, origin_node, target_node, origin_point, target_point)
             next = dest
-            while aux > DISTANCE_TO_FINAL_NODE:
+            while aux > DESTINATION_NODE_THRESHOLD:
                 dest, aux = self.calculate_point(segment, origin_node, target_node, next, target_point)
                 next = dest
         except KeyError:
@@ -105,33 +142,42 @@ class SimulateTrackImpl(SimulateTrack):
 
     def calculate_point(self, segment, origin_node, target_node, origin_point: TrackPoint,
                         segment_target_point: TrackPoint):
-        # Cargar la estructura de lista del segmento
+        """
+        Generation of point in a determinated segment. This function modifies segment
+        adding simulated point.
+        :param segment: [origin segment node, target segment node]
+        :param origin_node: origin node from generate new point
+        :param target_node: target node from generate new point
+        :param origin_point: origin point from generation start
+        :param segment_target_point: segment end point projection if
+        :return: generated point.
+        """
+        # Load segment list structure
         coords = self.graph.get_edge_by_nodes(origin_node, target_node)['geometry'].coords[:]
         coord_list = [tuple(item) for item in coords]
 
-        # Calcular el punto GPS más cercano del segmento
-        idx = self.get_closest_segment_point(coord_list, origin_point)
+        # Get closest point
+        idx = get_closest_segment_point(coord_list, origin_point)
 
-        # Calculamos la dirección entre el punto que origen y el siguiente punto encontrado
+        # Get bearing origin point to destiny
         try:
             next_point = TrackPoint(coord_list[idx + 1][0], coord_list[idx + 1][1])
         except IndexError:
-            # Si nos hemos pasado con el indice apuntaremos directamente al final.
-            print("Error de indice")
+            # If point is out, directly point to last segment point
             next_point = segment_target_point
 
         bearing = origin_point.get_bearing(next_point)
 
-        # Calculamos una desviación
+        # Get bearing given deviation
         random_bearing = np.random.uniform(bearing - 20, bearing + 20)
 
-        # Calculamos distacia al punto que queremos crear
+        # Get distance from last point given analysis.
         if len(self.accumulative_point_distance_distribution) > 0:
-            point_distance = self.__get_random_value(self.accumulative_point_distance_distribution)
+            point_distance = get_random_value(self.accumulative_point_distance_distribution)
         else:
-            point_distance = 20
+            point_distance = GENERATION_DISTANCE
 
-        # Generamos el punto
+        # Point generation
         generated_point = origin_point.generate_point(random_bearing, point_distance)
         generated_point_distance = geopy.distance.distance((generated_point.get_longlat()),
                                                            (next_point.get_longlat())).m
@@ -144,16 +190,21 @@ class SimulateTrackImpl(SimulateTrack):
             generated_point_distance = geopy.distance.distance((generated_point.get_longlat()),
                                                                (next_point.get_longlat())).m
 
-        # Calculamos la distancia entre este punto y el final
+        # Get distance to final point
         aux = geopy.distance.distance((generated_point.get_longlat()), (segment_target_point.get_longlat())).m
 
-        # Meter el punto en el segmento resultante
+        # Set last point
         segment.append((generated_point.get_longlat()))
 
-        # Devolvemos el punto y la distancia de este al final
         return generated_point, aux
 
     def get_most_frequent_node(self, node, path):
+        """
+        Get frequent segment node given a probability distribution in graph.
+        :param node: node to select new segment.
+        :param path: created path in order to detect recullation
+        :return:
+        """
         target_list = [[i[1], i[2]['frequency']] for i in list(self.graph.get_edge_by_node(node))]
         try:
             if len(path) > 1:
@@ -172,42 +223,3 @@ class SimulateTrackImpl(SimulateTrack):
             print(target_prob_list)
         selected_target = np.random.choice(target_node_list, 1, p=target_prob_list)
         return selected_target.item()
-
-    def calculate_initial_compass_bearing(self, pointA, pointB):
-        if (type(pointA) != tuple) or (type(pointB) != tuple):
-            raise TypeError("Only tuples are supported as arguments")
-        lat1 = math.radians(pointA[0])
-        lat2 = math.radians(pointB[0])
-        diffLong = math.radians(pointB[1] - pointA[1])
-        x = math.sin(diffLong) * math.cos(lat2)
-        y = math.cos(lat1) * math.sin(lat2) - (math.sin(lat1)
-                                               * math.cos(lat2) * math.cos(diffLong))
-        initial_bearing = math.atan2(x, y)
-        # Now we have the initial bearing but math.atan2 return values
-        # from -180° to + 180° which is not what we want for a compass bearing
-
-        # The solution is to normalize the initial bearing as shown below
-        initial_bearing = math.degrees(initial_bearing)
-        compass_bearing = (initial_bearing + 360) % 360
-        return compass_bearing
-
-    def get_closest_segment_point(self, coord_list, point):
-        # Por cada elemento buscar la distancia.
-        distances = [[x[0], x[1], TrackPoint(x[0], x[1]).haversine_distance(TrackPoint(point))] for x in
-                     coord_list]
-
-        # Ordenar por esta nueva columna y coger el primer elemento
-        closest_element = sorted(distances, key=lambda x: x[2])[0]
-        return coord_list.index((closest_element[0], closest_element[1]))
-
-    def __get_random_value(self, ac_serie):
-        rnd = np.random.random()
-        return np.argmax(ac_serie > rnd)
-
-    def __get_accumulative_distribution(self, data, out_threshold):
-        dx2 = [i for i in data if i < out_threshold]
-        dx2 = np.array(dx2)
-        dx2 = np.sort(dx2)
-        cd_dx = np.linspace(0., 1., len(dx2))
-        ser_dx = pd.Series(cd_dx, index=dx2)
-        return ser_dx

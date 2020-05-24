@@ -1,24 +1,19 @@
 #!/bin/bash
-TRACKSIMULATORPATH=${HOME}/track-simulator/
+TRACKSIMULATORPATH=${HOME}/track-simulator
 DBPATH=${TRACKSIMULATORPATH}/db
 ANALYSISPATH=${TRACKSIMULATORPATH}/analysis
 SIMULATIONPATH=${TRACKSIMULATORPATH}/simulation
 CONFIGPATH=${TRACKSIMULATORPATH}/config
-export TRACKSIMULATORPATH
 # A wrapper script for execute TrackSimulator cli app with docker.
 # Put this file in $PATH as ts-cli
-
-# Make directories if do not exist.
-mkdir -p ${DBPATH}
-mkdir -p ${ANALYSISPATH}
-mkdir -p ${ANALYSISPATH}/statistics
-
 
 # Check if docker-compose exists
 if [ ! -e ${CONFIGPATH}/docker-compose.yaml ]; then
     echo "You have to install track-simulator first!"
     exit 0
 fi
+
+cd "${CONFIGPATH}"
 
 # First check dependencies
 docker -v
