@@ -54,35 +54,25 @@ class SimulateTrackImpl(SimulateTrack):
             track_statistics_repository.read_distance_point_to_next(), 40)
 
     def simulate(self, origin_node: int, distance: int):
-        print(DESTINATION_NODE_THRESHOLD)
-        print(GENERATION_DISTANCE)
         simulated_track = []
-        # Simular creación de trayectoria completa
-
-        # Encontrar el camino más probable.
         list_original = []
-        list_distances = []
         list_reduced = []
 
-        # Realizamos 5 y nos quedamos con el que tenga menos repeticiones.
+        # Get n, get most probably.
         for i in range(0, self.number_simulations):
-            simulated_path_aux, distance_generated = self.create_path(origin_node, distance)
+            simulated_path_aux, _ = self.create_path(origin_node, distance)
             list_original.append(simulated_path_aux)
-            list_distances.append(distance_generated)
-            res = []
-            res = [l for l in simulated_path_aux if l not in res]
-            list_reduced.append(res)
+            list_reduced.append(
+                [n for i, n in enumerate(simulated_path_aux) if i == 0 or n != simulated_path_aux[i - 2]])
 
         idx_to_return = list_reduced.index(max(list_reduced, key=len))
         simulated_path = list_original[idx_to_return]
-        distance_to_return = list_distances[idx_to_return]
 
-        # Iterar para cada uno de los nodos del camino escogido
+        # For each node of the selected path, iterate.
         path = []
         for d in range(0, len(simulated_path) - 1):
             path.append([simulated_path[d], simulated_path[d + 1]])
 
-        #  para crear segmentos de colores distintos
         for segment in path:
             seg = self.simulate_segment(segment)
             for s in seg:

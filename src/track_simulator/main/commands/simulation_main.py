@@ -7,9 +7,11 @@ from track_simulator.entities.graph_impl import Graph
 from track_simulator.interactor.simulate_track_impl import SimulateTrackImpl
 from track_simulator.pipelines.track_simulator_pipeline import TrackSimulatorPipeline
 from track_simulator.conf.config import LAST_VERSION_GRAPH
+from track_simulator.conf.config import NORTH_COMPONENT, SOUTH_COMPONENT, EAST_COMPONENT, WEST_COMPONENT
 
 
-def simulation_main(origin_node, distance, data, quantity):
+def simulation_main(origin_node, distance, data, quantity, north_component, south_component, east_component,
+                    west_component):
     """
     Main function to deploy pipeline that simulates track based on previous analysis.
 
@@ -18,10 +20,8 @@ def simulation_main(origin_node, distance, data, quantity):
     :param data: Data to import from database. (Graph_Analysis_mm-dd-YYYY)
     :param quantity: Number of tracks to generate.
     """
-    origin_node = 1248507104  # Bellver Castle entrance
-    distance = 20000  # In meters
-    data = 'Graph_Analysis_05-24-2020'
-    quantity = 1
+    if data is None:
+        data = 'Graph_Analysis_05-24-2020'
     # Resource
     mongo_resource = MongoResourceImpl()
     pyplot_resource = PyplotResourceImpl()
@@ -32,14 +32,19 @@ def simulation_main(origin_node, distance, data, quantity):
     track_statistics_repository = TrackStatisticsRepositoryImpl(mongo_resource)
 
     # Entity
-    bellver_graph = Graph(39.5713, 39.5573, 2.6257, 2.6023)
-    bellver_graph.load_graph_analysis_statistics(graph_repository.read_graph_information_dataframe(data))
+    useDefaultZone = any(elem is None for elem in [north_component, south_component, east_component, west_component])
+    if useDefaultZone:
+        zone_graph = Graph(NORTH_COMPONENT, SOUTH_COMPONENT, EAST_COMPONENT, WEST_COMPONENT)
+    else:
+        zone_graph = Graph(north_component, south_component, east_component, west_component)
+
+    zone_graph.load_graph_analysis_statistics(graph_repository.read_graph_information_dataframe(data))
 
     # Interactors
-    simulate_track = SimulateTrackImpl(bellver_graph, 4, gpx_resource, pyplot_resource, track_statistics_repository)
+    simulate_track = SimulateTrackImpl(zone_graph, 4, gpx_resource, pyplot_resource, track_statistics_repository)
 
     # Pipeline
     track_simulator_pipeline = TrackSimulatorPipeline(simulate_track)
 
     # Run
-    track_simulator_pipeline.run(origin_node, distance, quantity)
+    track_simulator_pipeline.run(int(origin_node), int(distance), int(quantity))
