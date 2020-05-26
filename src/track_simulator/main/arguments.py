@@ -8,8 +8,7 @@ class Arguments(object):
     def __init__(self):
         self.parser = argparse.ArgumentParser(
             description='TrackSimulator CLI. Analyze, simulate and generate GPX tracks',
-            usage='blvr-sim <command> [args]\n' +
-                  "The most commonly used git commands are:\n" +
+            usage="Available commands are:\n" +
                   "analyze Analyze GPX tracks, generate results and store information"
                   "in mongoDB\n" +
                   "simulate Generate track given analysis information stored in mongoDB\n")

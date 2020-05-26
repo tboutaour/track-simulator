@@ -15,7 +15,7 @@ from track_simulator.repository.graph_information_repository import GraphInforma
 from track_simulator.repository.resource.gpx_resource import GPXResource
 from track_simulator.repository.track_information_repository import TrackInformationRepository
 from track_simulator.repository.track_statistics_repository import TrackStatisticsRepository
-
+from track_simulator.conf.config import MAX_RANGE_REPETEITION
 MAX_RANGE_REPETEITION = 2
 
 
