@@ -4,6 +4,8 @@ import osmnx
 
 from track_simulator.entities.graph import Graph as dGraph
 from shapely.geometry import LineString
+from track_simulator.entities.track_point import TrackPoint
+
 
 class Graph(dGraph):
     def __init__(self, north, south, east, west):
@@ -29,15 +31,14 @@ class Graph(dGraph):
     def get_degree(self, point):
         return self.graph.degree(point)
 
-    def get_closest_node(self, point):
-        osmnx.get_nearest_node(self.graph, point)
+    def get_closest_node(self, point: TrackPoint):
+        osmnx.get_nearest_node(self.graph, point.get_latlong())
 
     def load_graph_analysis_statistics(self, data):
         frequency = {(row.source, row.target, 0): data.iloc[idx]['frequency'] for idx, row in data.iterrows()}
         num_of_detections = {(row.source, row.target, 0): data.iloc[idx]['num of detections'] for idx, row in data.iterrows()}
         networkx.set_edge_attributes(self.graph, frequency, 'frequency')
         networkx.set_edge_attributes(self.graph, num_of_detections, 'num of detections')
-
 
     def get_shortest_path_length(self, origin_node, target_node):
         try:

@@ -49,9 +49,18 @@ class Arguments(object):
         parser.add_argument('--south_component', help="South component of limited area.")
         parser.add_argument('--east_component', help="East component of limited area.")
         parser.add_argument('--west_component', help="West component of limited area.")
-        parser.add_argument('--origin_node', help='Node to start simulation.')
+        parser.add_argument('--origin_lat', help='Latitude coordinate to start simulation.')
+        parser.add_argument('--origin_lon', help='Longitude coordinate to start simulation.')
         parser.add_argument('--data', help="Data to import from database. (Graph_Analysis_mm-dd-YYYY)")
         parser.add_argument('--quantity', help="Number of tracks to generate.")
         args = parser.parse_args(sys.argv[2:])
-        simulation_main(args.origin_node, args.distance, args.data, args.quantity, args.north_component, args.south_component, args.east_component,
-                      args.west_component)
+        simulation_main(
+            origin_lat=args.origin_lat,
+            origin_lon=args.distance,
+            distance=args.distance,
+            data=args.data,
+            quantity=args.quantity,
+            north_component=args.north_component,
+            south_component=args.south_component,
+            east_component=args.east_component,
+            west_component=args.west_component)

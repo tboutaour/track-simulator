@@ -10,12 +10,12 @@ from track_simulator.conf.config import LAST_VERSION_GRAPH
 from track_simulator.conf.config import NORTH_COMPONENT, SOUTH_COMPONENT, EAST_COMPONENT, WEST_COMPONENT
 
 
-def simulation_main(origin_node, distance, data, quantity, north_component, south_component, east_component,
+def simulation_main(origin_lat, origin_lon, distance, data, quantity, north_component, south_component, east_component,
                     west_component):
     """
     Main function to deploy pipeline that simulates track based on previous analysis.
 
-    :param origin_node: Node to start simulation.
+    :param origin_point: Point to start simulation.
     :param distance: Distance to start simulation.
     :param data: Data to import from database. (Graph_Analysis_mm-dd-YYYY)
     :param quantity: Number of tracks to generate.
@@ -41,10 +41,20 @@ def simulation_main(origin_node, distance, data, quantity, north_component, sout
     zone_graph.load_graph_analysis_statistics(graph_repository.read_graph_information_dataframe(data))
 
     # Interactors
-    simulate_track = SimulateTrackImpl(zone_graph, 4, gpx_resource, pyplot_resource, track_statistics_repository)
+    simulate_track = SimulateTrackImpl(
+        graph=zone_graph,
+        number_simulations=4,
+        gpx_resource=gpx_resource,
+        pyplot_resource=pyplot_resource,
+        track_statistics_repository=track_statistics_repository
+    )
 
     # Pipeline
     track_simulator_pipeline = TrackSimulatorPipeline(simulate_track)
 
     # Run
-    track_simulator_pipeline.run(int(origin_node), int(distance), int(quantity))
+    track_simulator_pipeline.run(
+        origin_lat=float(origin_lat),
+        origin_lon=float(origin_lon),
+        distance=int(distance),
+        quantity=int(quantity))

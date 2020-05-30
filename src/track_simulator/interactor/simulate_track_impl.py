@@ -16,7 +16,6 @@ from track_simulator.conf.config import GENERATION_DISTANCE
 from track_simulator.conf.config import DESTINATION_NODE_THRESHOLD
 
 COLORS = ["green", "red", "blue", "purple", "pink", "orange", "yellow", "black"]
-DISTANCE_TO_FINAL_NODE = 24
 
 
 def get_closest_segment_point(coord_list, point):
@@ -45,19 +44,22 @@ class SimulateTrackImpl(SimulateTrack):
                  number_simulations,
                  gpx_resource: GPXResource,
                  pyplot_resource: PyplotResource,
-                 track_statistics_repository: TrackStatisticsRepository):
+                 track_statistics_repository: TrackStatisticsRepository,
+                 seed: int):
         self.number_simulations = number_simulations
         self.graph = graph
         self.gpx_resource = gpx_resource
         self.pyplot_resource = pyplot_resource
         self.accumulative_point_distance_distribution = utils.get_cumulative_distribution(
             track_statistics_repository.read_distance_point_to_next(), 40)
+        np.random.seed(seed)
 
-    def simulate(self, origin_node: int, distance: int):
+    def simulate(self, origin_point: TrackPoint, distance: int):
         simulated_track = []
         list_original = []
         list_reduced = []
 
+        origin_node = self.graph.get_closest_node(origin_point)
         # Get n, get most probably.
         for i in range(0, self.number_simulations):
             simulated_path_aux, _ = self.create_path(origin_node, distance)

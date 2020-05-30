@@ -1,5 +1,7 @@
 import abc
 
+from track_simulator.entities.track_point import TrackPoint
+
 
 class Graph(abc.ABC):
 
@@ -21,7 +23,7 @@ class Graph(abc.ABC):
     def get_degree(self, point):
         pass
 
-    def get_closest_node(self, point):
+    def get_closest_node(self, point: TrackPoint):
         pass
 
     def load_graph_analysis_statistics(self, data):
