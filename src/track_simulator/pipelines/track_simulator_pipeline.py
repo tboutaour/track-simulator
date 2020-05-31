@@ -13,9 +13,9 @@ class TrackSimulatorPipeline:
         :return: Simulate track in list of Point format.
         """
         if origin_lat is None or origin_lon is None:
-            origin_point = Point(39.567875, 2.623559)
+            origin_point = Point(2.623559, 39.567875)
         else:
-            origin_point = Point(origin_lat, origin_lon)
+            origin_point = Point(origin_lon, origin_lat)
         if distance is None:
             distance = 10000
         if quantity is None:

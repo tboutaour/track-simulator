@@ -11,7 +11,7 @@ from track_simulator.conf.config import NORTH_COMPONENT, SOUTH_COMPONENT, EAST_C
 
 
 def simulation_main(origin_lat, origin_lon, distance, data, quantity, north_component, south_component, east_component,
-                    west_component):
+                    west_component, seed):
     """
     Main function to deploy pipeline that simulates track based on previous analysis.
 
@@ -34,9 +34,17 @@ def simulation_main(origin_lat, origin_lon, distance, data, quantity, north_comp
     # Entity
     useDefaultZone = any(elem is None for elem in [north_component, south_component, east_component, west_component])
     if useDefaultZone:
-        zone_graph = Graph(NORTH_COMPONENT, SOUTH_COMPONENT, EAST_COMPONENT, WEST_COMPONENT)
+        zone_graph = Graph(
+            north=NORTH_COMPONENT,
+            south=SOUTH_COMPONENT,
+            east=EAST_COMPONENT,
+            west=WEST_COMPONENT)
     else:
-        zone_graph = Graph(north_component, south_component, east_component, west_component)
+        zone_graph = Graph(
+            north=float(north_component),
+            south=float(south_component),
+            east=float(east_component),
+            west=float(west_component))
 
     zone_graph.load_graph_analysis_statistics(graph_repository.read_graph_information_dataframe(data))
 
@@ -46,7 +54,8 @@ def simulation_main(origin_lat, origin_lon, distance, data, quantity, north_comp
         number_simulations=4,
         gpx_resource=gpx_resource,
         pyplot_resource=pyplot_resource,
-        track_statistics_repository=track_statistics_repository
+        track_statistics_repository=track_statistics_repository,
+        seed=seed
     )
 
     # Pipeline

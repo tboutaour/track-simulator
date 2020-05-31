@@ -53,14 +53,16 @@ class Arguments(object):
         parser.add_argument('--origin_lon', help='Longitude coordinate to start simulation.')
         parser.add_argument('--data', help="Data to import from database. (Graph_Analysis_mm-dd-YYYY)")
         parser.add_argument('--quantity', help="Number of tracks to generate.")
+        parser.add_argument('--seed', help="Random seed for geneate deterministic results.")
         args = parser.parse_args(sys.argv[2:])
         simulation_main(
             origin_lat=args.origin_lat,
-            origin_lon=args.distance,
+            origin_lon=args.origin_lon,
             distance=args.distance,
             data=args.data,
             quantity=args.quantity,
             north_component=args.north_component,
             south_component=args.south_component,
             east_component=args.east_component,
-            west_component=args.west_component)
+            west_component=args.west_component,
+            seed=args.seed)

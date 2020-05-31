@@ -1,19 +1,17 @@
+import uuid
+
+import geopy
+import geopy.distance
+import numpy as np
+import utils
+from track_simulator.conf.config import DESTINATION_NODE_THRESHOLD
+from track_simulator.conf.config import GENERATION_DISTANCE
+from track_simulator.entities.graph import Graph
+from track_simulator.entities.track_point import TrackPoint
 from track_simulator.interactor.simulate_track import SimulateTrack
 from track_simulator.repository.resource.gpx_resource import GPXResource
 from track_simulator.repository.resource.pyplot_resource import PyplotResource
 from track_simulator.repository.track_statistics_repository import TrackStatisticsRepository
-import math
-import uuid
-import pandas as pd
-import geopy
-import geopy.distance
-import matplotlib.pyplot as plt
-import numpy as np
-import utils
-from track_simulator.entities.graph import Graph
-from track_simulator.entities.track_point import TrackPoint
-from track_simulator.conf.config import GENERATION_DISTANCE
-from track_simulator.conf.config import DESTINATION_NODE_THRESHOLD
 
 COLORS = ["green", "red", "blue", "purple", "pink", "orange", "yellow", "black"]
 
@@ -52,7 +50,10 @@ class SimulateTrackImpl(SimulateTrack):
         self.pyplot_resource = pyplot_resource
         self.accumulative_point_distance_distribution = utils.get_cumulative_distribution(
             track_statistics_repository.read_distance_point_to_next(), 40)
-        np.random.seed(seed)
+
+        if seed is not None:
+            self.seed = int(seed)
+            np.random.seed(int(seed))
 
     def simulate(self, origin_point: TrackPoint, distance: int):
         simulated_track = []

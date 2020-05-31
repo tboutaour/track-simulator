@@ -32,7 +32,7 @@ class Graph(dGraph):
         return self.graph.degree(point)
 
     def get_closest_node(self, point: TrackPoint):
-        osmnx.get_nearest_node(self.graph, point.get_latlong())
+        return osmnx.get_nearest_node(self.graph, point.get_latlong())
 
     def load_graph_analysis_statistics(self, data):
         frequency = {(row.source, row.target, 0): data.iloc[idx]['frequency'] for idx, row in data.iterrows()}
