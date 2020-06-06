@@ -12,7 +12,9 @@ class Arguments(object):
                   "analyze Analyze GPX tracks, generate results and store information"
                   "in mongoDB\n" +
                   "simulate Generate track given analysis information stored in mongoDB\n")
-        self.parser.add_argument('command', help="Subcommand to run")
+        self.parser.add_argument('command', help="Subcommand to run:\n"
+                                                 "analize\n"
+                                                 "simulate")
         args = self.parser.parse_args(sys.argv[1:2])
         if not hasattr(self, args.command):
             print('Unrecognized command')

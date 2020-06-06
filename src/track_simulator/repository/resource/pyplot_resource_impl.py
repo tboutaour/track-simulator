@@ -8,6 +8,7 @@ from track_simulator.repository.resource.pyplot_resource import PyplotResource
 
 COLORS = ["green", "red", "blue", "purple", "pink", "orange", "yellow", "black"]
 
+
 class PyplotResourceImpl(PyplotResource):
     def write(self, uid, graph, track):
         fig, ax = graph.plot_graph()
@@ -17,4 +18,5 @@ class PyplotResourceImpl(PyplotResource):
         plt.savefig(path +
                     "/simulated_track_" +
                     uid +
-                    ".eps", format='eps')
+                    ".png", format='png')
+        plt.close(fig)

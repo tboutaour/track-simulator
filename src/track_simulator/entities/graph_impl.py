@@ -51,13 +51,16 @@ class Graph(dGraph):
 
     def get_edge_information_dataframe(self):
         df = networkx.to_pandas_edgelist(self.graph)
-        del df['tunnel']
-        del df['ref']
-        del df['service']
-        del df['lanes']
-        del df['bridge']
-        del df['maxspeed']
-        del df['width']
+        try:
+            del df['tunnel']
+            del df['ref']
+            del df['service']
+            del df['lanes']
+            del df['bridge']
+            del df['maxspeed']
+            del df['width']
+        except KeyError:
+            pass
         return df
 
     def get_shortest_path(self, origin_node, target_node):

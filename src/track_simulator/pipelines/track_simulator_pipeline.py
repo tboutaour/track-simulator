@@ -1,6 +1,7 @@
 from track_simulator.interactor.simulate_track import SimulateTrack
 from track_simulator.entities.track_point import TrackPoint as Point
 
+
 class TrackSimulatorPipeline:
     def __init__(self, simulate_track: SimulateTrack):
         self.simulate_track = simulate_track
